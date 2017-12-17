@@ -1,13 +1,12 @@
 import subprocess
+from os import listdir
+from os.path import isfile, join
 
 if __name__ == "__main__":
     command = "python "
     path = "tests/"
-    fileNames = [
-        "dimensionsTest",
-        "shapesTest"
-    ]
-    for name in fileNames:
-        print("Test Name = ", name)
-        process = subprocess.Popen(["python", path + name + ".py"], stdout=subprocess.PIPE)
+    fileNames = [file for file in listdir(path) if isfile(join(path, file))] 
+    for fileName in fileNames:
+        print("Test Name = ", fileName)
+        process = subprocess.Popen(["python", path + fileName], stdout=subprocess.PIPE)
         process.communicate()[0]

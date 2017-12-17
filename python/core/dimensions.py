@@ -1,3 +1,5 @@
+from utils import *
+
 class Dim2D:
     def __init__(self, x, y):
         self.x = x
@@ -8,6 +10,18 @@ class Dim2D:
 
     def __repr__(self):
         return self.__str__()
+    
+    def __eq__(self, other):
+        checkType(other, Dim2D)
+        return self.x == other.x and self.y == other.y
+    
+    @staticmethod
+    def listToDim2Ds(liste):
+        checkType(liste, list)
+        if not liste:
+            return []
+        checkType(liste[0], tuple)
+        return [Dim2D(lx, ly) for lx, ly in liste]
 
 class Dim3D:
     def __init__(self, x, y, z):
