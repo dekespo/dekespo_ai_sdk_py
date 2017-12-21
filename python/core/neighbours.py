@@ -20,14 +20,13 @@ def getNeighbours2D_rectangle_8Sides(position):
     candidates = Dim2D.listToDim2Ds(candidates)
     return candidates
 
-# Think more about this
-def getAvailableNeighbours2D_rectangle_4Sides(map, blockingPositions, position):
+def getAvailableNeighbours2D_rectangle(map, blockingPositions, getNeighboursFunction, position):
     checkType(map, Rectangle)
     checkType(blockingPositions, list)
     if blockingPositions:
         checkType(blockingPositions[0], Dim2D)
     checkType(position, Dim2D)
-    candidates = getNeighbours2D_rectangle_4Sides(position)
+    candidates = getNeighboursFunction(position)
 
     for candi in reversed(candidates):
         isInsideBoundary = boundaryChecks2D_rectangle(map, candi)
@@ -39,7 +38,4 @@ def getAvailableNeighbours2D_rectangle_4Sides(map, blockingPositions, position):
     return candidates
 
 def getNeighbours2D_hexagon(position):
-    pass
-
-def getAvailableNeighbours2D_rectangle_8Sides(position):
     pass
