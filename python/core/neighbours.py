@@ -3,6 +3,8 @@ from shapes import *
 from boundaryChecks import *
 from utils import *
 
+import types
+
 def getNeighbours2D_rectangle_4Sides(position):
     checkType(position, Dim2D)
     x, y = position.x, position.y
@@ -26,6 +28,7 @@ def getAvailableNeighbours2D_rectangle(map, blockingPositions, getNeighboursFunc
     if blockingPositions:
         checkType(blockingPositions[0], Dim2D)
     checkType(position, Dim2D)
+    checkType(getNeighboursFunction, types.FunctionType)
     candidates = getNeighboursFunction(position)
 
     for candi in reversed(candidates):
