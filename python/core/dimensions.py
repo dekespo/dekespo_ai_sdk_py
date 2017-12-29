@@ -2,6 +2,8 @@ from utils import *
 
 class Dim2D:
     def __init__(self, x, y):
+        checkNumberValue(x)
+        checkNumberValue(y)
         self.x = x
         self.y = y
 
@@ -15,6 +17,22 @@ class Dim2D:
         checkType(other, Dim2D)
         return self.x == other.x and self.y == other.y
     
+    def vectoralMultiply(self, other):
+        checkType(other, Dim2D)
+        return Dim2D(self.x * other.x, self.y * other.y)
+    
+    def constantMultiply(self, other):
+        checkNumberValue(other)
+        return Dim2D(self.x * other, self.y * other)
+
+    def vectoralDivide(self, other):
+        checkType(other, Dim2D)
+        return Dim2D(self.x / other.x, self.y / other.y)
+    
+    def constantDivide(self, other):
+        checkNumberValue(other)
+        return Dim2D(self.x / other, self.y / other)
+    
     @staticmethod
     def listToDim2Ds(liste):
         checkType(liste, list)
@@ -23,8 +41,23 @@ class Dim2D:
         checkType(liste[0], tuple)
         return [Dim2D(lx, ly) for lx, ly in liste]
 
+    @staticmethod
+    def toNumberValue(object):
+        checkType(object, Dim2D)
+        if object.x == object.y:
+            return object.x
+        elif object.x == 0 and object.y != 0:
+            return object.y
+        elif object.x != 0 and object.y == 0:
+            return object.x
+        else:
+            raise AssertionError("It cannot be converted to a value as x: ", object.x, " and y: ", object.y, " are not the same and nonzero")
+
 class Dim3D:
     def __init__(self, x, y, z):
+        checkNumberValue(x)
+        checkNumberValue(y)
+        checkNumberValue(z)
         self.x = x
         self.y = y
         self.z = z

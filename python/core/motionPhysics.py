@@ -20,19 +20,38 @@ class MotionPhysics2D:
             checkPositiveValue(mass)
             self.mass = mass
 
-# TODO: Add normalise the units for these variables
-# TODO: Add input conditions for which ones should be accessible(for example, if we have mass and acceleration, we don't need force and momentum)
+        if not acceleration:
+            if force and mass:
+                self.acceleration = force.constantDivide(mass)
+        if not force:
+            if acceleration and mass:
+                self.force = acceleration.constantMultiply(mass)
+        if not momentum:
+            if mass:
+                self.momentum = velocity.constantMultiply(mass)
+        if not mass:
+            if acceleration and force:
+                self.mass = force.vectoralDivide(acceleration)
+                self.mass = Dim2D.toNumberValue(self.mass)
+                if not momentum:
+                    self.momentum = velocity.constantMultiply(self.mass)
+            elif momentum:
+                self.mass = momentum.vectoralDivide(velocity)
+                self.mass = Dim2D.toNumberValue(self.mass)
+                if not acceleration and force:
+                    self.acceleration = force.constantDivide(self.mass)
+
     def __str__(self):
         string = "Position: " + self.position
-        string += "\nVelocity" + self.velocity
+        string += "\nVelocity: " + self.velocity
         if self.acceleration:
-            string += "\nAcceleration" + self.acceleration
+            string += "\nAcceleration: " + self.acceleration
         if self.force:
-            string += "\nForce" + self.force
+            string += "\nForce: " + self.force
         if self.momentum:
-            string += "\nMomentum" + self.momentum
+            string += "\nMomentum: " + self.momentum
         if self.mass:
-            string += "\nMass" + self.mass
+            string += "\nMass: " + self.mass
         return string
 
     def __repr__(self):
