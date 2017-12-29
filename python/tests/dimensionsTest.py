@@ -15,6 +15,16 @@ class Dimensions2D(unittest.TestCase):
         dim2Dlist = Dim2D.listToDim2Ds(liste)
         for idx, pos in enumerate(dim2Dlist):
             self.assertEqual(pos, Dim2D(liste[idx][0], liste[idx][1]))
+    
+    def test_add(self):
+        dim1 = Dim2D(2, 3)
+        dim2 = Dim2D(-1, 1)
+        self.assertEqual(dim1 + dim2, Dim2D(1, 4))
+
+    def test_round(self):
+        dim = Dim2D(2.4, 3.7)
+        dim.round()
+        self.assertEqual(dim, Dim2D(2, 4))
 
     def test_multiply(self):
         vecA = Dim2D(2, 3)
@@ -49,6 +59,11 @@ class Dimensions2D(unittest.TestCase):
             dim5 = Dim2D(2, 1)
             Dim2D.toNumberValue(dim5)
             self.assertEqual(exception.error_code, 3)
+    
+    def test_getAverageOfDim2Ds(self):
+        liste = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
+        dim2Dlist = Dim2D.listToDim2Ds(liste)
+        self.assertEqual(Dim2D.getAverageOfDim2Ds(dim2Dlist), Dim2D(-1, -4 / 5))
 
 class Dimensions3D(unittest.TestCase):
     def test_simple(self):

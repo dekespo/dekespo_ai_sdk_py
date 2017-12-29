@@ -17,6 +17,10 @@ class Dim2D:
         checkType(other, Dim2D)
         return self.x == other.x and self.y == other.y
     
+    def __add__(self, other):
+        checkType(other, Dim2D)
+        return Dim2D(self.x + other.x, self.y + other.y)
+    
     def vectoralMultiply(self, other):
         checkType(other, Dim2D)
         return Dim2D(self.x * other.x, self.y * other.y)
@@ -32,6 +36,10 @@ class Dim2D:
     def constantDivide(self, other):
         checkNumberValue(other)
         return Dim2D(self.x / other, self.y / other)
+    
+    def round(self):
+        self.x = round(self.x)
+        self.y = round(self.y)
     
     @staticmethod
     def listToDim2Ds(liste):
@@ -52,6 +60,17 @@ class Dim2D:
             return object.x
         else:
             raise AssertionError("It cannot be converted to a value as x: ", object.x, " and y: ", object.y, " are not the same and nonzero")
+
+    @staticmethod
+    def getAverageOfDim2Ds(liste):
+        checkType(liste, list)
+        totalDim2D = Dim2D(0, 0)
+        if not liste:
+            return totalDim2D
+        for object in liste:
+            checkType(object, Dim2D)
+            totalDim2D += object
+        return totalDim2D.constantDivide(len(liste))
 
 class Dim3D:
     def __init__(self, x, y, z):
