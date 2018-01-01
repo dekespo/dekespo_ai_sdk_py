@@ -1,3 +1,4 @@
+import math
 from utils import *
 
 class Dim2D:
@@ -71,6 +72,12 @@ class Dim2D:
             checkType(object, Dim2D)
             totalDim2D += object
         return totalDim2D.constantDivide(len(liste))
+    
+    @staticmethod
+    def getEuclidDistance(point1, point2):
+        checkType(point1, Dim2D)
+        checkType(point2, Dim2D)
+        return math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2)
 
 class Dim3D:
     def __init__(self, x, y, z):

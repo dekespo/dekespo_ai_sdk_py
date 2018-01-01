@@ -1,4 +1,5 @@
 import sys
+import math
 sys.path.insert(0, "core/")
 
 import unittest
@@ -64,6 +65,19 @@ class Dimensions2D(unittest.TestCase):
         liste = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
         dim2Dlist = Dim2D.listToDim2Ds(liste)
         self.assertEqual(Dim2D.getAverageOfDim2Ds(dim2Dlist), Dim2D(-1, -4 / 5))
+    
+    def test_getEuclidDistance(self):
+        pos1 = Dim2D(0, 0)
+        pos2 = Dim2D(1, 1)
+        pos3 = Dim2D(-2, -1)
+        pos4 = Dim2D(1, -2)
+        pos5 = Dim2D(-3, 4)
+        self.assertEqual(Dim2D.getEuclidDistance(pos1, pos2), math.sqrt(2))
+        self.assertEqual(Dim2D.getEuclidDistance(pos2, pos3), math.sqrt(13))
+        self.assertEqual(Dim2D.getEuclidDistance(pos3, pos4), math.sqrt(10))
+        self.assertEqual(Dim2D.getEuclidDistance(pos4, pos5), math.sqrt(52))
+        self.assertEqual(Dim2D.getEuclidDistance(pos3, pos3), 0)
+        self.assertEqual(Dim2D.getEuclidDistance(pos1, pos3), Dim2D.getEuclidDistance(pos3, pos1))
 
 class Dimensions3D(unittest.TestCase):
     def test_simple(self):
