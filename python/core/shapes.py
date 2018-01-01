@@ -39,3 +39,10 @@ class Circle:
 
     def __repr__(self):
         return self.__str__()
+
+class Shape:
+    @staticmethod
+    def circleVscircleIntersectionCheck(circle1, circle2):
+        dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
+        totalRadius = circle1.radius + circle2.radius
+        return dist <= totalRadius
