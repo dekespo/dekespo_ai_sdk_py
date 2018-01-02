@@ -2,13 +2,13 @@ from utils import *
 
 import types
 
-def getMaximumMinimumValues(listOfObjects, maximiniValue, criteriaFunction, operator):
+def getMaximumMinimumValues(listOfObjects, maximiniValue, criteriaFunction, operator, **kwargs):
     checkType(listOfObjects, list)
     checkNoneValue(maximiniValue, "maximiniValue")
     checkType(criteriaFunction, types.FunctionType)
     chosenObject = None
     for object in listOfObjects:
-        localValue = criteriaFunction(object)
+        localValue = criteriaFunction(object, **kwargs)
         if localValue == "CONTINUE":
             continue
         elif localValue == "BREAK":

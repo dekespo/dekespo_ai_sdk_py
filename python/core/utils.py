@@ -1,5 +1,6 @@
 from numbers import Number
 
+import sys
 import operator
 
 def checkNumberValue(value):
