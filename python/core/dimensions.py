@@ -79,6 +79,12 @@ class Dim2D:
         checkType(point2, Dim2D)
         return math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2)
 
+    @staticmethod
+    def getManathanDistance(point1, point2):
+        checkType(point1, Dim2D)
+        checkType(point2, Dim2D)
+        return abs(point1.x - point2.x) + abs(point1.y - point2.y)
+
 class Dim3D:
     def __init__(self, x, y, z):
         checkNumberValue(x)

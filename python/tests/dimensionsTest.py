@@ -79,6 +79,19 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(Dim2D.getEuclidDistance(pos3, pos3), 0)
         self.assertEqual(Dim2D.getEuclidDistance(pos1, pos3), Dim2D.getEuclidDistance(pos3, pos1))
 
+    def test_getManathanDistance(self):
+        pos1 = Dim2D(0, 0)
+        pos2 = Dim2D(1, 1)
+        pos3 = Dim2D(-2, -1)
+        pos4 = Dim2D(1, -2)
+        pos5 = Dim2D(-3, 4)
+        self.assertEqual(Dim2D.getManathanDistance(pos1, pos2), 2)
+        self.assertEqual(Dim2D.getManathanDistance(pos2, pos3), 5)
+        self.assertEqual(Dim2D.getManathanDistance(pos3, pos4), 4)
+        self.assertEqual(Dim2D.getManathanDistance(pos4, pos5), 10)
+        self.assertEqual(Dim2D.getManathanDistance(pos3, pos3), 0)
+        self.assertEqual(Dim2D.getManathanDistance(pos1, pos3), Dim2D.getManathanDistance(pos3, pos1))
+
 class Dimensions3D(unittest.TestCase):
     def test_simple(self):
         pos = Dim3D(2, 3, 4)
