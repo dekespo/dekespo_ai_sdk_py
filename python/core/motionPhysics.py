@@ -1,10 +1,9 @@
 from dimensions import Dim2D
 from utils import *
 
+# This class should be used in a class with position
 class MotionPhysics2D:
-    def __init__(self, position, velocity, acceleration = None, force = None, momentum = None, mass = None):
-        checkType(position, Dim2D)
-        self.position = position
+    def __init__(self, velocity, acceleration = None, force = None, momentum = None, mass = None):
         checkType(velocity, Dim2D)
         self.velocity = velocity
         if acceleration:
@@ -42,8 +41,7 @@ class MotionPhysics2D:
                     self.acceleration = force.constantDivide(self.mass)
 
     def __str__(self):
-        string = "Position: " + self.position
-        string += "\nVelocity: " + self.velocity
+        string = "Velocity: " + self.velocity
         if self.acceleration:
             string += "\nAcceleration: " + self.acceleration
         if self.force:

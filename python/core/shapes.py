@@ -1,8 +1,9 @@
 from dimensions import Dim2D
 from utils import *
+from motionPhysics import MotionPhysics2D
 from abc import ABC, abstractmethod
 
-class Shape(ABC):
+class Shape2D(ABC):
     def addPosition(self, position):
         checkType(position, Dim2D)
         return position
@@ -15,13 +16,17 @@ class Shape(ABC):
     def __repr__(self):
         pass
 
+    def addMotionPhysics(self, motionPhysics):
+        checkType(motionPhysics, MotionPhysics2D)
+        self.motionPhysics = motionPhysics
+
     @staticmethod
     def circleVscircleIntersectionCheck(circle1, circle2):
         dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
         totalRadius = circle1.radius + circle2.radius
         return dist <= totalRadius
 
-class Rectangle(Shape):
+class Rectangle(Shape2D):
     def __init__(self, upperLeftCorner, width, height):
         self.upperLeftCorner = super().addPosition(upperLeftCorner)
         checkPositiveValue(width)
@@ -36,7 +41,7 @@ class Rectangle(Shape):
     def __repr__(self):
         return self.__str__()
 
-class Hexagon(Shape):
+class Hexagon(Shape2D):
     def __init__(self):
         pass
     
@@ -46,7 +51,7 @@ class Hexagon(Shape):
     def __repr__(self):
         return self.__str__()
 
-class Circle(Shape):
+class Circle(Shape2D):
     def __init__(self, centre, radius):
         self.centre = super().addPosition(centre)
         checkPositiveValue(radius)
@@ -58,7 +63,7 @@ class Circle(Shape):
     def __repr__(self):
         return self.__str__()
 
-class Point(Shape):
+class Point(Shape2D):
     def __init__(self, position):
         self.position = super().addPosition(position)
 

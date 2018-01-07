@@ -30,19 +30,19 @@ class PointTest(unittest.TestCase):
         point2 = Point(Dim2D(-5, -3))
         self.assertEqual(point2.position, Dim2D(-5, -3))
 
-class ShapeTest(unittest.TestCase):
+class Shape2DTest(unittest.TestCase):
     def test_circleVscircleIntersectionCheck(self):
         circle1 = Circle(Dim2D(3, 3), 2)
         circle2 = Circle(Dim2D(1, 1), 2)
         circle3 = Circle(Dim2D(-2, -2), 2)
         circle4 = Circle(Dim2D(2, 2), 1.5)
-        self.assertTrue(Shape.circleVscircleIntersectionCheck(circle1, circle2))
-        self.assertTrue(Shape.circleVscircleIntersectionCheck(circle2, circle1))
-        self.assertFalse(Shape.circleVscircleIntersectionCheck(circle1, circle3))
-        self.assertFalse(Shape.circleVscircleIntersectionCheck(circle2, circle3))
-        self.assertTrue(Shape.circleVscircleIntersectionCheck(circle1, circle4))
-        self.assertTrue(Shape.circleVscircleIntersectionCheck(circle2, circle4))
-        self.assertFalse(Shape.circleVscircleIntersectionCheck(circle3, circle4))
+        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle1, circle2))
+        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle2, circle1))
+        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle1, circle3))
+        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle2, circle3))
+        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle1, circle4))
+        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle2, circle4))
+        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle3, circle4))
 
 if __name__ == "__main__":
     unittest.main()
