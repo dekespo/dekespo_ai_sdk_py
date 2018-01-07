@@ -8,7 +8,7 @@ class RectangleTest(unittest.TestCase):
     def test_simple(self):
         corner = Dim2D(0, 1)
         rec = Rectangle(corner, 20, 30)
-        self.assertEqual(rec.upLeftCorner, Dim2D(0, 1))
+        self.assertEqual(rec.upperLeftCorner, Dim2D(0, 1))
         self.assertEqual(rec.width, 20)
         self.assertEqual(rec.height, 30)
 
@@ -25,10 +25,10 @@ class HexagonTest(unittest.TestCase):
 
 class PointTest(unittest.TestCase):
     def test_simple(self):
-        point = Point(Dim2D(2, 1))
-        self.assertEqual(point.upLeftCorner, Dim2D(2, 1))
-        self.assertEqual(point.width, 1)
-        self.assertEqual(point.height, 1)
+        point1 = Point(Dim2D(2, 1))
+        self.assertEqual(point1.position, Dim2D(2, 1))
+        point2 = Point(Dim2D(-5, -3))
+        self.assertEqual(point2.position, Dim2D(-5, -3))
 
 class ShapeTest(unittest.TestCase):
     def test_circleVscircleIntersectionCheck(self):

@@ -1,7 +1,20 @@
 from dimensions import Dim2D
 from utils import *
+from abc import ABC, abstractmethod
 
-class Shape:
+class Shape(ABC):
+    def addPosition(self, position):
+        checkType(position, Dim2D)
+        return position
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
     @staticmethod
     def circleVscircleIntersectionCheck(circle1, circle2):
         dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
@@ -9,16 +22,15 @@ class Shape:
         return dist <= totalRadius
 
 class Rectangle(Shape):
-    def __init__(self, upLeftCorner, width, height):
-        checkType(upLeftCorner, Dim2D)
+    def __init__(self, upperLeftCorner, width, height):
+        self.upperLeftCorner = super().addPosition(upperLeftCorner)
         checkPositiveValue(width)
         checkPositiveValue(height)
-        self.upLeftCorner = upLeftCorner
         self.width = width
         self.height = height        
 
     def __str__(self):
-        return "upLeftCorner = " + str(self.upLeftCorner) 
+        return "upperLeftCorner = " + str(self.upperLeftCorner)
         + "width x height: " + str(self.width) + " x " + str(self.height)
 
     def __repr__(self):
@@ -36,23 +48,22 @@ class Hexagon(Shape):
 
 class Circle(Shape):
     def __init__(self, centre, radius):
+        self.centre = super().addPosition(centre)
         checkPositiveValue(radius)
-        checkType(centre, Dim2D)
-        self.centre = centre
         self.radius = radius
     
     def __str__(self):
-        return "centre: " + str(self.centre) + ", radius: " + str(self.radius) 
+        return "centre: " + str(self.centre) + ", radius: " + str(self.radius)
 
     def __repr__(self):
         return self.__str__()
 
-class Point(Rectangle):
-    def __init__(self, upLeftCorner):
-        super().__init__(upLeftCorner, 1 ,1)
+class Point(Shape):
+    def __init__(self, position):
+        self.position = super().addPosition(position)
 
     def __str__(self):
-        return super.__str__()
+        return "position: " + str(self.position)
 
     def __repr__(self):
         return self.__str__()
