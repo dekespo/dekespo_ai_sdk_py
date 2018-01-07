@@ -14,7 +14,7 @@ def checkType(instance, classType):
 def checkPositiveValue(value):
     checkNumberValue(value)
     if value <= 0:
-        raise ArithmeticError("Value " + value + " must be larger than 0")
+        raise ArithmeticError("Value " + str(value) + " must be larger than 0")
 
 def checkNoneValue(value, valueName):
     if value == None:
