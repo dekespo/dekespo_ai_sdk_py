@@ -20,6 +20,10 @@ class Shape2D(ABC):
         checkType(motionPhysics, MotionPhysics2D)
         self.motionPhysics = motionPhysics
 
+    def updateMotionPhysics(self, position):
+        checkNoneValue(self.motionPhysics, "motionPhysics")
+        return self.motionPhysics.update(position)
+
     @staticmethod
     def circleVscircleIntersectionCheck(circle1, circle2):
         dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
@@ -40,6 +44,9 @@ class Rectangle(Shape2D):
 
     def __repr__(self):
         return self.__str__()
+
+    def updateMotionPhysics(self):
+        self.upperLeftCorner = super().updateMotionPhysics(self.upperLeftCorner)
 
 class Hexagon(Shape2D):
     def __init__(self):
@@ -63,6 +70,9 @@ class Circle(Shape2D):
     def __repr__(self):
         return self.__str__()
 
+    def updateMotionPhysics(self):
+        self.centre = super().updateMotionPhysics(self.centre)
+
 class Point(Shape2D):
     def __init__(self, position):
         self.position = super().addPosition(position)
@@ -72,3 +82,6 @@ class Point(Shape2D):
 
     def __repr__(self):
         return self.__str__()
+
+    def updateMotionPhysics(self):
+        self.position = super().updateMotionPhysics(self.position)

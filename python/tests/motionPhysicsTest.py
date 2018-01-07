@@ -106,5 +106,43 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(rec.motionPhysics.momentum, Dim2D(9, 9))
         self.assertEqual(rec.motionPhysics.mass, 4.5)
 
+    def test_updateMotionPhysics(self):
+        pos = Dim2D(3, 5)
+        point = Point(pos)
+        vel = Dim2D(2, 2)
+        point.addMotionPhysics(MotionPhysics2D(vel))
+        self.assertEqual(point.position, Dim2D(3, 5))
+        self.assertEqual(point.motionPhysics.velocity, Dim2D(2, 2))
+        for i in range(20):
+            point.updateMotionPhysics()
+            self.assertEqual(point.position, Dim2D(3 + 2*(i+1), 5 + 2*(i+1)))
+            self.assertEqual(point.motionPhysics.velocity, Dim2D(2, 2))
+
+#    def test_updateMotionPhysicsWithRectangle(self):
+#        pos = Dim2D(3, 5)
+#        width, height = 4, 5
+#        rec = Rectangle(pos, width, height)
+#        vel = Dim2D(2, 2)
+#        mass = 4.5
+#        force = Dim2D(-5, 0)
+#        rec.addMotionPhysics(MotionPhysics2D(vel, force=force, mass=mass))
+#        self.assertEqual(rec.upperLeftCorner, Dim2D(3, 5))
+#        self.assertEqual(rec.width, 4)
+#        self.assertEqual(rec.height, 5)
+#        self.assertEqual(rec.motionPhysics.velocity, Dim2D(2, 2))
+#        self.assertEqual(rec.motionPhysics.acceleration, Dim2D(-5 / 4.5, 0))
+#        self.assertEqual(rec.motionPhysics.force, Dim2D(-5, 0))
+#        self.assertEqual(rec.motionPhysics.momentum, Dim2D(9, 9))
+#        self.assertEqual(rec.motionPhysics.mass, 4.5)
+#        rec.updateMotionPhysics()
+#        self.assertEqual(rec.upperLeftCorner, Dim2D(5, 7))
+#        self.assertEqual(rec.width, 4)
+#        self.assertEqual(rec.height, 5)
+#        self.assertEqual(rec.motionPhysics.velocity, Dim2D(2, 2))
+#        self.assertEqual(rec.motionPhysics.acceleration, Dim2D(-5 / 4.5, 0))
+#        self.assertEqual(rec.motionPhysics.force, Dim2D(-5, 0))
+#        self.assertEqual(rec.motionPhysics.momentum, Dim2D(9, 9))
+#        self.assertEqual(rec.motionPhysics.mass, 4.5)
+
 if __name__ == "__main__":
     unittest.main()
