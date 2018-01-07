@@ -5,11 +5,11 @@ import operator
 
 def checkNumberValue(value):
     if not isinstance(value, Number):
-        raise TypeError("Value type ", type(value), " is not a Number type")
+        raise TypeError("Value type " + type(value).__name__ + " is not a Number type")
 
 def checkType(instance, classType):
     if not isinstance(instance, classType):
-        raise TypeError("Mismatch in types: instance = " + type(instance) + "and class = " + type(classType))
+        raise TypeError("Mismatch in types: instance = " + type(instance).__name__ + " and class = " + classType.__name__)
 
 def checkPositiveValue(value):
     checkNumberValue(value)
