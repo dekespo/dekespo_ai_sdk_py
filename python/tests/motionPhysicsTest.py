@@ -73,5 +73,38 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(point.motionPhysics.momentum, Dim2D(6, 9))
         self.assertEqual(point.motionPhysics.mass, 3)
 
+    def test_randomWithCircle(self):
+        pos = Dim2D(3, 5)
+        radius = 3
+        circle = Circle(pos, radius)
+        vel = Dim2D(2, 2)
+        acc = Dim2D(1, -1)
+        mass = 6.5
+        circle.addMotionPhysics(MotionPhysics2D(vel, acceleration=acc, mass=mass))
+        self.assertEqual(circle.centre, Dim2D(3, 5))
+        self.assertEqual(circle.radius, 3)
+        self.assertEqual(circle.motionPhysics.velocity, Dim2D(2, 2))
+        self.assertEqual(circle.motionPhysics.acceleration, Dim2D(1, -1))
+        self.assertEqual(circle.motionPhysics.force, Dim2D(6.5, -6.5))
+        self.assertEqual(circle.motionPhysics.momentum, Dim2D(13, 13))
+        self.assertEqual(circle.motionPhysics.mass, 6.5)
+
+    def test_randomWithRectangle(self):
+        pos = Dim2D(3, 5)
+        width, height = 4, 5
+        rec = Rectangle(pos, width, height)
+        vel = Dim2D(2, 2)
+        mass = 4.5
+        force = Dim2D(-5, 0)
+        rec.addMotionPhysics(MotionPhysics2D(vel, force=force, mass=mass))
+        self.assertEqual(rec.upperLeftCorner, Dim2D(3, 5))
+        self.assertEqual(rec.width, 4)
+        self.assertEqual(rec.height, 5)
+        self.assertEqual(rec.motionPhysics.velocity, Dim2D(2, 2))
+        self.assertEqual(rec.motionPhysics.acceleration, Dim2D(-5 / 4.5, 0))
+        self.assertEqual(rec.motionPhysics.force, Dim2D(-5, 0))
+        self.assertEqual(rec.motionPhysics.momentum, Dim2D(9, 9))
+        self.assertEqual(rec.motionPhysics.mass, 4.5)
+
 if __name__ == "__main__":
     unittest.main()
