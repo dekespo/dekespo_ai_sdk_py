@@ -1,7 +1,14 @@
 from dimensions import Dim2D
 from utils import *
 
-class Rectangle:
+class Shape:
+    @staticmethod
+    def circleVscircleIntersectionCheck(circle1, circle2):
+        dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
+        totalRadius = circle1.radius + circle2.radius
+        return dist <= totalRadius
+
+class Rectangle(Shape):
     def __init__(self, upLeftCorner, width, height):
         checkType(upLeftCorner, Dim2D)
         checkPositiveValue(width)
@@ -17,7 +24,7 @@ class Rectangle:
     def __repr__(self):
         return self.__str__()
 
-class Hexagon:
+class Hexagon(Shape):
     def __init__(self):
         pass
     
@@ -27,7 +34,7 @@ class Hexagon:
     def __repr__(self):
         return self.__str__()
 
-class Circle:
+class Circle(Shape):
     def __init__(self, centre, radius):
         checkPositiveValue(radius)
         checkType(centre, Dim2D)
@@ -40,9 +47,12 @@ class Circle:
     def __repr__(self):
         return self.__str__()
 
-class Shape:
-    @staticmethod
-    def circleVscircleIntersectionCheck(circle1, circle2):
-        dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
-        totalRadius = circle1.radius + circle2.radius
-        return dist <= totalRadius
+class Point(Rectangle):
+    def __init__(self, upLeftCorner):
+        super().__init__(upLeftCorner, 1 ,1)
+
+    def __str__(self):
+        return super.__str__()
+
+    def __repr__(self):
+        return self.__str__()

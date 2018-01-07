@@ -23,6 +23,13 @@ class HexagonTest(unittest.TestCase):
     def test_simple(self):
         pass
 
+class PointTest(unittest.TestCase):
+    def test_simple(self):
+        point = Point(Dim2D(2, 1))
+        self.assertEqual(point.upLeftCorner, Dim2D(2, 1))
+        self.assertEqual(point.width, 1)
+        self.assertEqual(point.height, 1)
+
 class ShapeTest(unittest.TestCase):
     def test_circleVscircleIntersectionCheck(self):
         circle1 = Circle(Dim2D(3, 3), 2)
