@@ -55,5 +55,33 @@ class MotionPhysics2D:
     def __repr__(self):
         return self.__str__()
 
-    def update(self, position):
+    def update(self, position, newForce, newMass, friction, newAcceleration):
+        if friction:
+            checkPositiveValue(friction)
+        try:
+            if self.force:
+                self.force = newForce
+        except AttributeError:
+            eprint("Exception: There is no force!")
+        try:
+            if self.mass:
+                if newMass:
+                    checkPositiveValue(newMass)
+                    self.mass = newMass
+                self.acceleration = self.force.constantDivide(self.mass)
+        except AttributeError:
+            eprint("Exception: There is no mass!")
+        try:
+            if self.acceleration:
+                self.acceleration += newAcceleration
+                self.velocity += self.acceleration
+                if self.mass:
+                    try:
+                        if self.momentum:
+                            self.momentum = self.velocity.constantMultiply(self.mass)
+                    except AttributeError:
+                        eprint("Exception: There is no momentum!")
+        except AttributeError:
+            pass
+            eprint("Exception: There is no acceleration!")
         return position + self.velocity
