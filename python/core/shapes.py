@@ -39,7 +39,7 @@ class Rectangle(Shape2D):
         self.height = height        
 
     def __str__(self):
-        return "upperLeftCorner = " + str(self.upperLeftCorner)
+        return "upperLeftCorner = " + str(self.upperLeftCorner) \
         + "width x height: " + str(self.width) + " x " + str(self.height)
 
     def __repr__(self):
