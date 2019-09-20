@@ -56,10 +56,10 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(Dim2D.toNumberValue(dim2), 3)
         self.assertEqual(Dim2D.toNumberValue(dim3), -3)
         self.assertEqual(Dim2D.toNumberValue(dim4), 0)
-        with self.assertRaises(AssertionError) as exception:
+        def error_method_check():
             dim5 = Dim2D(2, 1)
             Dim2D.toNumberValue(dim5)
-            self.assertEqual(exception.error_code, 3)
+        self.assertRaises(AssertionError, error_method_check)
     
     def test_getAverageOfDim2Ds(self):
         liste = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
