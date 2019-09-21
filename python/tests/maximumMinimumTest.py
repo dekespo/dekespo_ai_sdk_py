@@ -56,7 +56,7 @@ class maximumMinimumTest(unittest.TestCase):
             pointB = extraParameters["PointB"]
             if Dim2D.getManathanDistance(value, pointA) > 10:
                 return "BREAK"
-            elif Dim2D.getManathanDistance(value, pointB) < 5:
+            if Dim2D.getManathanDistance(value, pointB) < 5:
                 return "CONTINUE"
             return Dim2D.getManathanDistance(value, pointA) + Dim2D.getManathanDistance(value, pointB)
         minimumValue = 100
