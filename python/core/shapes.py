@@ -4,10 +4,6 @@ from motionPhysics import MotionPhysics2D
 from abc import ABC, abstractmethod
 
 class Shape2D(ABC):
-    def addPosition(self, position):
-        checkType(position, Dim2D)
-        return position
-
     @abstractmethod
     def __str__(self):
         pass
@@ -15,6 +11,11 @@ class Shape2D(ABC):
     @abstractmethod
     def __repr__(self):
         pass
+
+    @staticmethod
+    def addPosition(position):
+        checkType(position, Dim2D)
+        return position
 
     def addMotionPhysics(self, motionPhysics):
         checkType(motionPhysics, MotionPhysics2D)
