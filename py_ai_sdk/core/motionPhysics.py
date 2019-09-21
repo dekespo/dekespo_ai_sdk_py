@@ -1,5 +1,5 @@
-from dimensions import Dim2D
-from utils import *
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.core_utils import checkType, checkPositiveValue, eprint
 
 # This class should be used in a class with position
 class MotionPhysics2D:

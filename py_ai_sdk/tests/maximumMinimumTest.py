@@ -1,10 +1,10 @@
 import sys
 import math
-sys.path.insert(0, "core/")
 
 import unittest
-from dimensions import Dim2D
-from maximumMinimum import *
+
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.maximumMinimum import getMaximumMinimumValues
 
 class maximumMinimumTest(unittest.TestCase):
     def test_getMininumValues(self):

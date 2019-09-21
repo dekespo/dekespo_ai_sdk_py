@@ -1,6 +1,6 @@
-from dimensions import Dim2D
-from shapes import *
-from utils import *
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.shapes import Rectangle
+from py_ai_sdk.core.core_utils import checkType
 
 def boundaryChecks2D_rectangle(map, position):
     checkType(map, Rectangle)

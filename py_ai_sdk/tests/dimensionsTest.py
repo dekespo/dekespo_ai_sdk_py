@@ -1,9 +1,8 @@
 import sys
 import math
-sys.path.insert(0, "core/")
 
 import unittest
-from dimensions import *
+from py_ai_sdk.core.dimensions import Dim2D, Dim3D
 
 class Dimensions2D(unittest.TestCase):
     def test_simple(self):

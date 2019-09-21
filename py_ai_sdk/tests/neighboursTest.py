@@ -1,10 +1,10 @@
 import sys
-sys.path.insert(0, "core/")
 
 import unittest
-from dimensions import Dim2D
-from shapes import *
-from neighbours import *
+
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.shapes import Rectangle
+from py_ai_sdk.core.neighbours import getNeighbours2D_rectangle_4Sides, getNeighbours2D_rectangle_8Sides, getAvailableNeighbours2D_rectangle
 
 class RectangleNeighboursTest(unittest.TestCase):
     def test_rectangleGet4Sides(self):

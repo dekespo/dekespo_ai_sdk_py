@@ -1,8 +1,4 @@
-from dimensions import Dim2D
-from shapes import *
-from boundaryChecks import *
-from neighbours import *
-from utils import *
+from py_ai_sdk.core.dimensions import Dim2D
 
 def depthFirstSearch():
     pass

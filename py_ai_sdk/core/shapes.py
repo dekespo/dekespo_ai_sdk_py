@@ -1,7 +1,8 @@
-from dimensions import Dim2D
-from utils import *
-from motionPhysics import MotionPhysics2D
 from abc import ABC, abstractmethod
+
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.core_utils import checkType, checkNoneValue, checkPositiveValue
+from py_ai_sdk.core.motionPhysics import MotionPhysics2D
 
 class Shape2D(ABC):
     @abstractmethod

@@ -1,8 +1,9 @@
 import sys
-sys.path.insert(0, "core/")
 
 import unittest
-from shapes import *
+
+from py_ai_sdk.core.dimensions import Dim2D
+from py_ai_sdk.core.shapes import Rectangle, Circle, Shape2D, Point
 
 class RectangleTest(unittest.TestCase):
     def test_simple(self):
