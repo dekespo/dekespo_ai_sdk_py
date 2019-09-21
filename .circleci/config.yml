@@ -21,7 +21,7 @@ jobs:
           command: |
             sudo pip install pipenv
             pipenv install
-            sudo pip install pylint
+            sudo pip install pylint # should be part of pipenv
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
@@ -32,6 +32,5 @@ jobs:
       - run:
           name: run tests
           command: |
-            cd python
-            python3 run_pylint.py
-            python3 run_tests.py
+            python3 -m py_ai_sdk.run_pylint
+            python3 -m py_ai_sdk.run_tests

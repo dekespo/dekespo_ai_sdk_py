@@ -12,3 +12,8 @@ def run_process(command, process_name):
     else:
         print(process_name + " is OK")
     return returncode
+
+def remove_extension_if_exists(string, extension):
+    if string.endswith(extension):
+        return string[:-len(extension)]
+    return string

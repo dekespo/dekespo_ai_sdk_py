@@ -1,5 +1,5 @@
 import math
-from utils import *
+from py_ai_sdk.core.core_utils import checkNumberValue, checkType
 
 class Dim2D:
     def __init__(self, x, y):
