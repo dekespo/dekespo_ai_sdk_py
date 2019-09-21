@@ -55,12 +55,12 @@ class Dim2D:
         checkType(object, Dim2D)
         if object.x == object.y:
             return object.x
-        elif object.x == 0 and object.y != 0:
+        if object.x == 0 and object.y != 0:
             return object.y
-        elif object.x != 0 and object.y == 0:
+        if object.x != 0 and object.y == 0:
             return object.x
-        else:
-            raise AssertionError("It cannot be converted to a value as x: ", object.x, " and y: ", object.y, " are not the same and nonzero")
+        raise AssertionError("It cannot be converted to a value as x: ", object.x, " and y: ", object.y, \
+             " are not the same and nonzero")
 
     @staticmethod
     def getAverageOfDim2Ds(liste):
