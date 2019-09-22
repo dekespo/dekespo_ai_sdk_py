@@ -1,9 +1,10 @@
 [MESSAGES CONTROL]
 
+# Errors
+
 # Refactors
 # R0913: = (too-many-arguments)
 # R0912: = (too-many-branches)
-# R0801: = (duplicate-code)
 
 # Warnings
 # W0221 = Parameters differ from overridden
@@ -13,7 +14,6 @@
 # W0613: = (unused-argument)
 # W0107: = (unnecessary-pass)
 # W0511: = (fixme)
-# W0104: = (pointless-statement)
 
 # Coding standard violation
 # C0111 = Missing docstring
@@ -23,9 +23,5 @@
 # C0411 = (wrong-import-order)
 # C0121: = Comparison to None should be
 # C0303: = Trailing whitespace
-# C0326: = (bad-whitespace)
-# C0304: = (missing-final-newline)
-# C0413: = (wrong-import-position)
-# C0305: = (trailing-newlines)
 
-disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, C0326, W0622, W0613, R0912, W0107, W0511, C0304, W0104, C0413, C0305, R0801
+disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, W0622, W0613, R0912, W0107, W0511

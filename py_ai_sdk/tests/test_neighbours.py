@@ -6,7 +6,7 @@ from py_ai_sdk.core.neighbours import getNeighbours2D_rectangle_4Sides, getNeigh
 
 class RectangleNeighboursTest(unittest.TestCase):
     def test_rectangleGet4Sides(self):
-        pos = Dim2D(1,1)
+        pos = Dim2D(1, 1)
         poses = getNeighbours2D_rectangle_4Sides(pos)
         self.assertEqual(len(poses), 4)
         self.assertTrue(Dim2D(0, 1) in poses)
@@ -15,7 +15,7 @@ class RectangleNeighboursTest(unittest.TestCase):
         self.assertTrue(Dim2D(1, 0) in poses)
 
     def test_rectangleGet8Sides(self):
-        pos = Dim2D(1,1)
+        pos = Dim2D(1, 1)
         poses = getNeighbours2D_rectangle_8Sides(pos)
         self.assertEqual(len(poses), 8)
         self.assertTrue(Dim2D(0, 1) in poses)
@@ -29,7 +29,7 @@ class RectangleNeighboursTest(unittest.TestCase):
 
     def test_availableRectangleTwoBlocks(self):
         map = Rectangle(Dim2D(0, 0), 3, 3)
-        blockingPositions = Dim2D.listToDim2Ds([(1,1), (0, 1)])
+        blockingPositions = Dim2D.listToDim2Ds([(1, 1), (0, 1)])
         pos1 = Dim2D(0, 2)
         availablePoses = getAvailableNeighbours2D_rectangle(map, blockingPositions, getNeighbours2D_rectangle_4Sides, pos1)
         self.assertEqual(len(availablePoses), 1)
@@ -71,4 +71,3 @@ class RectangleNeighboursTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

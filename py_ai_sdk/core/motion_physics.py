@@ -3,7 +3,7 @@ from py_ai_sdk.core.core_utils import checkType, checkPositiveValue, eprint
 
 # This class should be used in a class with position
 class MotionPhysics2D:
-    def __init__(self, velocity, acceleration = None, force = None, momentum = None, mass = None):
+    def __init__(self, velocity, acceleration=None, force=None, momentum=None, mass=None):
         checkType(velocity, Dim2D)
         self.velocity = velocity
         if acceleration:

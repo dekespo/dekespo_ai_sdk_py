@@ -22,7 +22,7 @@ class Shape2D(ABC):
         checkType(motionPhysics, MotionPhysics2D)
         self.motionPhysics = motionPhysics
 
-    def updateMotionPhysics(self, position, newForce=Dim2D(0,0), newMass=None, friction=None, newAcceleration=Dim2D(0,0)):
+    def updateMotionPhysics(self, position, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
         checkNoneValue(self.motionPhysics, "motionPhysics")
         return self.motionPhysics.update(position, newForce, newMass, friction, newAcceleration)
 
@@ -47,7 +47,7 @@ class Rectangle(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0,0), newMass=None, friction=None, newAcceleration=Dim2D(0,0)):
+    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
         self.upperLeftCorner = super().updateMotionPhysics(self.upperLeftCorner, newForce, newMass, friction, newAcceleration)
 
 class Hexagon(Shape2D):
@@ -72,7 +72,7 @@ class Circle(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0,0), newMass=None, friction=None, newAcceleration=Dim2D(0,0)):
+    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
         self.centre = super().updateMotionPhysics(self.centre, newForce, newMass, friction, newAcceleration)
 
 class Point(Shape2D):
@@ -85,5 +85,5 @@ class Point(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0,0), newMass=None, friction=None, newAcceleration=Dim2D(0,0)):
+    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
         self.position = super().updateMotionPhysics(self.position, newForce, newMass, friction, newAcceleration)

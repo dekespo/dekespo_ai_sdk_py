@@ -141,7 +141,7 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(rec.motionPhysics.force, Dim2D(0, 0))
         self.assertEqual(rec.motionPhysics.momentum, Dim2D(9, 9))
         self.assertEqual(rec.motionPhysics.mass, 4.5)
-        rec.updateMotionPhysics(newForce=Dim2D(4.5,4.5))
+        rec.updateMotionPhysics(newForce=Dim2D(4.5, 4.5))
         self.assertEqual(rec.upperLeftCorner, Dim2D(8, 10))
         self.assertEqual(rec.width, 4)
         self.assertEqual(rec.height, 5)
