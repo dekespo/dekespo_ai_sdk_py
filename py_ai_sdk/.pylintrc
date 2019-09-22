@@ -11,7 +11,6 @@
 # W0201: = (attribute-defined-outside-init)
 # W0622: = (redefined-builtin)
 # W0613: = (unused-argument)
-# W0611: = (unused-import)
 # W0107: = (unnecessary-pass)
 # W0511: = (fixme)
 # W0104: = (pointless-statement)
@@ -29,4 +28,4 @@
 # C0413: = (wrong-import-position)
 # C0305: = (trailing-newlines)
 
-disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, C0326, W0622, W0613, W0611, R0912, W0107, W0511, C0304, W0104, C0413, C0305, R0801
+disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, C0326, W0622, W0613, R0912, W0107, W0511, C0304, W0104, C0413, C0305, R0801

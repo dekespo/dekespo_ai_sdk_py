@@ -1,6 +1,5 @@
-import sys
-
 import unittest
+
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle, Point, Circle
 from py_ai_sdk.core.motion_physics import MotionPhysics2D

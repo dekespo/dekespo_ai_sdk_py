@@ -1,5 +1,3 @@
-from py_ai_sdk.core.dimensions import Dim2D
-
 def depthFirstSearch():
     pass
 

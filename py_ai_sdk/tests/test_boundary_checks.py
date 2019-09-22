@@ -1,10 +1,8 @@
-import sys
-
 import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.boundary_checks import boundaryChecks2D_rectangle
-from py_ai_sdk.core.shapes import Rectangle, Circle, Shape2D, Point
+from py_ai_sdk.core.shapes import Rectangle
 
 class RectangleMapTest(unittest.TestCase):
     def test1(self):

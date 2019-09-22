@@ -1,4 +1,3 @@
-from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle
 from py_ai_sdk.core.core_utils import checkType
 
