@@ -1,5 +1,3 @@
-import sys
-
 import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
