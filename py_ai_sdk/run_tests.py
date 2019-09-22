@@ -1,18 +1,10 @@
 import sys
-import os
 
 from py_ai_sdk import ci_utils
 
 def main():
-    path = "py_ai_sdk/tests/"
-    base_command = "python -m unittest " + path.replace("/", ".")
-    file_names = [file for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
-    commands = [base_command + ci_utils.remove_extension_if_exists(file,".py") for file in file_names]
-    for command in commands:
-        print(command)
-        returncode = ci_utils.run_process(command, "Test")
-        if returncode != ci_utils.RETURN_CODE_OK:
-            break
+    command = "python -m unittest discover py_ai_sdk/tests"
+    returncode = ci_utils.run_process(command, "Unit tests")
     print("Return code is ", returncode)
     sys.exit(returncode)
 
