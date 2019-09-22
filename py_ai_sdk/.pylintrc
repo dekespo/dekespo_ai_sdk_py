@@ -14,7 +14,6 @@
 # W0613: = (unused-argument)
 # W0107: = (unnecessary-pass)
 # W0511: = (fixme)
-# W0104: = (pointless-statement)
 
 # Coding standard violation
 # C0111 = Missing docstring
@@ -27,4 +26,4 @@
 # C0326: = (bad-whitespace)
 # C0304: = (missing-final-newline)
 
-disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, C0326, W0622, W0613, R0912, W0107, W0511, C0304, W0104
+disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, C0326, W0622, W0613, R0912, W0107, W0511, C0304
