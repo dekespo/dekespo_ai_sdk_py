@@ -3,7 +3,7 @@ import sys
 import unittest
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle, Point, Circle
-from py_ai_sdk.core.motionPhysics import MotionPhysics2D
+from py_ai_sdk.core.motion_physics import MotionPhysics2D
 
 class MotionPhysics2DTest(unittest.TestCase):
     def test_velocity(self):

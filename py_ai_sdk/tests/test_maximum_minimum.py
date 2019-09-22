@@ -4,7 +4,7 @@ import math
 import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.maximumMinimum import getMaximumMinimumValues
+from py_ai_sdk.core.maximum_minimum import getMaximumMinimumValues
 
 class maximumMinimumTest(unittest.TestCase):
     def test_getMininumValues(self):

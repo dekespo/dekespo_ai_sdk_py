@@ -1,6 +1,6 @@
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle
-from py_ai_sdk.core.boundaryChecks import boundaryChecks2D_rectangle
+from py_ai_sdk.core.boundary_checks import boundaryChecks2D_rectangle
 from py_ai_sdk.core.core_utils import checkType
 
 import types

@@ -5,7 +5,7 @@ import unittest
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle
 from py_ai_sdk.core.neighbours import getAvailableNeighbours2D_rectangle
-from py_ai_sdk.core.searchAlgorithms import breadthFirstSearch
+from py_ai_sdk.core.search_algorithms import breadthFirstSearch
 
 class SearchAlgorithmsTest(unittest.TestCase):
     def test_depthFirstSearch(self):

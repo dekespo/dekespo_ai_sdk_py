@@ -10,7 +10,7 @@ def run_process(command, process_name):
     if returncode != RETURN_CODE_OK:
         print(stdout)
     else:
-        print(process_name + " is OK")
+        print(process_name + " -> OK")
     return returncode
 
 def remove_extension_if_exists(string, extension):
