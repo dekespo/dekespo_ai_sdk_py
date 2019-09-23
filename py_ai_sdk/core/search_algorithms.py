@@ -4,7 +4,7 @@ def depthFirstSearch():
 def breadthFirstSearch():
     pass
 
-# TODO: might be combined in to AStar search
+# Might be combined in to AStar search
 def dijkstraSearch():
     pass
 
