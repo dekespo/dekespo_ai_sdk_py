@@ -39,6 +39,3 @@ def getAvailableNeighbours2D_rectangle(map, blockingPositions, getNeighboursFunc
             candidates.remove(candi)
     
     return candidates
-
-def getNeighbours2D_hexagon(position):
-    pass
