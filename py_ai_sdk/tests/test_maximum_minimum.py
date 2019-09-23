@@ -7,7 +7,7 @@ from py_ai_sdk.core.maximum_minimum import getMaximumMinimumValues
 
 class maximumMinimumTest(unittest.TestCase):
     def test_getMininumValues(self):
-        def localSqrtFunction(value, **extraParameters):
+        def localSqrtFunction(value):
             return math.sqrt(Dim2D.toNumberValue(value))
         minimumValue = 100
         extraParameters = {}
@@ -21,7 +21,7 @@ class maximumMinimumTest(unittest.TestCase):
         self.assertEqual(chosenValue2, Dim2D(0, 0))
 
     def test_getMaximumValues(self):
-        def localSqrtFunction(value, **extraParameters):
+        def localSqrtFunction(value):
             return math.sqrt(Dim2D.toNumberValue(value))
         maximumValue = -1
         extraParameters = {}

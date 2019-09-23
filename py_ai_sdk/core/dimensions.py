@@ -51,15 +51,15 @@ class Dim2D:
         return [Dim2D(lx, ly) for lx, ly in liste]
 
     @staticmethod
-    def toNumberValue(object):
-        checkType(object, Dim2D)
-        if object.x == object.y:
-            return object.x
-        if object.x == 0 and object.y != 0:
-            return object.y
-        if object.x != 0 and object.y == 0:
-            return object.x
-        raise AssertionError("It cannot be converted to a value as x: ", object.x, " and y: ", object.y, \
+    def toNumberValue(dim2D):
+        checkType(dim2D, Dim2D)
+        if dim2D.x == dim2D.y:
+            return dim2D.x
+        if dim2D.x == 0 and dim2D.y != 0:
+            return dim2D.y
+        if dim2D.x != 0 and dim2D.y == 0:
+            return dim2D.x
+        raise AssertionError("It cannot be converted to a value as x: ", dim2D.x, " and y: ", dim2D.y, \
              " are not the same and nonzero")
 
     @staticmethod
@@ -68,9 +68,9 @@ class Dim2D:
         totalDim2D = Dim2D(0, 0)
         if not liste:
             return totalDim2D
-        for object in liste:
-            checkType(object, Dim2D)
-            totalDim2D += object
+        for dim2D in liste:
+            checkType(dim2D, Dim2D)
+            totalDim2D += dim2D
         return totalDim2D.constantDivide(len(liste))
     
     @staticmethod
