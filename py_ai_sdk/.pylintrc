@@ -12,7 +12,6 @@
 # W0201: = (attribute-defined-outside-init)
 # W0622: = (redefined-builtin)
 # W0613: = (unused-argument)
-# W0107: = (unnecessary-pass)
 # W0511: = (fixme)
 
 # Coding standard violation
@@ -24,4 +23,4 @@
 # C0121: = Comparison to None should be
 # C0303: = Trailing whitespace
 
-disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, W0622, W0613, R0912, W0107, W0511
+disable=C0111, C0103, C0330, C0301,  W0221, C0411, C0121, W0106, W0201, R0913, C0303, W0622, W0613, R0912, W0511

@@ -82,6 +82,5 @@ class MotionPhysics2D:
                     except AttributeError:
                         eprint("Exception: There is no momentum!")
         except AttributeError:
-            pass
             eprint("Exception: There is no acceleration!")
         return position + self.velocity
