@@ -1,6 +1,6 @@
-from py_ai_sdk.core.core_utils import checkType, checkNoneValue, eprint, comparisonCheck
-
 import types
+
+from py_ai_sdk.core.core_utils import checkType, checkNoneValue, eprint, comparisonCheck
 
 def getMaximumMinimumValues(list_dim2Ds, maximiniValue, criteriaFunction, operator, **kwargs):
     checkType(list_dim2Ds, list)
