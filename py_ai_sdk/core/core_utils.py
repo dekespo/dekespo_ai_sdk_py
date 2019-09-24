@@ -18,7 +18,7 @@ def checkPositiveValue(value):
         raise ArithmeticError("Value " + str(value) + " must be larger than 0")
 
 def checkNoneValue(value, valueName):
-    if value == None:
+    if not value:
         checkType(valueName, str)
         raise AssertionError(valueName, " cannot be None!")
 

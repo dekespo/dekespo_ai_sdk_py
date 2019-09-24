@@ -14,7 +14,6 @@
 # C0111 = Missing docstring # Won't happen anytime soon
 # C0103 = (invalid-name) # Fix it meanwhile
 # C0301 = Line too long # Will be fixed when refactoring bad filenames
-# C0121: = Comparison to None should be
 # C0303: = Trailing whitespace
 
-disable=C0111, C0103, C0301, W0221, C0121, W0201, R0913, C0303, R0912
+disable=C0111, C0103, C0301, W0221, W0201, R0913, C0303, R0912
