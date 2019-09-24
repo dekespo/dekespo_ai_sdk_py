@@ -9,7 +9,8 @@ def checkNumberValue(value):
 
 def checkType(instance, classType):
     if not isinstance(instance, classType):
-        raise TypeError("Mismatch in types: instance = " + type(instance).__name__ + " and class = " + classType.__name__)
+        raise TypeError("Mismatch in types: instance = " + type(instance).__name__ \
+            + " and class = " + classType.__name__)
 
 def checkPositiveValue(value):
     checkNumberValue(value)
@@ -24,7 +25,8 @@ def checkNoneValue(value, valueName):
 def checkValidation(value, valueName, validValues):
     checkType(validValues, tuple)
     if value not in validValues:
-        raise AssertionError(valueName, " is ", value, ", which is not valid. The valid list is: ", validValues)
+        raise AssertionError(valueName, " is ", value, ", which is not valid." \
+            " The valid list is: ", validValues)
 
 def comparisonCheck(first, relate, second):
     operators = {

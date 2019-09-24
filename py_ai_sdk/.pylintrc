@@ -13,7 +13,7 @@
 # Coding standard violation
 # C0111 = Missing docstring # Won't happen anytime soon
 # C0103 = (invalid-name) # Fix it meanwhile
-# C0301 = Line too long
+# C0301 = Line too long # Will be fixed when refactoring bad filenames
 # C0411 = (wrong-import-order)
 # C0121: = Comparison to None should be
 # C0303: = Trailing whitespace

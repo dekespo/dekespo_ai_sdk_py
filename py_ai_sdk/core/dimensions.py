@@ -59,8 +59,8 @@ class Dim2D:
             return dim2D.y
         if dim2D.x != 0 and dim2D.y == 0:
             return dim2D.x
-        raise AssertionError("It cannot be converted to a value as x: ", dim2D.x, " and y: ", dim2D.y, \
-             " are not the same and nonzero")
+        raise AssertionError("It cannot be converted to a value as " \
+            " x: ", dim2D.x, " and y: ", dim2D.y, " are not the same and nonzero")
 
     @staticmethod
     def getAverageOfDim2Ds(liste):
