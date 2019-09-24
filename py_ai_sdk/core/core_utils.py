@@ -27,11 +27,13 @@ def checkValidation(value, valueName, validValues):
         raise AssertionError(valueName, " is ", value, ", which is not valid. The valid list is: ", validValues)
 
 def comparisonCheck(first, relate, second):
-    operators = {'>': operator.gt,
-           '<': operator.lt,
-           '>=': operator.ge,
-           '<=': operator.le,
-           '==': operator.eq}
+    operators = {
+        '>': operator.gt,
+        '<': operator.lt,
+        '>=': operator.ge,
+        '<=': operator.le,
+        '==': operator.eq
+    }
     checkValidation(relate, "relate", tuple(operators.keys()))
     return operators[relate](first, second)
 

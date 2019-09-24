@@ -11,12 +11,11 @@
 # W0201: = (attribute-defined-outside-init) # should be fixed by fixing motion_physics
 
 # Coding standard violation
-# C0111 = Missing docstring
-# C0103 = (invalid-name)
-# C0330 = Wrong continueud indentation
+# C0111 = Missing docstring # Won't happen anytime soon
+# C0103 = (invalid-name) # Fix it meanwhile
 # C0301 = Line too long
 # C0411 = (wrong-import-order)
 # C0121: = Comparison to None should be
 # C0303: = Trailing whitespace
 
-disable=C0111, C0103, C0330, C0301, W0221, C0411, C0121, W0201, R0913, C0303, R0912
+disable=C0111, C0103, C0301, W0221, C0411, C0121, W0201, R0913, C0303, R0912
