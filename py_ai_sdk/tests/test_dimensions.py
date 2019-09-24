@@ -8,13 +8,13 @@ class Dimensions2D(unittest.TestCase):
         pos = Dim2D(2, 3)
         self.assertEqual(pos.x, 2)
         self.assertEqual(pos.y, 3)
-    
+
     def test_listToDim2Ds(self):
         liste = [(2, 3), (0, 0), (-4, -5)]
         dim2Dlist = Dim2D.listToDim2Ds(liste)
         for idx, pos in enumerate(dim2Dlist):
             self.assertEqual(pos, Dim2D(liste[idx][0], liste[idx][1]))
-    
+
     def test_add(self):
         dim1 = Dim2D(2, 3)
         dim2 = Dim2D(-1, 1)
@@ -58,12 +58,12 @@ class Dimensions2D(unittest.TestCase):
             dim5 = Dim2D(2, 1)
             Dim2D.toNumberValue(dim5)
         self.assertRaises(AssertionError, error_method_check)
-    
+
     def test_getAverageOfDim2Ds(self):
         liste = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
         dim2Dlist = Dim2D.listToDim2Ds(liste)
         self.assertEqual(Dim2D.getAverageOfDim2Ds(dim2Dlist), Dim2D(-1, -4 / 5))
-    
+
     def test_getEuclidDistance(self):
         pos1 = Dim2D(0, 0)
         pos2 = Dim2D(1, 1)

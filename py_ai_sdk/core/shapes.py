@@ -38,7 +38,7 @@ class Rectangle(Shape2D):
         checkPositiveValue(width)
         checkPositiveValue(height)
         self.width = width
-        self.height = height        
+        self.height = height
 
     def __str__(self):
         return "upperLeftCorner = " + str(self.upperLeftCorner) \
@@ -53,7 +53,7 @@ class Rectangle(Shape2D):
 class Hexagon(Shape2D):
     def __init__(self):
         pass
-    
+
     def __str__(self):
         return "pass"
 
@@ -65,7 +65,7 @@ class Circle(Shape2D):
         self.centre = super().addPosition(centre)
         checkPositiveValue(radius)
         self.radius = radius
-    
+
     def __str__(self):
         return "centre: " + str(self.centre) + ", radius: " + str(self.radius)
 

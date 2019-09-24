@@ -37,5 +37,4 @@ def getAvailableNeighbours2D_rectangle(grid, blockingPositions, getNeighboursFun
             candidates.remove(candi)
         elif candi in blockingPositions:
             candidates.remove(candi)
-    
     return candidates
