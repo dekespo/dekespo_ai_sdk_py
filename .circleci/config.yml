@@ -10,14 +10,13 @@ jobs:
         environment:
           PIPENV_VENV_IN_PROJECT: true
 
-    working_directory: ~/repo
-
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-      - restore_cache:  # ensure this step occurs *before* installing dependencies
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - restore_cache:
+          keys:
+            - python-cache-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - python-cache-{{ .Branch }}
+            - python-cache
       - run:
           command: |
             sudo pip install pipenv
@@ -25,11 +24,9 @@ jobs:
             pipenv install coverage==4.5.4
             pipenv install codecov
       - save_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: python-cache-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
-            - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.7/site-packages"
+            - "Pipfile.lock"
 
       - run:
           name: run pylint
