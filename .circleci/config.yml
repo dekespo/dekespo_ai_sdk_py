@@ -31,8 +31,14 @@ jobs:
             - "/usr/local/lib/python3.7/site-packages"
 
       - run:
-          name: run tests
+          name: run pylint
           command: |
             pipenv run python3 -m py_ai_sdk.run_pylint
+      - run:
+          name: run unit tests
+          command: |
             pipenv run python3 -m py_ai_sdk.run_tests
+      - run:
+          name: run coverage
+          command: |
             pipenv run python3 -m py_ai_sdk.run_coverage
