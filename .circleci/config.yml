@@ -6,33 +6,33 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.7.1
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
 
     working_directory: ~/repo
 
     steps:
       - checkout
-
       - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:  # ensure this step occurs *before* installing dependencies
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
             sudo pip install pipenv
-            pipenv install
-            sudo pip install pylint # should be part of pipenv
-            sudo pip install coverage # should be part of pipenv
+            pipenv install pylint==2.3.1
+            pipenv install coverage==4.5.4
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python3.6/site-packages"
+            - "/usr/local/lib/python3.7/site-packages"
 
       - run:
           name: run tests
           command: |
-            python3 -m py_ai_sdk.run_pylint
-            python3 -m py_ai_sdk.run_tests
-            python3 -m py_ai_sdk.run_coverage
+            pipenv run python3 -m py_ai_sdk.run_pylint
+            pipenv run python3 -m py_ai_sdk.run_tests
+            pipenv run python3 -m py_ai_sdk.run_coverage
