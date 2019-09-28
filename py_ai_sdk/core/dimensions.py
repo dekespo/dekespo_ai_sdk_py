@@ -13,19 +13,19 @@ class Dim2D:
 
     def __repr__(self):
         return self.__str__()
-    
+
     def __eq__(self, other):
         checkType(other, Dim2D)
         return self.x == other.x and self.y == other.y
-    
+
     def __add__(self, other):
         checkType(other, Dim2D)
         return Dim2D(self.x + other.x, self.y + other.y)
-    
+
     def vectoralMultiply(self, other):
         checkType(other, Dim2D)
         return Dim2D(self.x * other.x, self.y * other.y)
-    
+
     def constantMultiply(self, other):
         checkNumberValue(other)
         return Dim2D(self.x * other, self.y * other)
@@ -33,15 +33,15 @@ class Dim2D:
     def vectoralDivide(self, other):
         checkType(other, Dim2D)
         return Dim2D(self.x / other.x, self.y / other.y)
-    
+
     def constantDivide(self, other):
         checkNumberValue(other)
         return Dim2D(self.x / other, self.y / other)
-    
+
     def round(self):
         self.x = round(self.x)
         self.y = round(self.y)
-    
+
     @staticmethod
     def listToDim2Ds(liste):
         checkType(liste, list)
@@ -59,8 +59,8 @@ class Dim2D:
             return dim2D.y
         if dim2D.x != 0 and dim2D.y == 0:
             return dim2D.x
-        raise AssertionError("It cannot be converted to a value as x: ", dim2D.x, " and y: ", dim2D.y, \
-             " are not the same and nonzero")
+        raise AssertionError("It cannot be converted to a value as " \
+            " x: ", dim2D.x, " and y: ", dim2D.y, " are not the same and nonzero")
 
     @staticmethod
     def getAverageOfDim2Ds(liste):
@@ -72,7 +72,7 @@ class Dim2D:
             checkType(dim2D, Dim2D)
             totalDim2D += dim2D
         return totalDim2D.constantDivide(len(liste))
-    
+
     @staticmethod
     def getEuclidDistance(point1, point2):
         checkType(point1, Dim2D)
