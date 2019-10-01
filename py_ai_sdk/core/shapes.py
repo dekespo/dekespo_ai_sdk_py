@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.core_utils import checkType, checkNoneValue, checkPositiveValue
-from py_ai_sdk.core.motion_physics import MotionPhysics2D
+from py_ai_sdk.core.core_utils import checkNoneValue, checkPositiveValue
 
 class Shape2D(ABC):
     @abstractmethod
@@ -15,11 +14,9 @@ class Shape2D(ABC):
 
     @staticmethod
     def addPosition(position):
-        checkType(position, Dim2D)
         return position
 
     def addMotionPhysics(self, motionPhysics):
-        checkType(motionPhysics, MotionPhysics2D)
         self.motionPhysics = motionPhysics
 
     def updateMotionPhysics(self, position, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):

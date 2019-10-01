@@ -1,19 +1,15 @@
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.core_utils import checkType, checkPositiveValue, eprint
+from py_ai_sdk.core.core_utils import checkPositiveValue, eprint
 
 # This class should be used in a class with position
 class MotionPhysics2D:
     def __init__(self, velocity, acceleration=None, force=None, momentum=None, mass=None):
-        checkType(velocity, Dim2D)
         self.velocity = velocity
         if acceleration:
-            checkType(acceleration, Dim2D)
             self.acceleration = acceleration
         if force:
-            checkType(force, Dim2D)
             self.force = force
         if momentum:
-            checkType(momentum, Dim2D)
             self.momentum = momentum
         if mass:
             checkPositiveValue(mass)
