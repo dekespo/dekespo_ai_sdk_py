@@ -13,7 +13,6 @@ class Player:
         return self.__str__()
 
     def addUnit(self, unit):
-        checkType(unit, Unit)
         self.units.append(unit)
 
     def chooseUnit(self, type):

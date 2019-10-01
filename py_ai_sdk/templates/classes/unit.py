@@ -1,7 +1,5 @@
 class Unit:
     def __init__(self, identity, physics):
-        checkType(identity, Identity)
-        checkType(physics, Physics)
         self.identity = identity
         self.physics = physics
 
