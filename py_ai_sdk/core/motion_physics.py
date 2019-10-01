@@ -17,24 +17,24 @@ class MotionPhysics2D:
 
         if not acceleration:
             if force and mass:
-                self.acceleration = force.constantDivide(mass)
+                self.acceleration = force.constant_divide(mass)
         if not force:
             if acceleration and mass:
-                self.force = acceleration.constantMultiply(mass)
+                self.force = acceleration.constant_multiply(mass)
         if not momentum:
             if mass:
-                self.momentum = velocity.constantMultiply(mass)
+                self.momentum = velocity.constant_multiply(mass)
         if not mass:
             if acceleration and force:
-                self.mass = force.vectoralDivide(acceleration)
+                self.mass = force.vectoral_divide(acceleration)
                 self.mass = Dim2D.toNumberValue(self.mass)
                 if not momentum:
-                    self.momentum = velocity.constantMultiply(self.mass)
+                    self.momentum = velocity.constant_multiply(self.mass)
             elif momentum:
-                self.mass = momentum.vectoralDivide(velocity)
+                self.mass = momentum.vectoral_divide(velocity)
                 self.mass = Dim2D.toNumberValue(self.mass)
                 if not acceleration and force:
-                    self.acceleration = force.constantDivide(self.mass)
+                    self.acceleration = force.constant_divide(self.mass)
 
     def __str__(self):
         string = "Velocity: " + self.velocity
@@ -64,7 +64,7 @@ class MotionPhysics2D:
                 if newMass:
                     checkPositiveValue(newMass)
                     self.mass = newMass
-                self.acceleration = self.force.constantDivide(self.mass)
+                self.acceleration = self.force.constant_divide(self.mass)
         except AttributeError:
             eprint("Exception: There is no mass!")
         try:
@@ -74,7 +74,7 @@ class MotionPhysics2D:
                 if self.mass:
                     try:
                         if self.momentum:
-                            self.momentum = self.velocity.constantMultiply(self.mass)
+                            self.momentum = self.velocity.constant_multiply(self.mass)
                     except AttributeError:
                         eprint("Exception: There is no momentum!")
         except AttributeError:

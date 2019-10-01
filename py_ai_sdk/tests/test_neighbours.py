@@ -29,7 +29,7 @@ class RectangleNeighboursTest(unittest.TestCase):
 
     def test_availableRectangleTwoBlocks(self):
         grid = Rectangle(Dim2D(0, 0), 3, 3)
-        blockingPositions = Dim2D.listToDim2Ds([(1, 1), (0, 1)])
+        blockingPositions = Dim2D.convert_candiates_to_dimensions([(1, 1), (0, 1)])
         pos1 = Dim2D(0, 2)
         availablePoses = getAvailableNeighbours2D_rectangle(grid, blockingPositions, getNeighbours2D_rectangle_4Sides, pos1)
         self.assertEqual(len(availablePoses), 1)
@@ -49,7 +49,7 @@ class RectangleNeighboursTest(unittest.TestCase):
 
     def test_availableRectangleEmptyMap(self):
         grid = Rectangle(Dim2D(0, 0), 3, 3)
-        blockingPositions = Dim2D.listToDim2Ds([])
+        blockingPositions = Dim2D.convert_candiates_to_dimensions([])
         pos1 = Dim2D(1, 1)
         availablePoses = getAvailableNeighbours2D_rectangle(grid, blockingPositions, getNeighbours2D_rectangle_4Sides, pos1)
         self.assertEqual(len(availablePoses), 4)
