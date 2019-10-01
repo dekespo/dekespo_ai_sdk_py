@@ -25,7 +25,7 @@ class Shape2D(ABC):
 
     @staticmethod
     def circleVscircleIntersectionCheck(circle1, circle2):
-        dist = Dim2D.getEuclidDistance(circle1.centre, circle2.centre)
+        dist = Dim2D.get_euclid_distance(circle1.centre, circle2.centre)
         totalRadius = circle1.radius + circle2.radius
         return dist <= totalRadius
 

@@ -17,16 +17,16 @@ class Dim2D:
     def __add__(self, other):
         return Dim2D(self.x + other.x, self.y + other.y)
 
-    def vectoralMultiply(self, other):
+    def vectoral_multiply(self, other):
         return Dim2D(self.x * other.x, self.y * other.y)
 
-    def constantMultiply(self, other):
+    def constant_multiply(self, other):
         return Dim2D(self.x * other, self.y * other)
 
-    def vectoralDivide(self, other):
+    def vectoral_divide(self, other):
         return Dim2D(self.x / other.x, self.y / other.y)
 
-    def constantDivide(self, other):
+    def constant_divide(self, other):
         return Dim2D(self.x / other, self.y / other)
 
     def round(self):
@@ -34,10 +34,10 @@ class Dim2D:
         self.y = round(self.y)
 
     @staticmethod
-    def listToDim2Ds(liste):
-        if not liste:
+    def convert_candiates_to_dimensions(candidates):
+        if not candidates:
             return []
-        return [Dim2D(lx, ly) for lx, ly in liste]
+        return [Dim2D(x, y) for x, y in candidates]
 
     @staticmethod
     def toNumberValue(dim2D):
@@ -51,20 +51,20 @@ class Dim2D:
             " x: ", dim2D.x, " and y: ", dim2D.y, " are not the same and nonzero")
 
     @staticmethod
-    def getAverageOfDim2Ds(liste):
-        totalDim2D = Dim2D(0, 0)
-        if not liste:
-            return totalDim2D
-        for dim2D in liste:
-            totalDim2D += dim2D
-        return totalDim2D.constantDivide(len(liste))
+    def get_average_value(dimensions):
+        total_dimensions_values = Dim2D(0, 0)
+        if not dimensions:
+            return total_dimensions_values
+        for dimension in dimensions:
+            total_dimensions_values += dimension
+        return total_dimensions_values.constant_divide(len(dimensions))
 
     @staticmethod
-    def getEuclidDistance(point1, point2):
+    def get_euclid_distance(point1, point2):
         return math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2)
 
     @staticmethod
-    def getManathanDistance(point1, point2):
+    def get_manathan_distance(point1, point2):
         return abs(point1.x - point2.x) + abs(point1.y - point2.y)
 
 class Dim3D:

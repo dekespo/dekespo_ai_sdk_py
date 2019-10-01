@@ -37,7 +37,7 @@ class maximumMinimumTest(unittest.TestCase):
     def test_getMaximumValuesWithExtraParameters(self):
         def localDim2DDistanceFunction(value, **extraParameters):
             myPoint = extraParameters["myPoint"]
-            return Dim2D.getEuclidDistance(value, myPoint)
+            return Dim2D.get_euclid_distance(value, myPoint)
         maximumValue = -1
         extraParameters = {"myPoint": Dim2D(-2, -2)}
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
@@ -53,11 +53,11 @@ class maximumMinimumTest(unittest.TestCase):
         def complexFunction(value, **extraParameters):
             pointA = extraParameters["PointA"]
             pointB = extraParameters["PointB"]
-            if Dim2D.getManathanDistance(value, pointA) > 10:
+            if Dim2D.get_manathan_distance(value, pointA) > 10:
                 return "BREAK"
-            if Dim2D.getManathanDistance(value, pointB) < 5:
+            if Dim2D.get_manathan_distance(value, pointB) < 5:
                 return "CONTINUE"
-            return Dim2D.getManathanDistance(value, pointA) + Dim2D.getManathanDistance(value, pointB)
+            return Dim2D.get_manathan_distance(value, pointA) + Dim2D.get_manathan_distance(value, pointB)
         minimumValue = 100
         extraParameters = {
             "PointA": Dim2D(5, 5),

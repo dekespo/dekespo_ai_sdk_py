@@ -1,5 +1,7 @@
 [MESSAGES CONTROL]
 
+good-names = x, y, z
+
 # Errors
 
 # Refactors

@@ -11,7 +11,7 @@ class Dimensions2D(unittest.TestCase):
 
     def test_listToDim2Ds(self):
         liste = [(2, 3), (0, 0), (-4, -5)]
-        dim2Dlist = Dim2D.listToDim2Ds(liste)
+        dim2Dlist = Dim2D.convert_candiates_to_dimensions(liste)
         for idx, pos in enumerate(dim2Dlist):
             self.assertEqual(pos, Dim2D(liste[idx][0], liste[idx][1]))
 
@@ -29,21 +29,21 @@ class Dimensions2D(unittest.TestCase):
         vecA = Dim2D(2, 3)
         vecB = Dim2D(-1, 1)
         const = 5
-        self.assertEqual(vecA.vectoralMultiply(vecB), Dim2D(-2, 3))
-        self.assertEqual(vecB.vectoralMultiply(vecA), Dim2D(-2, 3))
-        self.assertEqual(vecA.vectoralMultiply(vecA), Dim2D(4, 9))
-        self.assertEqual(vecA.constantMultiply(const), Dim2D(10, 15))
-        self.assertEqual(vecB.constantMultiply(const), Dim2D(-5, 5))
+        self.assertEqual(vecA.vectoral_multiply(vecB), Dim2D(-2, 3))
+        self.assertEqual(vecB.vectoral_multiply(vecA), Dim2D(-2, 3))
+        self.assertEqual(vecA.vectoral_multiply(vecA), Dim2D(4, 9))
+        self.assertEqual(vecA.constant_multiply(const), Dim2D(10, 15))
+        self.assertEqual(vecB.constant_multiply(const), Dim2D(-5, 5))
 
     def test_divide(self):
         vecA = Dim2D(2, 3)
         vecB = Dim2D(-1, 1)
         const = 5
-        self.assertEqual(vecA.vectoralDivide(vecB), Dim2D(-2, 3))
-        self.assertEqual(vecB.vectoralDivide(vecA), Dim2D(-1/2, 1/3))
-        self.assertEqual(vecA.vectoralDivide(vecA), Dim2D(1, 1))
-        self.assertEqual(vecA.constantDivide(const), Dim2D(2/5, 3/5))
-        self.assertEqual(vecB.constantDivide(const), Dim2D(-1/5, 1/5))
+        self.assertEqual(vecA.vectoral_divide(vecB), Dim2D(-2, 3))
+        self.assertEqual(vecB.vectoral_divide(vecA), Dim2D(-1/2, 1/3))
+        self.assertEqual(vecA.vectoral_divide(vecA), Dim2D(1, 1))
+        self.assertEqual(vecA.constant_divide(const), Dim2D(2/5, 3/5))
+        self.assertEqual(vecB.constant_divide(const), Dim2D(-1/5, 1/5))
 
     def test_toNumberValue(self):
         dim1 = Dim2D(2, 2)
@@ -61,8 +61,8 @@ class Dimensions2D(unittest.TestCase):
 
     def test_getAverageOfDim2Ds(self):
         liste = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
-        dim2Dlist = Dim2D.listToDim2Ds(liste)
-        self.assertEqual(Dim2D.getAverageOfDim2Ds(dim2Dlist), Dim2D(-1, -4 / 5))
+        dim2Dlist = Dim2D.convert_candiates_to_dimensions(liste)
+        self.assertEqual(Dim2D.get_average_value(dim2Dlist), Dim2D(-1, -4 / 5))
 
     def test_getEuclidDistance(self):
         pos1 = Dim2D(0, 0)
@@ -70,12 +70,12 @@ class Dimensions2D(unittest.TestCase):
         pos3 = Dim2D(-2, -1)
         pos4 = Dim2D(1, -2)
         pos5 = Dim2D(-3, 4)
-        self.assertEqual(Dim2D.getEuclidDistance(pos1, pos2), math.sqrt(2))
-        self.assertEqual(Dim2D.getEuclidDistance(pos2, pos3), math.sqrt(13))
-        self.assertEqual(Dim2D.getEuclidDistance(pos3, pos4), math.sqrt(10))
-        self.assertEqual(Dim2D.getEuclidDistance(pos4, pos5), math.sqrt(52))
-        self.assertEqual(Dim2D.getEuclidDistance(pos3, pos3), 0)
-        self.assertEqual(Dim2D.getEuclidDistance(pos1, pos3), Dim2D.getEuclidDistance(pos3, pos1))
+        self.assertEqual(Dim2D.get_euclid_distance(pos1, pos2), math.sqrt(2))
+        self.assertEqual(Dim2D.get_euclid_distance(pos2, pos3), math.sqrt(13))
+        self.assertEqual(Dim2D.get_euclid_distance(pos3, pos4), math.sqrt(10))
+        self.assertEqual(Dim2D.get_euclid_distance(pos4, pos5), math.sqrt(52))
+        self.assertEqual(Dim2D.get_euclid_distance(pos3, pos3), 0)
+        self.assertEqual(Dim2D.get_euclid_distance(pos1, pos3), Dim2D.get_euclid_distance(pos3, pos1))
 
     def test_getManathanDistance(self):
         pos1 = Dim2D(0, 0)
@@ -83,12 +83,12 @@ class Dimensions2D(unittest.TestCase):
         pos3 = Dim2D(-2, -1)
         pos4 = Dim2D(1, -2)
         pos5 = Dim2D(-3, 4)
-        self.assertEqual(Dim2D.getManathanDistance(pos1, pos2), 2)
-        self.assertEqual(Dim2D.getManathanDistance(pos2, pos3), 5)
-        self.assertEqual(Dim2D.getManathanDistance(pos3, pos4), 4)
-        self.assertEqual(Dim2D.getManathanDistance(pos4, pos5), 10)
-        self.assertEqual(Dim2D.getManathanDistance(pos3, pos3), 0)
-        self.assertEqual(Dim2D.getManathanDistance(pos1, pos3), Dim2D.getManathanDistance(pos3, pos1))
+        self.assertEqual(Dim2D.get_manathan_distance(pos1, pos2), 2)
+        self.assertEqual(Dim2D.get_manathan_distance(pos2, pos3), 5)
+        self.assertEqual(Dim2D.get_manathan_distance(pos3, pos4), 4)
+        self.assertEqual(Dim2D.get_manathan_distance(pos4, pos5), 10)
+        self.assertEqual(Dim2D.get_manathan_distance(pos3, pos3), 0)
+        self.assertEqual(Dim2D.get_manathan_distance(pos1, pos3), Dim2D.get_manathan_distance(pos3, pos1))
 
 class Dimensions3D(unittest.TestCase):
     def test_simple(self):
