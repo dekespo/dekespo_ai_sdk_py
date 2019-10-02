@@ -67,6 +67,19 @@ class Dim2D:
     def get_manathan_distance(point1, point2):
         return abs(point1.x - point2.x) + abs(point1.y - point2.y)
 
+    @staticmethod
+    def get_minimum_index_and_value(dimensions, criteria_function, **kwargs):
+        start_index = 0
+        minimum_dimension = dimensions[start_index]
+        minimum_value = criteria_function(dimensions[start_index], **kwargs)
+        for dimension in dimensions:
+            new_value = criteria_function(dimension, **kwargs)
+            if new_value < minimum_value:
+                minimum_dimension = dimension
+                minimum_value = new_value
+        return minimum_dimension, minimum_value
+
+
 class Dim3D:
     def __init__(self, x, y, z):
         self.x = x
