@@ -26,24 +26,24 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(dim, Dim2D(2, 4))
 
     def test_multiply(self):
-        vecA = Dim2D(2, 3)
-        vecB = Dim2D(-1, 1)
+        vec1 = Dim2D(2, 3)
+        vec2 = Dim2D(-1, 1)
         const = 5
-        self.assertEqual(vecA.vectoral_multiply(vecB), Dim2D(-2, 3))
-        self.assertEqual(vecB.vectoral_multiply(vecA), Dim2D(-2, 3))
-        self.assertEqual(vecA.vectoral_multiply(vecA), Dim2D(4, 9))
-        self.assertEqual(vecA.constant_multiply(const), Dim2D(10, 15))
-        self.assertEqual(vecB.constant_multiply(const), Dim2D(-5, 5))
+        self.assertEqual(vec1.vectoral_multiply(vec2), Dim2D(-2, 3))
+        self.assertEqual(vec2.vectoral_multiply(vec1), Dim2D(-2, 3))
+        self.assertEqual(vec1.vectoral_multiply(vec1), Dim2D(4, 9))
+        self.assertEqual(vec1.constant_multiply(const), Dim2D(10, 15))
+        self.assertEqual(vec2.constant_multiply(const), Dim2D(-5, 5))
 
     def test_divide(self):
-        vecA = Dim2D(2, 3)
-        vecB = Dim2D(-1, 1)
+        vec1 = Dim2D(2, 3)
+        vec2 = Dim2D(-1, 1)
         const = 5
-        self.assertEqual(vecA.vectoral_divide(vecB), Dim2D(-2, 3))
-        self.assertEqual(vecB.vectoral_divide(vecA), Dim2D(-1/2, 1/3))
-        self.assertEqual(vecA.vectoral_divide(vecA), Dim2D(1, 1))
-        self.assertEqual(vecA.constant_divide(const), Dim2D(2/5, 3/5))
-        self.assertEqual(vecB.constant_divide(const), Dim2D(-1/5, 1/5))
+        self.assertEqual(vec1.vectoral_divide(vec2), Dim2D(-2, 3))
+        self.assertEqual(vec2.vectoral_divide(vec1), Dim2D(-1/2, 1/3))
+        self.assertEqual(vec1.vectoral_divide(vec1), Dim2D(1, 1))
+        self.assertEqual(vec1.constant_divide(const), Dim2D(2/5, 3/5))
+        self.assertEqual(vec2.constant_divide(const), Dim2D(-1/5, 1/5))
 
     def test_toNumberValue(self):
         dim1 = Dim2D(2, 2)
@@ -94,13 +94,49 @@ class Dimensions2D(unittest.TestCase):
         def local_sqrt_function(value):
             return math.sqrt(Dim2D.toNumberValue(value))
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
-        chosen_pos_1, minimum_value_1 = Dim2D.get_minimum_index_and_value(poses1, local_sqrt_function)
-        self.assertEqual(minimum_value_1, math.sqrt(1))
-        self.assertEqual(chosen_pos_1, Dim2D(1, 1))
+        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, local_sqrt_function)
+        self.assertEqual(minimum_value1, math.sqrt(1))
+        self.assertEqual(chosen_pos1, Dim2D(1, 1))
         poses2 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3), Dim2D(0, 0)]
-        chosen_pos_2, minimum_value_2 = Dim2D.get_minimum_index_and_value(poses2, local_sqrt_function)
-        self.assertEqual(minimum_value_2, 0)
-        self.assertEqual(chosen_pos_2, Dim2D(0, 0))
+        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(poses2, local_sqrt_function)
+        self.assertEqual(minimum_value2, 0)
+        self.assertEqual(chosen_pos2, Dim2D(0, 0))
+
+    def test_get_minimum_index_and_value_with_extra_parameters(self):
+        def local_distance_function(value, **extra_parameters):
+            current_point = extra_parameters["current_point"]
+            return Dim2D.get_euclid_distance(value, current_point)
+        extra_parameters = {"current_point": Dim2D(-2, -2)}
+        poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
+        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, local_distance_function, **extra_parameters)
+        self.assertEqual(minimum_value1, math.sqrt(18))
+        self.assertEqual(chosen_pos1, Dim2D(1, 1))
+        poses2 = [Dim2D(1, 1), Dim2D(-2, 2), Dim2D(3, 3), Dim2D(4, 0)]
+        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(poses2, local_distance_function, **extra_parameters)
+        self.assertEqual(minimum_value2, math.sqrt(16))
+        self.assertEqual(chosen_pos2, Dim2D(-2, 2))
+
+    def test_get_minimum_index_and_value_with_complex_criteria_function(self):
+        def complex_function(value, **extra_parameters):
+            point1 = extra_parameters["point1"]
+            point2 = extra_parameters["point2"]
+            if Dim2D.get_manathan_distance(value, point1) > 10:
+                return 20
+            if Dim2D.get_manathan_distance(value, point2) < 5:
+                return 50
+            return Dim2D.get_manathan_distance(value, point1) + Dim2D.get_manathan_distance(value, point2)
+        extra_parameters = {
+            "point1": Dim2D(5, 5),
+            "point2": Dim2D(0, 0)
+        }
+        poses1 = [Dim2D(2, 3), Dim2D(-1, -1), Dim2D(2, 2), Dim2D(3, 3)]
+        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, complex_function, **extra_parameters)
+        self.assertEqual(minimum_value1, 10)
+        self.assertEqual(chosen_pos1, Dim2D(2, 3))
+        poses2 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3), Dim2D(4, 4), Dim2D(0, 0)]
+        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(poses2, complex_function, **extra_parameters)
+        self.assertEqual(minimum_value2, 10)
+        self.assertEqual(chosen_pos2, Dim2D(3, 3))
 
 class Dimensions3D(unittest.TestCase):
     def test_simple(self):
