@@ -6,7 +6,7 @@ class Dim2D:
         self.y = y
 
     def __str__(self):
-        return "x: " + str(self.x) + ", y: " + str(self.y)
+        return f"(x: {self.x}, y: {self.y})"
 
     def __repr__(self):
         return self.__str__()
@@ -78,6 +78,10 @@ class Dim2D:
                 minimum_dimension = dimension
                 minimum_value = new_value
         return minimum_dimension, minimum_value
+
+    # Find a better hashing
+    def __hash__(self):
+        return hash((self.x, self.y))
 
 
 class Dim3D:

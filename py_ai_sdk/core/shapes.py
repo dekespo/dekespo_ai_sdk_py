@@ -30,22 +30,22 @@ class Shape2D(ABC):
         return dist <= totalRadius
 
 class Rectangle(Shape2D):
-    def __init__(self, upperLeftCorner, width, height):
-        self.upperLeftCorner = super().addPosition(upperLeftCorner)
+    def __init__(self, top_left_corner, width, height):
+        self.top_left_corner = super().addPosition(top_left_corner)
         checkPositiveValue(width)
         checkPositiveValue(height)
         self.width = width
         self.height = height
 
     def __str__(self):
-        return "upperLeftCorner = " + str(self.upperLeftCorner) \
+        return "top_left_corner = " + str(self.top_left_corner) \
         + "width x height: " + str(self.width) + " x " + str(self.height)
 
     def __repr__(self):
         return self.__str__()
 
     def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        self.upperLeftCorner = super().updateMotionPhysics(self.upperLeftCorner, newForce, newMass, friction, newAcceleration)
+        self.top_left_corner = super().updateMotionPhysics(self.top_left_corner, newForce, newMass, friction, newAcceleration)
 
 class Hexagon(Shape2D):
     def __init__(self):
