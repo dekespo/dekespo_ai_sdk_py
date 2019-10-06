@@ -1,5 +1,5 @@
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.boundary_checks import boundaryChecks2D_rectangle
+from py_ai_sdk.core.boundary_checks import boundary_checks_rectangle
 
 def getNeighbours2D_rectangle_4Sides(position):
     x, y = position.x, position.y
@@ -17,12 +17,12 @@ def getNeighbours2D_rectangle_8Sides(position):
     return candidates
 
 def getAvailableNeighbours2D_rectangle(grid, blockingPositions, getNeighboursFunction, position):
-    candidates = getNeighboursFunction(position)
+    neighbours_positions = getNeighboursFunction(position)
 
-    for candi in reversed(candidates):
-        isInsideBoundary = boundaryChecks2D_rectangle(grid, candi)
-        if not isInsideBoundary:
-            candidates.remove(candi)
-        elif candi in blockingPositions:
-            candidates.remove(candi)
-    return candidates
+    for candidate_position in reversed(neighbours_positions):
+        is_inside_boundaries = boundary_checks_rectangle(grid, candidate_position)
+        if not is_inside_boundaries:
+            neighbours_positions.remove(candidate_position)
+        elif candidate_position in blockingPositions:
+            neighbours_positions.remove(candidate_position)
+    return neighbours_positions

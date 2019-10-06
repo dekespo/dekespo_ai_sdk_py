@@ -7,7 +7,7 @@ class RectangleTest(unittest.TestCase):
     def test_simple(self):
         corner = Dim2D(0, 1)
         rec = Rectangle(corner, 20, 30)
-        self.assertEqual(rec.upperLeftCorner, Dim2D(0, 1))
+        self.assertEqual(rec.top_left_corner, Dim2D(0, 1))
         self.assertEqual(rec.width, 20)
         self.assertEqual(rec.height, 30)
 
