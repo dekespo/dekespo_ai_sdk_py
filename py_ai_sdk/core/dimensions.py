@@ -69,15 +69,27 @@ class Dim2D:
 
     @staticmethod
     def get_minimum_index_and_value(dimensions, criteria_function, **kwargs):
+        def minimum_operator(a, b):
+            return a < b
+        return Dim2D.get_optimum_index_and_value(dimensions, criteria_function, minimum_operator, **kwargs)
+
+    @staticmethod
+    def get_maximum_index_and_value(dimensions, criteria_function, **kwargs):
+        def maximum_operator(a, b):
+            return a > b
+        return Dim2D.get_optimum_index_and_value(dimensions, criteria_function, maximum_operator, **kwargs)
+
+    @staticmethod
+    def get_optimum_index_and_value(dimensions, criteria_function, operator_function, **kwargs):
         start_index = 0
-        minimum_dimension = dimensions[start_index]
-        minimum_value = criteria_function(dimensions[start_index], **kwargs)
+        optimum_dimension = dimensions[start_index]
+        optimum_value = criteria_function(dimensions[start_index], **kwargs)
         for dimension in dimensions:
             new_value = criteria_function(dimension, **kwargs)
-            if new_value < minimum_value:
-                minimum_dimension = dimension
-                minimum_value = new_value
-        return minimum_dimension, minimum_value
+            if operator_function(new_value, optimum_value):
+                optimum_dimension = dimension
+                optimum_value = new_value
+        return optimum_dimension, optimum_value
 
     # Find a better hashing
     def __hash__(self):
