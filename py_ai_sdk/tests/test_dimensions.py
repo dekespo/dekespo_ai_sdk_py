@@ -45,20 +45,6 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(vec1.constant_divide(const), Dim2D(2/5, 3/5))
         self.assertEqual(vec2.constant_divide(const), Dim2D(-1/5, 1/5))
 
-    def test_toNumberValue(self):
-        dim1 = Dim2D(2, 2)
-        dim2 = Dim2D(3, 0)
-        dim3 = Dim2D(0, -3)
-        dim4 = Dim2D(0, 0)
-        self.assertEqual(Dim2D.toNumberValue(dim1), 2)
-        self.assertEqual(Dim2D.toNumberValue(dim2), 3)
-        self.assertEqual(Dim2D.toNumberValue(dim3), -3)
-        self.assertEqual(Dim2D.toNumberValue(dim4), 0)
-        def error_method_check():
-            dim5 = Dim2D(2, 1)
-            Dim2D.toNumberValue(dim5)
-        self.assertRaises(AssertionError, error_method_check)
-
     def test_get_average_value(self):
         candidates = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
         dimensions = Dim2D.convert_candiates_to_dimensions(candidates)
@@ -92,7 +78,7 @@ class Dimensions2D(unittest.TestCase):
 
     def test_simple_get_minimum_index_and_value(self):
         def local_sqrt_function(value):
-            return math.sqrt(Dim2D.toNumberValue(value))
+            return math.sqrt(value.x)
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
         chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, local_sqrt_function)
         self.assertEqual(minimum_value1, 1)
@@ -140,7 +126,7 @@ class Dimensions2D(unittest.TestCase):
 
     def test_simple_get_maximum_index_and_value(self):
         def local_sqrt_function(value):
-            return math.sqrt(Dim2D.toNumberValue(value))
+            return math.sqrt(value.x)
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
         chosen_pos1, maximum_value1 = Dim2D.get_maximum_index_and_value(poses1, local_sqrt_function)
         self.assertEqual(maximum_value1, math.sqrt(3))

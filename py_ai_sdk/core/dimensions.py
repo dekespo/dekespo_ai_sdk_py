@@ -40,17 +40,6 @@ class Dim2D:
         return [Dim2D(x, y) for x, y in candidates]
 
     @staticmethod
-    def toNumberValue(dim2D):
-        if dim2D.x == dim2D.y:
-            return dim2D.x
-        if dim2D.x == 0 and dim2D.y != 0:
-            return dim2D.y
-        if dim2D.x != 0 and dim2D.y == 0:
-            return dim2D.x
-        raise AssertionError("It cannot be converted to a value as " \
-            " x: ", dim2D.x, " and y: ", dim2D.y, " are not the same and nonzero")
-
-    @staticmethod
     def get_average_value(dimensions):
         total_dimensions_values = Dim2D(0, 0)
         if not dimensions:
@@ -69,14 +58,14 @@ class Dim2D:
 
     @staticmethod
     def get_minimum_index_and_value(dimensions, criteria_function, **kwargs):
-        def minimum_operator(a, b):
-            return a < b
+        def minimum_operator(value, minimum):
+            return value < minimum
         return Dim2D.get_optimum_index_and_value(dimensions, criteria_function, minimum_operator, **kwargs)
 
     @staticmethod
     def get_maximum_index_and_value(dimensions, criteria_function, **kwargs):
-        def maximum_operator(a, b):
-            return a > b
+        def maximum_operator(value, maximum):
+            return value > maximum
         return Dim2D.get_optimum_index_and_value(dimensions, criteria_function, maximum_operator, **kwargs)
 
     @staticmethod
