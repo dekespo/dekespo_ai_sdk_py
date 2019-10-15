@@ -1,4 +1,3 @@
-from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.core_utils import checkPositiveValue, eprint
 
 # This class should be used in a class with position
@@ -27,12 +26,12 @@ class MotionPhysics2D:
         if not mass:
             if acceleration and force:
                 self.mass = force.vectoral_divide(acceleration)
-                self.mass = Dim2D.toNumberValue(self.mass)
+                self.mass = self.mass.x
                 if not momentum:
                     self.momentum = velocity.constant_multiply(self.mass)
             elif momentum:
                 self.mass = momentum.vectoral_divide(velocity)
-                self.mass = Dim2D.toNumberValue(self.mass)
+                self.mass = self.mass.x
                 if not acceleration and force:
                     self.acceleration = force.constant_divide(self.mass)
 
