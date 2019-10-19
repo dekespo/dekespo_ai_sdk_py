@@ -1,42 +1,58 @@
 from py_ai_sdk.core.core_utils import check_positive_value, error_print
 
-# This class should be used in a class with position
 class MotionPhysics2D:
-    def __init__(self, velocity, acceleration=None, force=None, momentum=None, mass=None):
-        self.velocity = velocity
-        if acceleration:
-            self.acceleration = acceleration
-        if force:
-            self.force = force
-        if momentum:
-            self.momentum = momentum
-        if mass:
-            check_positive_value(mass)
-            self.mass = mass
+    @property
+    def position(self):
+        return self._position
 
-        if not acceleration:
-            if force and mass:
-                self.acceleration = force.constant_divide(mass)
-        if not force:
-            if acceleration and mass:
-                self.force = acceleration.constant_multiply(mass)
-        if not momentum:
-            if mass:
-                self.momentum = velocity.constant_multiply(mass)
-        if not mass:
-            if acceleration and force:
-                self.mass = force.vectoral_divide(acceleration)
-                self.mass = self.mass.x
-                if not momentum:
-                    self.momentum = velocity.constant_multiply(self.mass)
-            elif momentum:
-                self.mass = momentum.vectoral_divide(velocity)
-                self.mass = self.mass.x
-                if not acceleration and force:
-                    self.acceleration = force.constant_divide(self.mass)
+    @property
+    def velocity(self):
+        return self._velocity
+
+    @velocity.setter
+    def velocity(self, velocity):
+        self._velocity = velocity
+
+    @property
+    def acceleration(self):
+        return self._acceleration
+
+    @acceleration.setter
+    def acceleration(self, acceleration):
+        self._acceleration = acceleration
+
+    @property
+    def force(self):
+        return self._force
+
+    @force.setter
+    def force(self, force):
+        self._force = force
+
+    @property
+    def momentum(self):
+        return self._momentum
+
+    @momentum.setter
+    def momentum(self, momentum):
+        self._momentum = momentum
+
+    @property
+    def mass(self):
+        return self._mass
+
+    @mass.setter
+    def mass(self, mass):
+        check_positive_value(mass)
+        self._mass = mass
+
+    def __init__(self, position):
+        self._position = position
 
     def __str__(self):
-        string = "Velocity: " + self.velocity
+        string = "Position: " + self.position
+        if self.velocity:
+            string += "\nVelocity: " + self.velocity
         if self.acceleration:
             string += "\nAcceleration: " + self.acceleration
         if self.force:

@@ -6,7 +6,7 @@ good-names = x, y, z
 
 # Refactors
 # R0913: = (too-many-arguments) # should be fixed by fixing motion_physics
-# R0912: = (too-many-branches) # should be fixed by fixing motion_physics
+# R0902: = too-many-instance-attributes # should be fixed by making the fields a class
 
 # Warnings
 # W0221 = Parameters differ from overridden # should be fixed by fixing motion_physics
@@ -17,4 +17,4 @@ good-names = x, y, z
 # C0103 = (invalid-name) # Fix it meanwhile
 # C0301 = Line too long # Will be fixed when refactoring bad filenames
 
-disable=C0111, C0103, C0301, W0221, W0201, R0913, R0912
+disable=C0111, C0103, C0301, W0221, W0201, R0913, R0902

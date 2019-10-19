@@ -16,11 +16,11 @@ class Shape2D(ABC):
     def addPosition(position):
         return position
 
-    def addMotionPhysics(self, motionPhysics):
-        self.motionPhysics = motionPhysics
+    def set_motion_physics(self, motion_physics):
+        self.motion_physics = motion_physics
 
-    def updateMotionPhysics(self, position, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        return self.motionPhysics.update(position, newForce, newMass, friction, newAcceleration)
+    def update_motion_physics(self, position, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
+        return self.motion_physics.update(position, newForce, newMass, friction, newAcceleration)
 
     @staticmethod
     def circleVscircleIntersectionCheck(circle1, circle2):
@@ -43,8 +43,8 @@ class Rectangle(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        self.top_left_corner = super().updateMotionPhysics(self.top_left_corner, newForce, newMass, friction, newAcceleration)
+    def update_motion_physics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
+        self.top_left_corner = super().update_motion_physics(self.top_left_corner, newForce, newMass, friction, newAcceleration)
 
 class Hexagon(Shape2D):
     def __init__(self):
@@ -68,8 +68,8 @@ class Circle(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        self.centre = super().updateMotionPhysics(self.centre, newForce, newMass, friction, newAcceleration)
+    def update_motion_physics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
+        self.centre = super().update_motion_physics(self.centre, newForce, newMass, friction, newAcceleration)
 
 class Point(Shape2D):
     def __init__(self, position):
@@ -81,5 +81,5 @@ class Point(Shape2D):
     def __repr__(self):
         return self.__str__()
 
-    def updateMotionPhysics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        self.position = super().updateMotionPhysics(self.position, newForce, newMass, friction, newAcceleration)
+    def update_motion_physics(self, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
+        self.position = super().update_motion_physics(self.position, newForce, newMass, friction, newAcceleration)
