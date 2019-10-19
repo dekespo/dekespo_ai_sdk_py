@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.core_utils import checkNoneValue, checkPositiveValue
+from py_ai_sdk.core.core_utils import check_positive_value
 
 class Shape2D(ABC):
     @abstractmethod
@@ -20,7 +20,6 @@ class Shape2D(ABC):
         self.motionPhysics = motionPhysics
 
     def updateMotionPhysics(self, position, newForce=Dim2D(0, 0), newMass=None, friction=None, newAcceleration=Dim2D(0, 0)):
-        checkNoneValue(self.motionPhysics, "motionPhysics")
         return self.motionPhysics.update(position, newForce, newMass, friction, newAcceleration)
 
     @staticmethod
@@ -32,8 +31,8 @@ class Shape2D(ABC):
 class Rectangle(Shape2D):
     def __init__(self, top_left_corner, width, height):
         self.top_left_corner = super().addPosition(top_left_corner)
-        checkPositiveValue(width)
-        checkPositiveValue(height)
+        check_positive_value(width)
+        check_positive_value(height)
         self.width = width
         self.height = height
 
@@ -60,7 +59,7 @@ class Hexagon(Shape2D):
 class Circle(Shape2D):
     def __init__(self, centre, radius):
         self.centre = super().addPosition(centre)
-        checkPositiveValue(radius)
+        check_positive_value(radius)
         self.radius = radius
 
     def __str__(self):
