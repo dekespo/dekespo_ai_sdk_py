@@ -1,4 +1,4 @@
-from py_ai_sdk.core.core_utils import checkPositiveValue, eprint
+from py_ai_sdk.core.core_utils import check_positive_value, error_print
 
 # This class should be used in a class with position
 class MotionPhysics2D:
@@ -11,7 +11,7 @@ class MotionPhysics2D:
         if momentum:
             self.momentum = momentum
         if mass:
-            checkPositiveValue(mass)
+            check_positive_value(mass)
             self.mass = mass
 
         if not acceleration:
@@ -52,20 +52,20 @@ class MotionPhysics2D:
 
     def update(self, position, newForce, newMass, friction, newAcceleration):
         if friction:
-            checkPositiveValue(friction)
+            check_positive_value(friction)
         try:
             if self.force:
                 self.force = newForce
         except AttributeError:
-            eprint("Exception: There is no force!")
+            error_print("Exception: There is no force!")
         try:
             if self.mass:
                 if newMass:
-                    checkPositiveValue(newMass)
+                    check_positive_value(newMass)
                     self.mass = newMass
                 self.acceleration = self.force.constant_divide(self.mass)
         except AttributeError:
-            eprint("Exception: There is no mass!")
+            error_print("Exception: There is no mass!")
         try:
             if self.acceleration:
                 self.acceleration += newAcceleration
@@ -75,7 +75,7 @@ class MotionPhysics2D:
                         if self.momentum:
                             self.momentum = self.velocity.constant_multiply(self.mass)
                     except AttributeError:
-                        eprint("Exception: There is no momentum!")
+                        error_print("Exception: There is no momentum!")
         except AttributeError:
-            eprint("Exception: There is no acceleration!")
+            error_print("Exception: There is no acceleration!")
         return position + self.velocity

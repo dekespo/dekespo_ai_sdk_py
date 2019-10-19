@@ -1,4 +1,4 @@
-from py_ai_sdk.core.core_utils import eprint
+from py_ai_sdk.core.core_utils import error_print
 
 def depthFirstSearch():
     pass
@@ -63,5 +63,5 @@ def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighb
                         came_from[new_candidate_point] = current
                         g_score[new_candidate_point] = tentative_g_score
                         f_score[new_candidate_point] = g_score[new_candidate_point] + heuristic_function(new_candidate_point, goal_point)
-    eprint("A start cannot find the path, returning None")
+    error_print("A start cannot find the path, returning None")
     return []
