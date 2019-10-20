@@ -1,9 +1,13 @@
-from py_ai_sdk.core.core_utils import check_positive_value, error_print
+from py_ai_sdk.core.core_utils import check_positive_value
 
 class MotionPhysics2D:
     @property
     def position(self):
         return self._position
+
+    @position.setter
+    def position(self, position):
+        self._position = position
 
     @property
     def velocity(self):
@@ -48,6 +52,11 @@ class MotionPhysics2D:
 
     def __init__(self, position):
         self._position = position
+        self._velocity = None
+        self._acceleration = None
+        self._force = None
+        self._momentum = None
+        self._mass = None
 
     def __str__(self):
         string = "Position: " + self.position
@@ -66,32 +75,18 @@ class MotionPhysics2D:
     def __repr__(self):
         return self.__str__()
 
-    def update(self, position, newForce, newMass, friction, newAcceleration):
-        if friction:
-            check_positive_value(friction)
-        try:
-            if self.force:
-                self.force = newForce
-        except AttributeError:
-            error_print("Exception: There is no force!")
-        try:
-            if self.mass:
-                if newMass:
-                    check_positive_value(newMass)
-                    self.mass = newMass
-                self.acceleration = self.force.constant_divide(self.mass)
-        except AttributeError:
-            error_print("Exception: There is no mass!")
-        try:
+    def update(self):
+        def update_velocity():
+            if not self.velocity:
+                # Add error_print?
+                return
             if self.acceleration:
-                self.acceleration += newAcceleration
                 self.velocity += self.acceleration
-                if self.mass:
-                    try:
-                        if self.momentum:
-                            self.momentum = self.velocity.constant_multiply(self.mass)
-                    except AttributeError:
-                        error_print("Exception: There is no momentum!")
-        except AttributeError:
-            error_print("Exception: There is no acceleration!")
-        return position + self.velocity
+
+        def update_position():
+            if self.velocity:
+                self.position += self.velocity
+
+        update_velocity()
+        update_position()
+        return self.position

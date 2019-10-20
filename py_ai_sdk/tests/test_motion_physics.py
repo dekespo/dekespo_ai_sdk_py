@@ -42,9 +42,9 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(point.position, Dim2D(3, 5))
         self.assertEqual(point.position, Dim2D(3, 5))
         self.assertEqual(point.motion_physics.velocity, Dim2D(2, 2))
-        for i in range(20):
+        for time in range(20):
             point.update_motion_physics()
-            self.assertEqual(point.position, Dim2D(3 + 2*(i+1), 5 + 2*(i+1)))
+            self.assertEqual(point.position, Dim2D(3 + 2*(time+1), 5 + 2*(time+1)))
             self.assertEqual(point.motion_physics.velocity, Dim2D(2, 2))
 
 if __name__ == "__main__":
