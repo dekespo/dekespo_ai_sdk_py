@@ -18,10 +18,6 @@ class CircleTest(unittest.TestCase):
         self.assertEqual(circle.centre, Dim2D(5, 5))
         self.assertEqual(circle.radius, 10)
 
-class HexagonTest(unittest.TestCase):
-    def test_simple(self):
-        pass
-
 class PointTest(unittest.TestCase):
     def test_simple(self):
         point1 = Point(Dim2D(2, 1))
@@ -30,18 +26,18 @@ class PointTest(unittest.TestCase):
         self.assertEqual(point2.position, Dim2D(-5, -3))
 
 class Shape2DTest(unittest.TestCase):
-    def test_circleVscircleIntersectionCheck(self):
+    def test_circle_vs_circle_intersection_check(self):
         circle1 = Circle(Dim2D(3, 3), 2)
         circle2 = Circle(Dim2D(1, 1), 2)
         circle3 = Circle(Dim2D(-2, -2), 2)
         circle4 = Circle(Dim2D(2, 2), 1.5)
-        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle1, circle2))
-        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle2, circle1))
-        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle1, circle3))
-        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle2, circle3))
-        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle1, circle4))
-        self.assertTrue(Shape2D.circleVscircleIntersectionCheck(circle2, circle4))
-        self.assertFalse(Shape2D.circleVscircleIntersectionCheck(circle3, circle4))
+        self.assertTrue(Shape2D.circle_vs_circle_intersection_check(circle1, circle2))
+        self.assertTrue(Shape2D.circle_vs_circle_intersection_check(circle2, circle1))
+        self.assertFalse(Shape2D.circle_vs_circle_intersection_check(circle1, circle3))
+        self.assertFalse(Shape2D.circle_vs_circle_intersection_check(circle2, circle3))
+        self.assertTrue(Shape2D.circle_vs_circle_intersection_check(circle1, circle4))
+        self.assertTrue(Shape2D.circle_vs_circle_intersection_check(circle2, circle4))
+        self.assertFalse(Shape2D.circle_vs_circle_intersection_check(circle3, circle4))
 
 if __name__ == "__main__":
     unittest.main()
