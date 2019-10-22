@@ -23,6 +23,7 @@ jobs:
             sudo pip install pipenv
             pipenv install pylint==2.3.1
             pipenv install coverage==4.5.4
+            pipenv install codecov
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
@@ -42,3 +43,7 @@ jobs:
           name: run coverage
           command: |
             pipenv run python3 -m py_ai_sdk.run_coverage
+      - run:
+          name: run code cov
+          command: |
+            pipenv run codecov
