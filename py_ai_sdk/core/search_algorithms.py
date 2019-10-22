@@ -1,13 +1,13 @@
 from py_ai_sdk.core.core_utils import error_print
 
-def depthFirstSearch():
+def depth_first_search():
     pass
 
-def breadthFirstSearch():
+def breadth_first_search():
     pass
 
 # Might be combined in to AStar search
-def dijkstraSearch():
+def dijkstra_search():
     pass
 
 # Simplify this algorithm
