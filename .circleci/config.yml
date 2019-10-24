@@ -36,13 +36,9 @@ jobs:
           command: |
             pipenv run python3 -m py_ai_sdk.run_pylint
       - run:
-          name: run unit tests
+          name: run unit tests with coverage check
           command: |
             pipenv run python3 -m py_ai_sdk.run_tests
-      - run:
-          name: run coverage
-          command: |
-            pipenv run python3 -m py_ai_sdk.run_coverage
       - run:
           name: run code cov
           command: |
