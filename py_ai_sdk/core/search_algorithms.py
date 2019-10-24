@@ -11,7 +11,8 @@ def dijkstra_search():
     pass
 
 # Simplify this algorithm
-def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function): # pylint: disable=too-many-locals
+ # pylint: disable=too-many-locals
+def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function):
     def reconstruct_path(came_from, current):
         total_path = [current]
         while current in came_from:
