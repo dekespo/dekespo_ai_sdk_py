@@ -1,7 +1,15 @@
 from py_ai_sdk.core.core_utils import error_print
 
-def depth_first_search():
-    pass
+def depth_first_search(graph, start_point, get_neighbours_function):
+    closed_set = []
+    open_set = [start_point]
+    while open_set:
+        current_point = open_set.pop()
+        if current_point not in closed_set:
+            closed_set.append(current_point)
+            for new_candidate_point in get_neighbours_function(graph, current_point):
+                open_set.append(new_candidate_point)
+    return closed_set
 
 def breadth_first_search():
     pass
@@ -13,11 +21,11 @@ def dijkstra_search():
 # Simplify this algorithm
  # pylint: disable=too-many-locals
 def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function):
-    def reconstruct_path(came_from, current):
-        total_path = [current]
-        while current in came_from:
-            current = came_from[current]
-            total_path.append(current)
+    def reconstruct_path(came_from, current_point):
+        total_path = [current_point]
+        while current_point in came_from:
+            current_point = came_from[current_point]
+            total_path.append(current_point)
         total_path.reverse()
         return total_path
 
@@ -44,24 +52,24 @@ def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighb
 
     while open_set:
 
-        current = get_minimum_f_score_index(open_set, f_score)
-        if current == goal_point:
-            return reconstruct_path(came_from, current)
+        current_point = get_minimum_f_score_index(open_set, f_score)
+        if current_point == goal_point:
+            return reconstruct_path(came_from, current_point)
 
-        open_set.remove(current)
-        closed_set.append(current)
+        open_set.remove(current_point)
+        closed_set.append(current_point)
 
-        for new_candidate_point in get_neighbours_function(graph, current):
+        for new_candidate_point in get_neighbours_function(graph, current_point):
             if new_candidate_point not in closed_set:
-                tentative_g_score = g_score[current] + heuristic_function(new_candidate_point, current)
+                tentative_g_score = g_score[current_point] + heuristic_function(new_candidate_point, current_point)
                 if new_candidate_point not in open_set:
                     open_set.append(new_candidate_point)
-                    came_from[new_candidate_point] = current
+                    came_from[new_candidate_point] = current_point
                     g_score[new_candidate_point] = tentative_g_score
                     f_score[new_candidate_point] = g_score[new_candidate_point] + heuristic_function(new_candidate_point, goal_point)
                 else:
                     if tentative_g_score < g_score[new_candidate_point]:
-                        came_from[new_candidate_point] = current
+                        came_from[new_candidate_point] = current_point
                         g_score[new_candidate_point] = tentative_g_score
                         f_score[new_candidate_point] = g_score[new_candidate_point] + heuristic_function(new_candidate_point, goal_point)
     error_print("A start cannot find the path, returning None")
