@@ -14,10 +14,8 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          # this can be removed
-          name: Locate site Packages
-          command: python -c "import site; print(site.getsitepackages())"
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
             - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
@@ -32,6 +30,9 @@ jobs:
       - save_cache:
           paths:
             - "Pipfile.lock"
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.7/site-packages"
           key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           # this can be removed
