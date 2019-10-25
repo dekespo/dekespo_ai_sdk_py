@@ -14,9 +14,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - python-cache-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-            - python-cache-{{ .Branch }}
-            - python-cache
+            - cache-{{ checksum "Pipfile.lock" }}
+            - cache-
       - run:
           command: |
             sudo pip install pipenv
@@ -24,9 +23,10 @@ jobs:
             pipenv install coverage==4.5.4
             pipenv install codecov
       - save_cache:
-          key: python-cache-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: cache-{{ checksum "Pipfile.lock" }}
           paths:
-            - "Pipfile.lock"
+            - "~/.local"
+            - "~/.cache"
 
       - run:
           name: run pylint
