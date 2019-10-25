@@ -11,11 +11,11 @@ jobs:
           PIPENV_VENV_IN_PROJECT: true
 
     steps:
-      - checkout
       - restore_cache:
           keys:
-            - cache-{{ checksum "Pipfile.lock" }}
-            - cache-
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - pip-packages-v1-{{ .Branch }}-
+            - pip-packages-v1-
       - run:
           command: |
             sudo pip install pipenv
@@ -23,10 +23,9 @@ jobs:
             pipenv install coverage==4.5.4
             pipenv install codecov
       - save_cache:
-          key: cache-{{ checksum "Pipfile.lock" }}
           paths:
-            - "~/.local"
-            - "~/.cache"
+            - ~/.local/share/virtualenvs/venv
+          key: pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
 
       - run:
           name: run pylint
