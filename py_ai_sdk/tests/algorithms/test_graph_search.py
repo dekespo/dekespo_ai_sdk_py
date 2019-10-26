@@ -1,6 +1,6 @@
 import unittest
 from py_ai_sdk.templates.rectangle_world import example_1
-from py_ai_sdk.core.search_algorithms import a_star_search, depth_first_search, breadth_first_search, dijkstra_search
+from py_ai_sdk.algorithms.graph_search import GraphSearch
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.neighbours import get_available_neighbours2d_rectangle, get_neighbours2d_rectangle_4_sides
 from py_ai_sdk.core.shapes import Rectangle
@@ -30,7 +30,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2), (9, 1),
             (9, 0)
         ])
-        self.assertEqual(depth_first_search(graph, start_point, get_neighbours_function), correct_path_list)
+        self.assertEqual(GraphSearch.depth_first_search(graph, start_point, get_neighbours_function), correct_path_list)
 
     def test_breadth_first_search(self):
         graph, blocking_points = example_1()
@@ -52,7 +52,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (7, 9), (7, 1), (6, 0), (9, 8), (9, 2), (8, 9), (8, 1), (7, 0), (9, 9), (9, 1),
             (8, 0), (9, 0)
         ])
-        self.assertEqual(breadth_first_search(graph, start_point, get_neighbours_function), correct_path_list)
+        self.assertEqual(GraphSearch.breadth_first_search(graph, start_point, get_neighbours_function), correct_path_list)
 
     def test_dijkstra_search(self):
         graph, blocking_points = example_1()
@@ -66,7 +66,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(dijkstra_search(graph, start_point, end_point, get_neighbours_function), correct_path_list)
+        self.assertEqual(GraphSearch.dijkstra_search(graph, start_point, end_point, get_neighbours_function), correct_path_list)
 
     def test_a_star_search(self):
         graph, blocking_points = example_1()
@@ -81,7 +81,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(a_star_search(graph, start_point, end_point, heuristic_function, get_neighbours_function), correct_path_list)
+        self.assertEqual(GraphSearch.a_star_search(graph, start_point, end_point, heuristic_function, get_neighbours_function), correct_path_list)
 
 if __name__ == "__main__":
     unittest.main()
