@@ -22,11 +22,16 @@ def breadth_first_search(graph, start_point, get_neighbours_function):
                 open_set.append(new_candidate_point)
     return closed_set
 
-# Might be combined in to AStar search
-def dijkstra_search():
-    pass
+def dijkstra_search(graph, start_point, goal_point, get_neighbours_function):
+    # pylint: disable=fixme
+    # TODO: heuristic_function should use any number of parameters
+    # pylint: disable=unused-argument
+    def heuristic_function(not_used1, not_used2):
+        return 0
+    return a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function)
 
-# Simplify this algorithm
+# pylint: disable=fixme
+# TODO: Simplify this algorithm
 # pylint: disable=too-many-locals
 def a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function):
     def reconstruct_path(came_from, current_point):
