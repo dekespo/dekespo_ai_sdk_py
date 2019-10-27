@@ -27,14 +27,12 @@ class GraphSearch:
 
     @staticmethod
     def dijkstra_search(graph, start_point, goal_point, get_neighbours_function):
-        # pylint: disable=fixme
         # TODO: heuristic_function should use any number of parameters
         # pylint: disable=unused-argument
         def heuristic_function(not_used1, not_used2):
             return 0
         return GraphSearch.a_star_search(graph, start_point, goal_point, heuristic_function, get_neighbours_function)
 
-    # pylint: disable=fixme
     # TODO: Simplify this algorithm
     # pylint: disable=too-many-locals
     @staticmethod
