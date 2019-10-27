@@ -5,6 +5,13 @@ from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.core_utils import check_positive_value
 
 class Shape2D(ABC):
+
+    class NeighbourType(Enum):
+        CROSS = 1
+        DIAMOND = 2
+        SQUARE = 3
+        DIAGONAL = 4
+
     def __init__(self, data):
         self.motion_physics = None
         self.data = data
@@ -27,14 +34,6 @@ class Shape2D(ABC):
         return self.motion_physics.update()
 
 class Rectangle(Shape2D):
-
-    # TODO: Move it and the static methods to Shape2D?
-    class NeighbourType(Enum):
-        CROSS = 1
-        DIAMOND = 2
-        SQUARE = 3
-        DIAGONAL = 4
-
     def __init__(self, top_left_corner, width, height, data=None):
         super().__init__(data)
         self.top_left_corner = top_left_corner
