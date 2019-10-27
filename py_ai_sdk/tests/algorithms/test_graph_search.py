@@ -5,13 +5,16 @@ from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle, Shape2D
 
 class SearchAlgorithmsTest(unittest.TestCase):
-    def test_depth_first_search(self):
+    def setUp(self):
         graph_data, blocking_points = example_1()
         top_left_corner = Dim2D(0, 0)
         blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
         width, height = len(graph_data[0]), len(graph_data)
         graph = Rectangle(top_left_corner, width, height, graph_data)
         start_point = Dim2D(0, 0)
+        self.search_object = GraphSearch(graph, start_point, Shape2D.NeighbourType.CROSS, blocking_points)
+
+    def test_depth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6),
             (0, 7), (0, 8), (0, 9), (1, 9), (1, 8), (1, 7), (1, 6),
@@ -28,14 +31,9 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2), (9, 1),
             (9, 0)
         ])
-        self.assertEqual(GraphSearch.depth_first_search(graph, start_point, blocking_points, Shape2D.NeighbourType.CROSS), correct_path_list)
+        self.assertEqual(self.search_object.depth_first_search(), correct_path_list)
 
     def test_breadth_first_search(self):
-        graph, blocking_points = example_1()
-        top_left_corner = Dim2D(0, 0)
-        blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
-        graph = Rectangle(top_left_corner, len(graph[0]), len(graph))
-        start_point = Dim2D(0, 0)
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2), (3, 0), (2, 1), (1, 2), (0, 3),
             (3, 1), (2, 2), (1, 3), (0, 4), (3, 2), (2, 3), (1, 4), (0, 5), (3, 3), (2, 4),
@@ -48,32 +46,22 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (7, 9), (7, 1), (6, 0), (9, 8), (9, 2), (8, 9), (8, 1), (7, 0), (9, 9), (9, 1),
             (8, 0), (9, 0)
         ])
-        self.assertEqual(GraphSearch.breadth_first_search(graph, start_point, blocking_points, Shape2D.NeighbourType.CROSS), correct_path_list)
+        self.assertEqual(self.search_object.breadth_first_search(), correct_path_list)
 
     def test_dijkstra_search(self):
-        graph, blocking_points = example_1()
-        top_left_corner = Dim2D(0, 0)
-        blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
-        graph = Rectangle(top_left_corner, len(graph[0]), len(graph))
-        start_point = Dim2D(0, 0)
         end_point = Dim2D(7, 6)
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(GraphSearch.dijkstra_search(graph, start_point, end_point, blocking_points, Shape2D.NeighbourType.CROSS), correct_path_list)
+        self.assertEqual(self.search_object.dijkstra_search(end_point), correct_path_list)
 
     def test_a_star_search(self):
-        graph, blocking_points = example_1()
-        top_left_corner = Dim2D(0, 0)
-        blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
-        graph = Rectangle(top_left_corner, len(graph[0]), len(graph))
-        start_point = Dim2D(0, 0)
         end_point = Dim2D(7, 6)
         heuristic_function = Dim2D.get_manathan_distance
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(GraphSearch.a_star_search(graph, start_point, end_point, heuristic_function, blocking_points, Shape2D.NeighbourType.CROSS), correct_path_list)
+        self.assertEqual(self.search_object.a_star_search(end_point, heuristic_function), correct_path_list)
 
 if __name__ == "__main__":
     unittest.main()
