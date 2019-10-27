@@ -1,44 +1,43 @@
 from py_ai_sdk.core.core_utils import error_print
-from py_ai_sdk.core.shapes import Rectangle
 
-# TODO: Add neighbour type parameter
 class GraphSearch:
     @staticmethod
-    def depth_first_search(graph, start_point, blocking_points):
+    def depth_first_search(graph, start_point, blocking_points, neighbour_type, neighbour_length=1):
         closed_set = []
         open_set = [start_point]
         while open_set:
             current_point = open_set.pop()
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in graph.get_available_neighbours(blocking_points, Rectangle.NeighbourType.CROSS, current_point):
+                for new_candidate_point in graph.get_available_neighbours(blocking_points, neighbour_type, current_point, neighbour_length):
                     open_set.append(new_candidate_point)
         return closed_set
 
     @staticmethod
-    def breadth_first_search(graph, start_point, blocking_points):
+    def breadth_first_search(graph, start_point, blocking_points, neighbour_type, neighbour_length=1):
         closed_set = []
         open_set = [start_point]
         while open_set:
             current_point = open_set.pop(0)
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in graph.get_available_neighbours(blocking_points, Rectangle.NeighbourType.CROSS, current_point):
+                for new_candidate_point in graph.get_available_neighbours(blocking_points, neighbour_type, current_point, neighbour_length):
                     open_set.append(new_candidate_point)
         return closed_set
 
+    # pylint: disable=too-many-arguments
     @staticmethod
-    def dijkstra_search(graph, start_point, goal_point, blocking_points):
+    def dijkstra_search(graph, start_point, goal_point, blocking_points, neighbour_type, neighbour_length=1):
         # TODO: heuristic_function should use any number of parameters
         # pylint: disable=unused-argument
         def heuristic_function(not_used1, not_used2):
             return 0
-        return GraphSearch.a_star_search(graph, start_point, goal_point, heuristic_function, blocking_points)
+        return GraphSearch.a_star_search(graph, start_point, goal_point, heuristic_function, blocking_points, neighbour_type, neighbour_length)
 
     # TODO: Simplify this algorithm
-    # pylint: disable=too-many-locals
+    # pylint: disable=too-many-locals, too-many-arguments
     @staticmethod
-    def a_star_search(graph, start_point, goal_point, heuristic_function, blocking_points):
+    def a_star_search(graph, start_point, goal_point, heuristic_function, blocking_points, neighbour_type, neighbour_length=1):
         def reconstruct_path(came_from, current_point):
             total_path = [current_point]
             while current_point in came_from:
@@ -77,7 +76,7 @@ class GraphSearch:
             open_set.remove(current_point)
             closed_set.append(current_point)
 
-            for new_candidate_point in graph.get_available_neighbours(blocking_points, Rectangle.NeighbourType.CROSS, current_point):
+            for new_candidate_point in graph.get_available_neighbours(blocking_points, neighbour_type, current_point, neighbour_length):
                 if new_candidate_point not in closed_set:
                     tentative_g_score = g_score[current_point] + heuristic_function(new_candidate_point, current_point)
                     if new_candidate_point not in open_set:
