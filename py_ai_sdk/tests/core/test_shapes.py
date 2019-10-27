@@ -48,6 +48,23 @@ class RectangleTest(unittest.TestCase):
         self.assertTrue(Dim2D(0, 2) in poses)
         self.assertTrue(Dim2D(2, 0) in poses)
 
+    def test_get_neighbours_diamond(self):
+        pos = Dim2D(1, 1)
+        poses = Rectangle.get_neighbours_diamond(pos, 2)
+        self.assertEqual(len(poses), 12)
+        self.assertTrue(Dim2D(0, 1) in poses)
+        self.assertTrue(Dim2D(-1, 1) in poses)
+        self.assertTrue(Dim2D(1, 2) in poses)
+        self.assertTrue(Dim2D(1, 3) in poses)
+        self.assertTrue(Dim2D(2, 1) in poses)
+        self.assertTrue(Dim2D(3, 1) in poses)
+        self.assertTrue(Dim2D(1, 0) in poses)
+        self.assertTrue(Dim2D(1, -1) in poses)
+        self.assertTrue(Dim2D(0, 0) in poses)
+        self.assertTrue(Dim2D(2, 2) in poses)
+        self.assertTrue(Dim2D(0, 2) in poses)
+        self.assertTrue(Dim2D(2, 0) in poses)
+
     def test_available_rectangle_two_blocks(self):
         grid = Rectangle(Dim2D(0, 0), 3, 3)
         blocking_positions = Dim2D.convert_candiates_to_dimensions([(1, 1), (0, 1)])
