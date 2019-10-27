@@ -81,6 +81,19 @@ class Rectangle(Shape2D):
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
+    @staticmethod
+    def get_neighbours_diamond(position, length=1):
+        x, y = position.x, position.y
+        candidates = []
+        for y_distance in range(-length, length + 1):
+            for x_distance in range(-length, length + 1):
+                magnitude = abs(x_distance) + abs(y_distance)
+                if magnitude <= length:
+                    candidates.append((x + x_distance, y + y_distance))
+        candidates.remove((x, y))
+        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
+        return candidates
+
     def get_available_neighbours(self, blocking_positions, neighbour_type, position, length=1):
         if neighbour_type == Rectangle.NeighbourType.CROSS:
             neighbours_positions = Rectangle.get_neighbours_cross(position, length)
