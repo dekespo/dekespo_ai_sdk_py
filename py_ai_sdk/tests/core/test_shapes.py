@@ -84,6 +84,12 @@ class RectangleTest(unittest.TestCase):
         self.assertTrue(Dim2D(2, 2) in available_poses)
         self.assertTrue(Dim2D(1, 0) in available_poses)
         self.assertTrue(Dim2D(1, 2) in available_poses)
+        available_poses = grid.get_available_neighbours(blocking_positions, Rectangle.NeighbourType.DIAMOND, pos3, 2)
+        self.assertEqual(len(available_poses), 4)
+        self.assertTrue(Dim2D(2, 0) in available_poses)
+        self.assertTrue(Dim2D(2, 2) in available_poses)
+        self.assertTrue(Dim2D(1, 0) in available_poses)
+        self.assertTrue(Dim2D(1, 2) in available_poses)
 
     def test_available_rectangle_empty_map(self):
         grid = Rectangle(Dim2D(0, 0), 3, 3)
