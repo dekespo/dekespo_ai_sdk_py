@@ -99,6 +99,8 @@ class Rectangle(Shape2D):
             neighbours_positions = Rectangle.get_neighbours_cross(position, length)
         elif neighbour_type == Rectangle.NeighbourType.SQUARE:
             neighbours_positions = Rectangle.get_neighbours_square(position, length)
+        elif neighbour_type == Rectangle.NeighbourType.DIAMOND:
+            neighbours_positions = Rectangle.get_neighbours_diamond(position, length)
 
         for candidate_position in reversed(neighbours_positions):
             is_inside_boundaries = self.check_boundaries(candidate_position)
