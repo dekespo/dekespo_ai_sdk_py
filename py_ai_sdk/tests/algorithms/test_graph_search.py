@@ -1,18 +1,23 @@
 import unittest
-from py_ai_sdk.templates.rectangle_world import example_1
+from py_ai_sdk.templates.rectangle_world import example_simple, example_blocked_in_the_middle
 from py_ai_sdk.algorithms.graph_search import GraphSearch
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Rectangle, Shape2D
 
+# TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):
     def setUp(self):
-        graph_data, blocking_points = example_1()
-        top_left_corner = Dim2D(0, 0)
-        blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
-        width, height = len(graph_data[0]), len(graph_data)
-        graph = Rectangle(top_left_corner, width, height, graph_data)
-        start_point = Dim2D(0, 0)
-        self.search_object = GraphSearch(graph, start_point, Shape2D.NeighbourType.CROSS, blocking_points)
+        def generate_graph_search(example_function):
+            graph_data, blocking_points = example_function()
+            top_left_corner = Dim2D(0, 0)
+            blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
+            width, height = len(graph_data[0]), len(graph_data)
+            graph = Rectangle(top_left_corner, width, height, graph_data)
+            start_point = Dim2D(0, 0)
+            return GraphSearch(graph, start_point, Shape2D.NeighbourType.CROSS, blocking_points)
+
+        self.simple_search_object = generate_graph_search(example_simple)
+        self.blocked_search_object = generate_graph_search(example_blocked_in_the_middle)
 
     def test_depth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
@@ -31,7 +36,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2), (9, 1),
             (9, 0)
         ])
-        self.assertEqual(self.search_object.depth_first_search(), correct_path_list)
+        self.assertEqual(self.simple_search_object.depth_first_search(), correct_path_list)
 
     def test_breadth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
@@ -46,22 +51,52 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (7, 9), (7, 1), (6, 0), (9, 8), (9, 2), (8, 9), (8, 1), (7, 0), (9, 9), (9, 1),
             (8, 0), (9, 0)
         ])
-        self.assertEqual(self.search_object.breadth_first_search(), correct_path_list)
+        self.assertEqual(self.simple_search_object.breadth_first_search(), correct_path_list)
 
     def test_dijkstra_search(self):
         end_point = Dim2D(7, 6)
+        weight_function = Dim2D.get_manathan_distance
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(self.search_object.dijkstra_search(end_point), correct_path_list)
+        self.assertEqual(self.simple_search_object.dijkstra_search(end_point, weight_function), correct_path_list)
 
-    def test_a_star_search(self):
+    def test_a_star_search_simple(self):
         end_point = Dim2D(7, 6)
-        heuristic_function = Dim2D.get_manathan_distance
+        a_star_functions = GraphSearch.AStarFunctions(
+            heuristic_function=Dim2D.get_manathan_distance,
+            weight_function=Dim2D.get_manathan_distance
+        )
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(self.search_object.a_star_search(end_point, heuristic_function), correct_path_list)
+        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
+
+    def test_a_star_search_with_heuristic(self):
+        end_point = Dim2D(7, 6)
+        def custom_heuristic_function(pos1, _):
+            risk_value = 0
+            if pos1 == Dim2D(4, 5):
+                risk_value = 100
+            return risk_value
+        a_star_functions = GraphSearch.AStarFunctions(
+            heuristic_function=custom_heuristic_function,
+            weight_function=Dim2D.get_manathan_distance
+        )
+        correct_path_list = Dim2D.convert_candiates_to_dimensions([
+            (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9),
+            (4, 9), (5, 9), (6, 9), (7, 9), (7, 8), (7, 7), (7, 6)
+        ])
+        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
+
+    def test_a_star_search_no_path(self):
+        end_point = Dim2D(7, 6)
+        a_star_functions = GraphSearch.AStarFunctions(
+            heuristic_function=Dim2D.get_manathan_distance,
+            weight_function=Dim2D.get_manathan_distance
+        )
+        correct_path_list = []
+        self.assertEqual(self.blocked_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
 
 if __name__ == "__main__":
     unittest.main()
