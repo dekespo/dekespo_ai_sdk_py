@@ -1,9 +1,9 @@
 import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Rectangle, Circle, Point
+from py_ai_sdk.core.shapes import Rectangle, Circle, Point, Shape2D
+from py_ai_sdk.templates.rectangle_world import example_raw_data
 
-# TODO: Add test with graph_data
 class RectangleTest(unittest.TestCase):
     def test_simple(self):
         graph_data = None
@@ -25,6 +25,31 @@ class RectangleTest(unittest.TestCase):
         self.assertFalse(graph.check_boundaries(Dim2D(202, 100)))
         self.assertFalse(graph.check_boundaries(Dim2D(-1, 3)))
         self.assertFalse(graph.check_boundaries(Dim2D(-1, -4)))
+
+    def test_graph_data(self):
+        raw_data, blocking_positions = example_raw_data()
+        blocking_positions = Dim2D.convert_candiates_to_dimensions(blocking_positions)
+        blocking_values = set([1])
+        graph_data = Shape2D.GraphData(raw_data, blocking_values)
+        self.assertTrue(graph_data.raw_data, example_raw_data())
+        self.assertTrue(graph_data.blocking_values, set([1]))
+        # TODO: Get the sizes of the raw data by giving what shape parameter it is
+        width, height = len(graph_data.raw_data[0]), len(graph_data.raw_data)
+        top_left_corner = Dim2D(0, 0)
+        graph = Rectangle(top_left_corner, width, height, graph_data)
+        self.assertTrue(graph.check_boundaries(Dim2D(1, 1)))
+        self.assertFalse(graph.check_boundaries(Dim2D(-1, 1)))
+        pos = Dim2D(1, 1)
+        # TODO: Remove the block_positions parameter
+        available_poses = graph.get_available_neighbours(blocking_positions, Rectangle.NeighbourType.DIAMOND, pos, 2)
+        self.assertEqual(len(available_poses), 7)
+        self.assertTrue(Dim2D(0, 0) in available_poses)
+        self.assertTrue(Dim2D(0, 2) in available_poses)
+        self.assertTrue(Dim2D(1, 2) in available_poses)
+        self.assertTrue(Dim2D(2, 0) in available_poses)
+        self.assertTrue(Dim2D(2, 1) in available_poses)
+        self.assertTrue(Dim2D(2, 2) in available_poses)
+        self.assertTrue(Dim2D(3, 1) in available_poses)
 
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)

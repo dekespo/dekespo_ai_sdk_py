@@ -33,3 +33,10 @@ def example_blocked_in_the_middle():
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]]
     blocking_positions = get_blocking_positions(grid, set([1]))
     return grid, blocking_positions
+
+def example_raw_data():
+    grid = [[0, 1, 0, 1],
+            [1, 0, 0, 0],
+            [0, 0, 0, 0]]
+    blocking_positions = get_blocking_positions(grid, set([1]))
+    return grid, blocking_positions
