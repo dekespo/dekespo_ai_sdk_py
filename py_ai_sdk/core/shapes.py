@@ -6,13 +6,31 @@ from py_ai_sdk.core.core_utils import check_positive_value
 
 class Shape2D(ABC):
 
+    #pylint: disable=too-few-public-methods
+    class GraphData:
+        def __init__(self, raw_data, blocking_values):
+            self.raw_data = raw_data
+            self.blocking_values = blocking_values
+
+        #YAGNI
+        # def get_blocking_positions(self):
+        #     positions = []
+        #     for y, row in enumerate(self.raw_data):
+        #         for x, value in enumerate(row):
+        #             if value in self.blocking_values:
+        #                 positions.append(Dim2D(x, y))
+        #     return positions
+
+        # def update_blocking_values(self, blocking_values):
+        #     self.blocking_values = blocking_values
+
     class NeighbourType(Enum):
         CROSS = 1
         DIAMOND = 2
         SQUARE = 3
         DIAGONAL = 4
 
-    def __init__(self, data):
+    def __init__(self, data: GraphData):
         self.motion_physics = None
         self.data = data
 
