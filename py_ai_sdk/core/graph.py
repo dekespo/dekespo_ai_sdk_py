@@ -5,11 +5,24 @@ from py_ai_sdk.core.shapes import Shape2D, Rectangle
 
 class Graph:
 
-    class NeighbourType(Enum):
-        CROSS = 1
-        DIAMOND = 2
-        SQUARE = 3
-        DIAGONAL = 4
+    class NeighbourData:
+        class Type(Enum):
+            CROSS = 1
+            DIAMOND = 2
+            SQUARE = 3
+            DIAGONAL = 4
+
+        @property
+        def type_(self):
+            return self._type_
+
+        @property
+        def length(self):
+            return self._length
+
+        def __init__(self, type_, length=1):
+            self._type_ = type_
+            self._length = length
 
     def __init__(self, raw_data, shape_type, blocking_values=None):
         self.raw_data = raw_data
@@ -76,13 +89,13 @@ class Graph:
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    def get_available_neighbours(self, neighbour_type, position, length=1):
+    def get_available_neighbours(self, position, neighbour_data):
         get_neighbours_type_function = {
-            Graph.NeighbourType.CROSS: Graph.get_neighbours_cross,
-            Graph.NeighbourType.SQUARE: Graph.get_neighbours_square,
-            Graph.NeighbourType.DIAMOND: Graph.get_neighbours_diamond
-        }[neighbour_type]
-        neighbours_positions = get_neighbours_type_function(position, length)
+            Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
+            Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
+            Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond
+        }[neighbour_data.type_]
+        neighbours_positions = get_neighbours_type_function(position, neighbour_data.length)
 
         for candidate_position in reversed(neighbours_positions):
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)

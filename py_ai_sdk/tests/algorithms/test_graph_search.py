@@ -13,7 +13,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             blocking_values = set([1])
             graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values)
             start_point = Dim2D(0, 0)
-            return GraphSearch(graph, start_point, Graph.NeighbourType.CROSS)
+            return GraphSearch(graph, start_point)
 
         self.simple_search_object = generate_graph_search(example_simple)
         self.blocked_search_object = generate_graph_search(example_blocked_in_the_middle)
@@ -35,7 +35,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2), (9, 1),
             (9, 0)
         ])
-        self.assertEqual(self.simple_search_object.depth_first_search(), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.simple_search_object.depth_first_search(neighbour_data), correct_path_list)
 
     def test_breadth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
@@ -50,7 +51,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (7, 9), (7, 1), (6, 0), (9, 8), (9, 2), (8, 9), (8, 1), (7, 0), (9, 9), (9, 1),
             (8, 0), (9, 0)
         ])
-        self.assertEqual(self.simple_search_object.breadth_first_search(), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.simple_search_object.breadth_first_search(neighbour_data), correct_path_list)
 
     def test_dijkstra_search(self):
         end_point = Dim2D(7, 6)
@@ -58,7 +60,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(self.simple_search_object.dijkstra_search(end_point, weight_function), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.simple_search_object.dijkstra_search(end_point, weight_function, neighbour_data), correct_path_list)
 
     def test_a_star_search_simple(self):
         end_point = Dim2D(7, 6)
@@ -69,7 +72,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
-        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions, neighbour_data), correct_path_list)
 
     def test_a_star_search_with_heuristic(self):
         end_point = Dim2D(7, 6)
@@ -86,7 +90,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9),
             (4, 9), (5, 9), (6, 9), (7, 9), (7, 8), (7, 7), (7, 6)
         ])
-        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.simple_search_object.a_star_search(end_point, a_star_functions, neighbour_data), correct_path_list)
 
     def test_a_star_search_no_path(self):
         end_point = Dim2D(7, 6)
@@ -95,7 +100,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
             weight_function=Dim2D.get_manathan_distance
         )
         correct_path_list = []
-        self.assertEqual(self.blocked_search_object.a_star_search(end_point, a_star_functions), correct_path_list)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        self.assertEqual(self.blocked_search_object.a_star_search(end_point, a_star_functions, neighbour_data), correct_path_list)
 
 if __name__ == "__main__":
     unittest.main()
