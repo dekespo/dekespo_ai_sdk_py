@@ -1,4 +1,5 @@
 from py_ai_sdk.core.core_utils import error_print
+from py_ai_sdk.core.graph import Graph
 
 class GraphSearch:
 
@@ -15,15 +16,14 @@ class GraphSearch:
             return self.weight_function(position1, position2)
 
     # pylint: disable=too-many-arguments
-    def __init__(self, graph, start_point, neighbour_type, blocking_points=None, neighbour_length=1):
+    def __init__(self, graph: Graph, start_point, neighbour_type, neighbour_length=1):
         self.graph = graph
         self.start_point = start_point
         self.neighbour_type = neighbour_type
-        self.blocking_points = blocking_points
         self.neighbour_length = neighbour_length
 
     def _get_available_neighbours(self, point):
-        return self.graph.get_available_neighbours(self.blocking_points, self.neighbour_type, point, self.neighbour_length)
+        return self.graph.get_available_neighbours(self.neighbour_type, point, self.neighbour_length)
 
     def depth_first_search(self):
         closed_set = []

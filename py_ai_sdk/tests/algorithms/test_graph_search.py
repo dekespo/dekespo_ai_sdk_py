@@ -1,20 +1,19 @@
 import unittest
 from py_ai_sdk.templates.rectangle_world import example_simple, example_blocked_in_the_middle
 from py_ai_sdk.algorithms.graph_search import GraphSearch
+from py_ai_sdk.core.graph import Graph
 from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Rectangle, Shape2D
+from py_ai_sdk.core.shapes import Shape2D
 
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):
     def setUp(self):
         def generate_graph_search(example_function):
-            graph_data, blocking_points = example_function()
-            top_left_corner = Dim2D(0, 0)
-            blocking_points = Dim2D.convert_candiates_to_dimensions(blocking_points)
-            width, height = len(graph_data[0]), len(graph_data)
-            graph = Rectangle(top_left_corner, width, height, graph_data)
+            raw_data = example_function()
+            blocking_values = set([1])
+            graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values)
             start_point = Dim2D(0, 0)
-            return GraphSearch(graph, start_point, Shape2D.NeighbourType.CROSS, blocking_points)
+            return GraphSearch(graph, start_point, Graph.NeighbourType.CROSS)
 
         self.simple_search_object = generate_graph_search(example_simple)
         self.blocked_search_object = generate_graph_search(example_blocked_in_the_middle)
