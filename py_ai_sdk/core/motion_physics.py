@@ -79,7 +79,7 @@ class MotionPhysics2D:
     def update(self):
         def update_velocity():
             if not self.velocity:
-                # Add error_print?
+                # TODO: Add error_print?
                 return
             if self.acceleration:
                 self.velocity += self.acceleration

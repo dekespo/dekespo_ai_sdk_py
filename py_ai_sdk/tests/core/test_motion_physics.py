@@ -10,6 +10,7 @@ class MotionPhysics2DTest(unittest.TestCase):
         point = Point(position)
         motion_physics = MotionPhysics2D(position)
         motion_physics.velocity = Dim2D(2, 2)
+        # TODO: set_motion_physics should use shape's current position
         point.set_motion_physics(motion_physics)
         self.assertEqual(point.position, Dim2D(3, 5))
         self.assertEqual(point.motion_physics.position, Dim2D(3, 5))

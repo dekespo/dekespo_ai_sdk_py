@@ -6,33 +6,14 @@ from py_ai_sdk.core.core_utils import check_positive_value
 
 class Shape2D(ABC):
 
-    #pylint: disable=too-few-public-methods
-    class GraphData:
-        def __init__(self, raw_data, blocking_values):
-            self.raw_data = raw_data
-            self.blocking_values = blocking_values
+    class Type(Enum):
+        RECTANGLE = 1
+        CIRCLE = 2
+        POINT = 3
 
-        #YAGNI
-        # def get_blocking_positions(self):
-        #     positions = []
-        #     for y, row in enumerate(self.raw_data):
-        #         for x, value in enumerate(row):
-        #             if value in self.blocking_values:
-        #                 positions.append(Dim2D(x, y))
-        #     return positions
-
-        # def update_blocking_values(self, blocking_values):
-        #     self.blocking_values = blocking_values
-
-    class NeighbourType(Enum):
-        CROSS = 1
-        DIAMOND = 2
-        SQUARE = 3
-        DIAGONAL = 4
-
-    def __init__(self, data: GraphData):
+    # TODO: Motion physics should have Shape2D instead of here
+    def __init__(self):
         self.motion_physics = None
-        self.data = data
 
     @abstractmethod
     def __str__(self):
@@ -52,8 +33,8 @@ class Shape2D(ABC):
         return self.motion_physics.update()
 
 class Rectangle(Shape2D):
-    def __init__(self, top_left_corner, width, height, data=None):
-        super().__init__(data)
+    def __init__(self, top_left_corner, width, height):
+        super().__init__()
         self.top_left_corner = top_left_corner
         check_positive_value(width)
         check_positive_value(height)
@@ -74,63 +55,9 @@ class Rectangle(Shape2D):
             return False
         return True
 
-    @staticmethod
-    def get_neighbours_cross(position, length=1):
-        x, y = position.x, position.y
-        candidates = []
-        for distance in range(1, length+1):
-            candidates.append((x + distance, y))
-            candidates.append((x - distance, y))
-            candidates.append((x, y + distance))
-            candidates.append((x, y - distance))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
-
-    @staticmethod
-    def get_neighbours_square(position, length=1):
-        x, y = position.x, position.y
-        candidates = []
-        top_left_corner_x, top_left_corner_y = (x - length, y - length)
-        edge_size = 2 * length + 1
-        for y_distance in range(edge_size):
-            for x_distance in range(edge_size):
-                candidates.append((top_left_corner_x + x_distance, top_left_corner_y + y_distance))
-        candidates.remove((x, y))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
-
-    @staticmethod
-    def get_neighbours_diamond(position, length=1):
-        x, y = position.x, position.y
-        candidates = []
-        for y_distance in range(-length, length + 1):
-            for x_distance in range(-length, length + 1):
-                magnitude = abs(x_distance) + abs(y_distance)
-                if magnitude <= length:
-                    candidates.append((x + x_distance, y + y_distance))
-        candidates.remove((x, y))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
-
-    def get_available_neighbours(self, blocking_positions, neighbour_type, position, length=1):
-        if neighbour_type == Rectangle.NeighbourType.CROSS:
-            neighbours_positions = Rectangle.get_neighbours_cross(position, length)
-        elif neighbour_type == Rectangle.NeighbourType.SQUARE:
-            neighbours_positions = Rectangle.get_neighbours_square(position, length)
-        elif neighbour_type == Rectangle.NeighbourType.DIAMOND:
-            neighbours_positions = Rectangle.get_neighbours_diamond(position, length)
-
-        for candidate_position in reversed(neighbours_positions):
-            is_inside_boundaries = self.check_boundaries(candidate_position)
-            if not is_inside_boundaries:
-                neighbours_positions.remove(candidate_position)
-            elif candidate_position in blocking_positions:
-                neighbours_positions.remove(candidate_position)
-        return neighbours_positions
-
 class Circle(Shape2D):
-    def __init__(self, centre, radius, data=None):
-        super().__init__(data)
+    def __init__(self, centre, radius):
+        super().__init__()
         self.centre = centre
         check_positive_value(radius)
         self.radius = radius
@@ -151,8 +78,8 @@ class Circle(Shape2D):
         return dist <= total_radius
 
 class Point(Shape2D):
-    def __init__(self, position, data=None):
-        super().__init__(data)
+    def __init__(self, position):
+        super().__init__()
         self.position = position
 
     def __str__(self):
