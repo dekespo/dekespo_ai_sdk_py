@@ -2,21 +2,22 @@ import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.templates.rectangle_world import example_raw_data
+from py_ai_sdk.templates.rectangle_world import example_small_random
 from py_ai_sdk.core.shapes import Shape2D
 
-# TODO: Add non-blocking graph
+# TODO: Add non-blocking (empty) graph
 class GraphTest(unittest.TestCase):
     def test_graph_data_with_blocking(self):
-        raw_data = example_raw_data()
+        raw_data = example_small_random()
         blocking_values = set([1])
         graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values)
-        self.assertTrue(graph.raw_data, example_raw_data())
+        self.assertTrue(graph.raw_data, example_small_random())
         self.assertTrue(graph.get_blocking_positions(), [Dim2D(1, 0), Dim2D(3, 0), Dim2D(1, 1)])
         self.assertTrue(graph.graph_shape.check_boundaries(Dim2D(1, 1)))
         self.assertFalse(graph.graph_shape.check_boundaries(Dim2D(-1, 1)))
         pos = Dim2D(1, 1)
-        available_poses = graph.get_available_neighbours(Graph.NeighbourType.DIAMOND, pos, 2)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.DIAMOND, 2)
+        available_poses = graph.get_available_neighbours(pos, neighbour_data)
         self.assertEqual(len(available_poses), 7)
         self.assertTrue(Dim2D(0, 0) in available_poses)
         self.assertTrue(Dim2D(0, 2) in available_poses)
@@ -25,6 +26,21 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(Dim2D(2, 1) in available_poses)
         self.assertTrue(Dim2D(2, 2) in available_poses)
         self.assertTrue(Dim2D(3, 1) in available_poses)
+        pos1 = Dim2D(0, 2)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, 1)
+        available_poses = graph.get_available_neighbours(pos1, neighbour_data)
+        self.assertEqual(len(available_poses), 1)
+        self.assertEqual(available_poses[0], Dim2D(1, 2))
+        pos2 = Dim2D(2, 1)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.SQUARE)
+        available_poses = graph.get_available_neighbours(pos2, neighbour_data)
+        self.assertEqual(len(available_poses), 6)
+        self.assertTrue(Dim2D(2, 0) in available_poses)
+        self.assertTrue(Dim2D(2, 2) in available_poses)
+        self.assertTrue(Dim2D(1, 1) in available_poses)
+        self.assertTrue(Dim2D(1, 2) in available_poses)
+        self.assertTrue(Dim2D(3, 1) in available_poses)
+        self.assertTrue(Dim2D(3, 2) in available_poses)
 
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)
@@ -64,34 +80,6 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(Dim2D(2, 2) in poses)
         self.assertTrue(Dim2D(0, 2) in poses)
         self.assertTrue(Dim2D(2, 0) in poses)
-
-
-    # TODO: Move some of them into the one with blocking
-    # def test_available_rectangle_two_blocks(self):
-    #     grid = Rectangle(Dim2D(0, 0), 3, 3)
-    #     blocking_positions = Dim2D.convert_candiates_to_dimensions([(1, 1), (0, 1)])
-    #     pos1 = Dim2D(0, 2)
-    #     available_poses = grid.get_available_neighbours(blocking_positions, Graph.NeighbourType.CROSS, pos1)
-    #     self.assertEqual(len(available_poses), 1)
-    #     self.assertEqual(available_poses[0], Dim2D(1, 2))
-    #     pos2 = Dim2D(1, 2)
-    #     available_poses = grid.get_available_neighbours(blocking_positions, Graph.NeighbourType.CROSS, pos2)
-    #     self.assertEqual(len(available_poses), 2)
-    #     self.assertTrue(Dim2D(0, 2) in available_poses)
-    #     self.assertTrue(Dim2D(2, 2) in available_poses)
-    #     pos3 = Dim2D(2, 1)
-    #     available_poses = grid.get_available_neighbours(blocking_positions, Graph.NeighbourType.SQUARE, pos3)
-    #     self.assertEqual(len(available_poses), 4)
-    #     self.assertTrue(Dim2D(2, 0) in available_poses)
-    #     self.assertTrue(Dim2D(2, 2) in available_poses)
-    #     self.assertTrue(Dim2D(1, 0) in available_poses)
-    #     self.assertTrue(Dim2D(1, 2) in available_poses)
-    #     available_poses = grid.get_available_neighbours(blocking_positions, Graph.NeighbourType.DIAMOND, pos3, 2)
-    #     self.assertEqual(len(available_poses), 4)
-    #     self.assertTrue(Dim2D(2, 0) in available_poses)
-    #     self.assertTrue(Dim2D(2, 2) in available_poses)
-    #     self.assertTrue(Dim2D(1, 0) in available_poses)
-    #     self.assertTrue(Dim2D(1, 2) in available_poses)
 
 if __name__ == "__main__":
     unittest.main()

@@ -22,7 +22,7 @@ def example_blocked_in_the_middle():
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]]
 
-def example_raw_data():
+def example_small_random():
     return [[0, 1, 0, 1],
             [1, 0, 0, 0],
             [0, 0, 0, 0]]

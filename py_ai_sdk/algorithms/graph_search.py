@@ -1,5 +1,4 @@
 from py_ai_sdk.core.core_utils import error_print
-from py_ai_sdk.core.graph import Graph
 
 class GraphSearch:
 
@@ -15,47 +14,45 @@ class GraphSearch:
         def run_weight_function(self, position1, position2):
             return self.weight_function(position1, position2)
 
-    # pylint: disable=too-many-arguments
-    def __init__(self, graph: Graph, start_point, neighbour_type, neighbour_length=1):
+    def __init__(self, graph, start_point):
         self.graph = graph
         self.start_point = start_point
-        self.neighbour_type = neighbour_type
-        self.neighbour_length = neighbour_length
 
-    def _get_available_neighbours(self, point):
-        return self.graph.get_available_neighbours(self.neighbour_type, point, self.neighbour_length)
+    def _get_available_neighbours(self, point, neighbour_data):
+        return self.graph.get_available_neighbours(point, neighbour_data)
 
-    def depth_first_search(self):
+    def depth_first_search(self, neighbour_data):
         closed_set = []
         open_set = [self.start_point]
         while open_set:
             current_point = open_set.pop()
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(current_point):
+                for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
                     open_set.append(new_candidate_point)
         return closed_set
 
-    def breadth_first_search(self):
+    def breadth_first_search(self, neighbour_data):
         closed_set = []
         open_set = [self.start_point]
         while open_set:
             current_point = open_set.pop(0)
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(current_point):
+                for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
                     open_set.append(new_candidate_point)
         return closed_set
 
-    def dijkstra_search(self, end_point, weight_function):
+    def dijkstra_search(self, end_point, weight_function, neighbour_data):
         no_heuristic_function = lambda *_: 0
         a_star_functions = GraphSearch.AStarFunctions(
             heuristic_function=no_heuristic_function,
             weight_function=weight_function
         )
-        return self.a_star_search(end_point, a_star_functions)
+        return self.a_star_search(end_point, a_star_functions, neighbour_data)
 
-    def a_star_search(self, end_point, a_star_functions):
+    # pylint: disable=too-many-locals
+    def a_star_search(self, end_point, a_star_functions, neighbour_data):
         def _reconstruct_path(came_from, current_point):
             total_path = [current_point]
             while current_point in came_from:
@@ -94,7 +91,7 @@ class GraphSearch:
             open_set.remove(current_point)
             closed_set.append(current_point)
 
-            for new_candidate_point in self._get_available_neighbours(current_point):
+            for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
                 if new_candidate_point not in closed_set:
                     tentative_g_score = g_score[current_point] + a_star_functions.run_weight_function(new_candidate_point, current_point)
                     if new_candidate_point not in open_set:
