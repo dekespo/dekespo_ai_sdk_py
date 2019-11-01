@@ -9,10 +9,14 @@ from py_ai_sdk.core.shapes import Shape2D
 class GraphTest(unittest.TestCase):
     def test_graph_data_with_blocking(self):
         raw_data = example_small_random()
-        blocking_values = set([1])
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values)
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
         self.assertTrue(graph.raw_data, example_small_random())
-        self.assertTrue(graph.get_blocking_positions(), [Dim2D(1, 0), Dim2D(3, 0), Dim2D(1, 1)])
+        self.assertIsNone(graph.blocking_values)
+        self.assertListEqual(graph.blocking_positions, [])
+        new_blocking_values = set([1])
+        graph.update_blocking_values(new_blocking_values)
+        self.assertTrue(graph.blocking_values, set([1]))
+        self.assertTrue(graph.blocking_positions, [Dim2D(1, 0), Dim2D(3, 0), Dim2D(1, 1)])
         self.assertTrue(graph.graph_shape.check_boundaries(Dim2D(1, 1)))
         self.assertFalse(graph.graph_shape.check_boundaries(Dim2D(-1, 1)))
         pos = Dim2D(1, 1)
