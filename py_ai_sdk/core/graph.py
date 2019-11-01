@@ -28,7 +28,7 @@ class Graph:
         self.raw_data = raw_data
         self.shape_type = shape_type
         self._get_shape(shape_type)
-        self.blocking_values = blocking_values
+        self.update_blocking_values(blocking_values)
 
     def _get_shape(self, shape_type):
         get_shape_function = {
@@ -41,8 +41,10 @@ class Graph:
         top_left_corner = Dim2D(0, 0)
         return Rectangle(top_left_corner, width, height)
 
-    def get_blocking_positions(self):
+    def _update_blocking_positions(self):
         positions = []
+        if not self.blocking_values:
+            return positions
         for y, row in enumerate(self.raw_data):
             for x, value in enumerate(row):
                 if value in self.blocking_values:
@@ -51,6 +53,7 @@ class Graph:
 
     def update_blocking_values(self, blocking_values):
         self.blocking_values = blocking_values
+        self.blocking_positions = self._update_blocking_positions()
 
     @staticmethod
     def get_neighbours_cross(position, length=1):
@@ -101,6 +104,6 @@ class Graph:
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
             if not is_inside_boundaries:
                 neighbours_positions.remove(candidate_position)
-            elif candidate_position in self.get_blocking_positions():
+            elif candidate_position in self.blocking_positions:
                 neighbours_positions.remove(candidate_position)
         return neighbours_positions
