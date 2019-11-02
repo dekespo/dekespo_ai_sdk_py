@@ -2,10 +2,11 @@ import unittest
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.templates.rectangle_world import example_small_random
+from py_ai_sdk.templates.rectangle_world import example_small_random, example_unreachable_positions
 from py_ai_sdk.core.shapes import Shape2D
 
 # TODO: Add non-blocking (empty) graph
+# TODO: Separate test_graph_data_with_blocking into small unittests with setup
 class GraphTest(unittest.TestCase):
     def test_graph_data_with_blocking(self):
         raw_data = example_small_random()
@@ -45,6 +46,20 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(Dim2D(1, 2) in available_poses)
         self.assertTrue(Dim2D(3, 1) in available_poses)
         self.assertTrue(Dim2D(3, 2) in available_poses)
+
+    def test_unreachable_graph_data(self):
+        raw_data = example_unreachable_positions()
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, set([1]))
+        self.assertTrue(graph.blocking_values, set([1]))
+        self.assertTrue(graph.blocking_positions, [Dim2D(2, 1), Dim2D(3, 1), Dim2D(2, 2)])
+        pos = Dim2D(1, 2)
+        unreachable_positions = [Dim2D(3, 2)]
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, 2)
+        available_poses = graph.get_available_neighbours(pos, neighbour_data, unreachable_positions)
+        self.assertEqual(len(available_poses), 3)
+        self.assertTrue(Dim2D(1, 0) in available_poses)
+        self.assertTrue(Dim2D(1, 1) in available_poses)
+        self.assertTrue(Dim2D(0, 2) in available_poses)
 
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)
