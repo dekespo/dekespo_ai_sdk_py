@@ -92,18 +92,22 @@ class Graph:
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    def get_available_neighbours(self, position, neighbour_data):
+    def get_available_neighbours(self, position, neighbour_data, unreachable_positions=None):
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
             Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond
         }[neighbour_data.type_]
         neighbours_positions = get_neighbours_type_function(position, neighbour_data.length)
+        if not unreachable_positions:
+            unreachable_positions = []
 
         for candidate_position in reversed(neighbours_positions):
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
             if not is_inside_boundaries:
                 neighbours_positions.remove(candidate_position)
             elif candidate_position in self.blocking_positions:
+                neighbours_positions.remove(candidate_position)
+            elif candidate_position in unreachable_positions:
                 neighbours_positions.remove(candidate_position)
         return neighbours_positions

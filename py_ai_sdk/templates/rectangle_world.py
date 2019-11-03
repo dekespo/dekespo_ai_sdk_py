@@ -26,3 +26,8 @@ def example_small_random():
     return [[0, 1, 0, 1],
             [1, 0, 0, 0],
             [0, 0, 0, 0]]
+
+def example_unreachable_positions():
+    return [[0, 0, 0, 0],
+            [0, 0, 1, 1],
+            [0, 0, 1, 0]]
