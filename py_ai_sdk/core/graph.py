@@ -1,28 +1,21 @@
-from enum import Enum
+from enum import Enum, auto
+from dataclasses import dataclass
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Shape2D, Rectangle
 
 class Graph:
 
+    @dataclass
     class NeighbourData:
         class Type(Enum):
-            CROSS = 1
-            DIAMOND = 2
-            SQUARE = 3
-            DIAGONAL = 4
+            CROSS = auto()
+            DIAMOND = auto()
+            SQUARE = auto()
+            DIAGONAL = auto()
 
-        @property
-        def type_(self):
-            return self._type_
-
-        @property
-        def length(self):
-            return self._length
-
-        def __init__(self, type_, length=1):
-            self._type_ = type_
-            self._length = length
+        type_: Type
+        length: int = 1
 
     def __init__(self, raw_data, shape_type, blocking_values=None):
         self.raw_data = raw_data
