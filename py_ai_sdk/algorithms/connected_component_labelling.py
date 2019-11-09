@@ -4,10 +4,6 @@ from py_ai_sdk.core.disjoint_set import DisjointSet
 
 class ConnectedComponentLabeling:
 
-    @property
-    def labels(self):
-        return self._labels 
-
     def __init__(self, graph: Graph, different_labels: list):
         self.graph = graph
         self._labels = None
@@ -37,9 +33,8 @@ class ConnectedComponentLabeling:
             for x, value in enumerate(row):
                 current_pos = Dim2D(x, y)
                 if value == 1: # TODO: Background check for now
-                    # neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS) # Should be NW 4
-                    # new_neighbours = self.graph.get_available_neighbours(Dim2D(x, y), neighbour_data)
-                    new_neighbours = Graph.get_neighbours_half_north_west_cross(current_pos)
+                    new_neighbours = set(Graph.get_neighbours_square(current_pos, 1, Graph.NeighbourData.Direction.NORTH))
+                    new_neighbours = new_neighbours.difference(set(Graph.get_neighbours_square(current_pos, 1, Graph.NeighbourData.Direction.SOUTH_EAST)))
                     new_labels = []
                     for neighbour in new_neighbours:
                         neighbour_value = self._labels[neighbour]
