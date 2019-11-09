@@ -49,6 +49,18 @@ class Graph:
         self.blocking_positions = self._update_blocking_positions()
 
     @staticmethod
+    def get_neighbours_half_north_west_cross(position, length=1):
+        x, y = position.x, position.y
+        candidates = []
+        for distance in range(1, length+1):
+            candidates.append((x - distance, y))
+            candidates.append((x + distance, y - distance)) # TODO: Not correct
+            candidates.append((x, y - distance))
+            candidates.append((x - distance, y - distance)) # TODO: Not correct
+        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
+        return candidates
+
+    @staticmethod
     def get_neighbours_cross(position, length=1):
         x, y = position.x, position.y
         candidates = []
