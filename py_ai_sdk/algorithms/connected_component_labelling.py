@@ -33,12 +33,10 @@ class ConnectedComponentLabeling:
             for x, value in enumerate(row):
                 current_pos = Dim2D(x, y)
                 if value == 1: # TODO: Background check for now
-                    new_neighbours = set(Graph.get_neighbours_square(current_pos, 1, Graph.NeighbourData.Direction.NORTH))
-                    new_neighbours = new_neighbours.difference(set(Graph.get_neighbours_square(current_pos, 1, Graph.NeighbourData.Direction.SOUTH_EAST)))
                     new_labels = []
-                    for neighbour in new_neighbours:
+                    for neighbour in self.graph.get_available_neighbours(current_pos, Graph.NeighbourData(Graph.NeighbourData.Type.CONNECTIVITY_8)):
                         neighbour_value = self._labels[neighbour]
-                        if  neighbour_value > 0: # Labelled
+                        if neighbour_value > 0: # Labelled
                             new_labels.append(neighbour_value)
 
                     if not new_labels:
