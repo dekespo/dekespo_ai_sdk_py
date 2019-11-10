@@ -22,31 +22,31 @@ class DisjointSet:
             return self.__str__()
 
     def __init__(self):
-        self.set = dict()
+        self._set = dict()
 
     def make_set(self, element: Element):
         if not self._is_element_id_in(element.id_):
-            self.set[element.id_] = DisjointSet.Element(element.id_)
+            self._set[element.id_] = DisjointSet.Element(element.id_)
         else:
             error_print(f"Element id {element.id_} already exists in the set. Skipping it!")
 
     def _is_element_id_in(self, element_id):
-        return element_id in self.set.keys()
+        return element_id in self._set.keys()
 
     def get_element(self, element_id) -> DisjointSet.Element:
         if self._is_element_id_in(element_id):
-            return self.set[element_id]
+            return self._set[element_id]
         return None
 
     # TODO: Separate into different types such as path_compression, path_halving, path_splitting
     def find(self, element_id) -> DisjointSet.Element:
         if self._is_element_id_in(element_id):
-            element = self.set[element_id]
+            element = self._set[element_id]
         else:
             error_print(f"Element id {element_id} does not exist in the set!")
             return None
         if element != element.parent:
-            self.set[element.id_].parent = self.find(element.parent.id_)
+            self._set[element.id_].parent = self.find(element.parent.id_)
         return element.parent
 
     # TODO: Separate into different types such by_rank and by_size
@@ -58,12 +58,12 @@ class DisjointSet:
             return
 
         if root_element1.rank > root_element2.rank:
-            self.set[root_element1.id_].size += self.set[root_element2.id_].size
-            self.set[root_element2.id_].parent = self.set[root_element1.id_]
+            self._set[root_element1.id_].size += self._set[root_element2.id_].size
+            self._set[root_element2.id_].parent = self._set[root_element1.id_]
         elif root_element1.rank < root_element2.rank:
-            self.set[root_element2.id_].size += self.set[root_element1.id_].size
-            self.set[root_element1.id_].parent = self.set[root_element2.id_]
+            self._set[root_element2.id_].size += self._set[root_element1.id_].size
+            self._set[root_element1.id_].parent = self._set[root_element2.id_]
         else:
-            self.set[root_element1.id_].size += self.set[root_element2.id_].size
-            self.set[root_element2.id_].parent = self.set[root_element1.id_]
-            self.set[root_element1.id_].rank = root_element1.rank + 1
+            self._set[root_element1.id_].size += self._set[root_element2.id_].size
+            self._set[root_element2.id_].parent = self._set[root_element1.id_]
+            self._set[root_element1.id_].rank = root_element1.rank + 1

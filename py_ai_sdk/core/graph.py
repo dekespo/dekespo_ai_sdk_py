@@ -9,13 +9,15 @@ class Graph:
     @dataclass
     class NeighbourData:
         class Type(Enum):
+            NONE = auto()
             CROSS = auto()
             DIAMOND = auto()
             SQUARE = auto()
-            DIAGONAL = auto()
+            CUSTOM = auto()
 
-        type_: Type
+        type_: Type = Type.NONE
         length: int = 1
+        custom_function: 'typing.Any' = None
 
     def __init__(self, raw_data, shape_type, blocking_values=None):
         self.raw_data = raw_data
@@ -49,10 +51,10 @@ class Graph:
         self.blocking_positions = self._update_blocking_positions()
 
     @staticmethod
-    def get_neighbours_cross(position, length=1):
+    def get_neighbours_cross(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
         candidates = []
-        for distance in range(1, length+1):
+        for distance in range(1, neighbour_data.length + 1):
             candidates.append((x + distance, y))
             candidates.append((x - distance, y))
             candidates.append((x, y + distance))
@@ -61,37 +63,36 @@ class Graph:
         return candidates
 
     @staticmethod
-    def get_neighbours_square(position, length=1):
+    def get_neighbours_square(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
         candidates = []
-        top_left_corner_x, top_left_corner_y = (x - length, y - length)
-        edge_size = 2 * length + 1
-        for y_distance in range(edge_size):
-            for x_distance in range(edge_size):
-                candidates.append((top_left_corner_x + x_distance, top_left_corner_y + y_distance))
+        for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
+            for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
+                candidates.append((x + x_distance, y + y_distance))
         candidates.remove((x, y))
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
     @staticmethod
-    def get_neighbours_diamond(position, length=1):
+    def get_neighbours_diamond(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
         candidates = []
-        for y_distance in range(-length, length + 1):
-            for x_distance in range(-length, length + 1):
-                if abs(x_distance) + abs(y_distance) <= length:
+        for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
+            for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
+                if abs(x_distance) + abs(y_distance) <= neighbour_data.length:
                     candidates.append((x + x_distance, y + y_distance))
         candidates.remove((x, y))
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    def get_available_neighbours(self, position, neighbour_data, unreachable_positions=None):
+    def get_available_neighbours(self, position, neighbour_data: NeighbourData, unreachable_positions=None, should_block=True):
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
-            Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond
+            Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond,
+            Graph.NeighbourData.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
-        neighbours_positions = get_neighbours_type_function(position, neighbour_data.length)
+        neighbours_positions = get_neighbours_type_function(position, neighbour_data)
         if not unreachable_positions:
             unreachable_positions = []
 
@@ -99,7 +100,7 @@ class Graph:
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
             if not is_inside_boundaries:
                 neighbours_positions.remove(candidate_position)
-            elif candidate_position in self.blocking_positions:
+            elif should_block and candidate_position in self.blocking_positions:
                 neighbours_positions.remove(candidate_position)
             elif candidate_position in unreachable_positions:
                 neighbours_positions.remove(candidate_position)

@@ -1,4 +1,5 @@
 from py_ai_sdk.core.core_utils import error_print
+from py_ai_sdk.core.graph import Graph
 
 class GraphSearch:
 
@@ -14,7 +15,7 @@ class GraphSearch:
         def run_weight_function(self, position1, position2):
             return self.weight_function(position1, position2)
 
-    def __init__(self, graph, start_point):
+    def __init__(self, graph: Graph, start_point):
         self.graph = graph
         self.start_point = start_point
 
