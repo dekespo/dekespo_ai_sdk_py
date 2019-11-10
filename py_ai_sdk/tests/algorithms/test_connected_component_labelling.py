@@ -1,7 +1,7 @@
 import unittest
 
 from py_ai_sdk.templates.rectangle_world import example_different_regions
-from py_ai_sdk.algorithms.connected_component_labelling import ConnectedComponentLabeling
+from py_ai_sdk.algorithms.connected_component_labelling import ConnectedComponentLabelling
 from py_ai_sdk.core.graph import Graph
 from py_ai_sdk.core.shapes import Shape2D
 from py_ai_sdk.core.dimensions import Dim2D
@@ -10,8 +10,8 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
 
     def test_wiki_example(self):
         raw_data = example_different_regions()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
-        labeller = ConnectedComponentLabeling(graph, [0, 1])
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        labeller = ConnectedComponentLabelling(graph)
         labeller.first_pass()
         first_pass_data = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -39,6 +39,7 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
         ]
         self.assertEqual(labeller.get_labels_graph(), second_pass_data)
         regions = labeller.get_regions()
+        self.assertEqual(len(regions), 3)
         self.assertTrue(Dim2D(0, 0) in regions[0])
         self.assertTrue(Dim2D(8, 3) in regions[0])
         self.assertTrue(Dim2D(11, 6) in regions[0])

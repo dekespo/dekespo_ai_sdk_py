@@ -13,7 +13,7 @@ class Graph:
             CROSS = auto()
             DIAMOND = auto()
             SQUARE = auto()
-            CONNECTIVITY_8 = auto()
+            CONNECTIVITY_8 = auto() # TODO: Why? Why not (half) SQUARE?
 
         class Direction(Enum):
             NORTH = auto()
@@ -127,7 +127,7 @@ class Graph:
         new_neighbours = set(Graph.get_neighbours_square(position, Graph.NeighbourData(Graph.NeighbourData.Type.SQUARE, direction=Graph.NeighbourData.Direction.NORTH)))
         return list(new_neighbours.difference(set(Graph.get_neighbours_square(position, Graph.NeighbourData(Graph.NeighbourData.Type.SQUARE, direction=Graph.NeighbourData.Direction.SOUTH_EAST)))))
 
-    def get_available_neighbours(self, position, neighbour_data: NeighbourData, unreachable_positions=None):
+    def get_available_neighbours(self, position, neighbour_data: NeighbourData, unreachable_positions=None, should_block=True):
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
@@ -142,7 +142,7 @@ class Graph:
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
             if not is_inside_boundaries:
                 neighbours_positions.remove(candidate_position)
-            elif candidate_position in self.blocking_positions:
+            elif should_block and candidate_position in self.blocking_positions:
                 neighbours_positions.remove(candidate_position)
             elif candidate_position in unreachable_positions:
                 neighbours_positions.remove(candidate_position)
