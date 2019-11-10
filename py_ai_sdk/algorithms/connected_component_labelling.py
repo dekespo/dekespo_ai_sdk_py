@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum, auto
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.graph import Graph
@@ -15,8 +16,16 @@ class ConnectedComponentLabelling:
         graph_binary_value: bool
         label_value: int = 0
 
-    def __init__(self, graph: Graph):
+    class ConnectivityType(Enum):
+        FOUR = auto()
+        EIGHT = auto()
+
+    def __init__(self, graph: Graph, connectivity_type: ConnectivityType):
         self.graph = graph
+        self._get_neighbour_function = {
+            ConnectedComponentLabelling.ConnectivityType.FOUR : self._get_neighbour_function_4_connectivity,
+            ConnectedComponentLabelling.ConnectivityType.EIGHT : self._get_neighbour_function_8_connectivity
+        }[connectivity_type]
         self._nodes = None
         self._set_nodes()
         self._labels_disjoint_set = DisjointSet()
@@ -37,6 +46,30 @@ class ConnectedComponentLabelling:
             new_grid.append(row_list)
         return new_grid
 
+    # TODO: Maybe move them to grpah class with better function names
+    @staticmethod
+    def _get_neighbour_function_8_connectivity(position, _):
+        x, y = position.x, position.y
+        candidates = [
+            (x - 1, y),
+            (x - 1, y - 1),
+            (x, y - 1),
+            (x + 1, y - 1)
+        ]
+        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
+        return candidates
+
+    @staticmethod
+    def _get_neighbour_function_4_connectivity(position, _):
+        x, y = position.x, position.y
+        candidates = [
+            (x - 1, y),
+            (x, y - 1)
+        ]
+        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
+        return candidates
+
+
     def first_pass(self):
 
         def is_already_labelled(node):
@@ -46,7 +79,7 @@ class ConnectedComponentLabelling:
         for current_node in self._nodes.values():
             if current_node.graph_binary_value:
                 new_labels = []
-                for neighbour_position in self.graph.get_available_neighbours(current_node.position, Graph.NeighbourData(Graph.NeighbourData.Type.CONNECTIVITY_8), should_block=False):
+                for neighbour_position in self.graph.get_available_neighbours(current_node.position, Graph.NeighbourData(Graph.NeighbourData.Type.CUSTOM, custom_function=self._get_neighbour_function), should_block=False):
                     neighbour_node = self._nodes[neighbour_position]
                     if is_already_labelled(neighbour_node):
                         new_labels.append(neighbour_node.label_value)

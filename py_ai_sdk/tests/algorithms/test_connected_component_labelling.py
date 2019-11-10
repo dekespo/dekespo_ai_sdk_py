@@ -11,7 +11,7 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
     def test_wiki_example(self):
         raw_data = example_different_regions()
         graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
-        labeller = ConnectedComponentLabelling(graph)
+        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.EIGHT)
         labeller.first_pass()
         first_pass_data = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

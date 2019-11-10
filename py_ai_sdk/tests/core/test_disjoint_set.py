@@ -18,6 +18,7 @@ class DisjointSetTest(unittest.TestCase):
         disjoint_set = DisjointSet()
         for id_ in range(4):
             disjoint_set.make_set(DisjointSet.Element(id_))
+        # pylint: disable=protected-access
         self.assertEqual(len(disjoint_set._set), 4)
         disjoint_set.union(0, 1)
         self.assertEqual("Rank: 1, Id: 0, Size: 2", str(disjoint_set.get_element(0)))
@@ -51,6 +52,7 @@ class DisjointSetTest(unittest.TestCase):
         disjoint_set.union(0, does_not_exist_element.id_)
         already_added_element = DisjointSet.Element(0)
         disjoint_set.make_set(already_added_element)
+        # pylint: disable=protected-access
         self.assertEqual(len(disjoint_set._set), 4)
 
     def test_disjoint_set_rank_comparison(self):

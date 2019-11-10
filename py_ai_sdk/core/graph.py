@@ -13,27 +13,11 @@ class Graph:
             CROSS = auto()
             DIAMOND = auto()
             SQUARE = auto()
-            CONNECTIVITY_8 = auto() # TODO: Why? Why not (half) SQUARE?
-
-        class Direction(Enum):
-            NORTH = auto()
-            NORTH_EAST = auto()
-            EAST = auto()
-            SOUTH_EAST = auto()
-            SOUTH = auto()
-            SOUTH_WEST = auto()
-            WEST = auto()
-            NORTH_WEST = auto()
-            ALL = auto()
+            CUSTOM = auto()
 
         type_: Type = Type.NONE
         length: int = 1
-        direction: Direction = Direction.ALL
-
-        west_group = (Direction.NORTH_WEST, Direction.WEST, Direction.SOUTH_WEST, Direction.ALL)
-        east_group = (Direction.NORTH_EAST, Direction.EAST, Direction.SOUTH_EAST, Direction.ALL)
-        south_group = (Direction.SOUTH_EAST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.ALL)
-        north_group = (Direction.NORTH_WEST, Direction.NORTH, Direction.NORTH_EAST, Direction.ALL)
+        custom_function: 'typing.Any' = None
 
     def __init__(self, raw_data, shape_type, blocking_values=None):
         self.raw_data = raw_data
@@ -71,14 +55,10 @@ class Graph:
         x, y = position.x, position.y
         candidates = []
         for distance in range(1, neighbour_data.length + 1):
-            if neighbour_data.direction in Graph.NeighbourData.east_group:
-                candidates.append((x + distance, y))
-            if neighbour_data.direction in Graph.NeighbourData.west_group:
-                candidates.append((x - distance, y))
-            if neighbour_data.direction in Graph.NeighbourData.south_group:
-                candidates.append((x, y + distance))
-            if neighbour_data.direction in Graph.NeighbourData.north_group:
-                candidates.append((x, y - distance))
+            candidates.append((x + distance, y))
+            candidates.append((x - distance, y))
+            candidates.append((x, y + distance))
+            candidates.append((x, y - distance))
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
@@ -88,15 +68,7 @@ class Graph:
         x, y = position.x, position.y
         candidates = []
         for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-            if y_distance < 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.south_group:
-                continue
-            if y_distance > 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.north_group:
-                continue
             for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                if x_distance < 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.east_group:
-                    continue
-                if x_distance > 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.west_group:
-                    continue
                 candidates.append((x + x_distance, y + y_distance))
         candidates.remove((x, y))
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
@@ -107,32 +79,19 @@ class Graph:
         x, y = position.x, position.y
         candidates = []
         for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-            if y_distance < 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.south_group:
-                continue
-            if y_distance > 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.north_group:
-                continue
             for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                if x_distance < 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.east_group:
-                    continue
-                if x_distance > 0 and neighbour_data.direction != Graph.NeighbourData.Direction.ALL and neighbour_data.direction in Graph.NeighbourData.west_group:
-                    continue
                 if abs(x_distance) + abs(y_distance) <= neighbour_data.length:
                     candidates.append((x + x_distance, y + y_distance))
         candidates.remove((x, y))
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    @staticmethod
-    def get_connectivity_8(position, _: NeighbourData):
-        new_neighbours = set(Graph.get_neighbours_square(position, Graph.NeighbourData(Graph.NeighbourData.Type.SQUARE, direction=Graph.NeighbourData.Direction.NORTH)))
-        return list(new_neighbours.difference(set(Graph.get_neighbours_square(position, Graph.NeighbourData(Graph.NeighbourData.Type.SQUARE, direction=Graph.NeighbourData.Direction.SOUTH_EAST)))))
-
     def get_available_neighbours(self, position, neighbour_data: NeighbourData, unreachable_positions=None, should_block=True):
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
             Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond,
-            Graph.NeighbourData.Type.CONNECTIVITY_8: Graph.get_connectivity_8
+            Graph.NeighbourData.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
         neighbours_positions = get_neighbours_type_function(position, neighbour_data)
         if not unreachable_positions:
