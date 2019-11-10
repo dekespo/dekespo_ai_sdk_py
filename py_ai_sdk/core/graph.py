@@ -62,7 +62,6 @@ class Graph:
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    # TODO: Remove the duplication for direction check with diamond
     @staticmethod
     def get_neighbours_square(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y

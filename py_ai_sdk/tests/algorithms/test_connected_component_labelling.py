@@ -1,6 +1,6 @@
 import unittest
 
-from py_ai_sdk.templates.rectangle_world import example_different_regions
+from py_ai_sdk.templates.rectangle_world import example_wiki_ccl, example_simple_different_regions
 from py_ai_sdk.algorithms.connected_component_labelling import ConnectedComponentLabelling
 from py_ai_sdk.core.graph import Graph
 from py_ai_sdk.core.shapes import Shape2D
@@ -9,8 +9,8 @@ from py_ai_sdk.core.dimensions import Dim2D
 class ConnectedComponentLabellingTest(unittest.TestCase):
 
     def test_wiki_example(self):
-        raw_data = example_different_regions()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        raw_data = example_wiki_ccl()
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[0])
         labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.EIGHT)
         labeller.first_pass()
         first_pass_data = [
@@ -47,6 +47,48 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
         self.assertTrue(Dim2D(4, 4) in regions[2])
         self.assertTrue(Dim2D(15, 1) in regions[4])
         self.assertTrue(Dim2D(13, 5) in regions[4])
+
+    def test_different_regions_8_connectivity(self):
+        raw_data = example_simple_different_regions()
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.EIGHT)
+        labeller.first_pass()
+        labeller.second_pass()
+        regions = labeller.get_regions()
+        self.assertEqual(len(regions), 3)
+        self.assertTrue(Dim2D(0, 1) in regions[0])
+        self.assertTrue(Dim2D(2, 1) in regions[0])
+        self.assertTrue(Dim2D(5, 4) in regions[0])
+        self.assertTrue(Dim2D(0, 0) in regions[2])
+        self.assertTrue(Dim2D(0, 4) in regions[2])
+        self.assertTrue(Dim2D(6, 0) in regions[2])
+        self.assertTrue(Dim2D(6, 4) in regions[2])
+        self.assertTrue(Dim2D(3, 0) in regions[2])
+        self.assertTrue(Dim2D(3, 4) in regions[2])
+        self.assertTrue(Dim2D(1, 2) in regions[2])
+        self.assertTrue(Dim2D(5, 2) in regions[2])
+        self.assertTrue(Dim2D(3, 2) in regions[4])
+
+    def test_different_regions_4_connectivity(self):
+        raw_data = example_simple_different_regions()
+        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.FOUR)
+        labeller.first_pass()
+        labeller.second_pass()
+        regions = labeller.get_regions()
+        self.assertEqual(len(regions), 10)
+        self.assertTrue(Dim2D(0, 1) in regions[0])
+        self.assertTrue(Dim2D(2, 1) in regions[0])
+        self.assertTrue(Dim2D(5, 4) in regions[0])
+        self.assertTrue(Dim2D(0, 0) in regions[1])
+        self.assertTrue(Dim2D(0, 4) in regions[7])
+        self.assertTrue(Dim2D(6, 0) in regions[3])
+        self.assertTrue(Dim2D(6, 4) in regions[9])
+        self.assertTrue(Dim2D(3, 2) in regions[6])
+        self.assertTrue(Dim2D(3, 0) in regions[2])
+        self.assertTrue(Dim2D(3, 4) in regions[8])
+        self.assertTrue(Dim2D(1, 2) in regions[4])
+        self.assertTrue(Dim2D(5, 2) in regions[5])
 
 
 if __name__ == "__main__":

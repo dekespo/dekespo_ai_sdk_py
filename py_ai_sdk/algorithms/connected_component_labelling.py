@@ -34,7 +34,7 @@ class ConnectedComponentLabelling:
         self._nodes = {}
         for y, row in enumerate(self.graph.raw_data):
             for x, graph_value in enumerate(row):
-                self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(Dim2D(x, y), graph_value in self.graph.blocking_values)
+                self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(Dim2D(x, y), graph_value not in self.graph.blocking_values)
 
     # TODO: Should return a graph?
     def get_labels_graph(self):
