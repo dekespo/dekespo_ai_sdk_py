@@ -23,8 +23,10 @@ class ConnectedComponentLabelling:
     def __init__(self, graph: Graph, connectivity_type: ConnectivityType):
         self.graph = graph
         self._get_neighbour_function = {
-            ConnectedComponentLabelling.ConnectivityType.FOUR : self._get_neighbour_function_4_connectivity,
-            ConnectedComponentLabelling.ConnectivityType.EIGHT : self._get_neighbour_function_8_connectivity
+            ConnectedComponentLabelling.ConnectivityType.FOUR : \
+                self._get_neighbour_function_4_connectivity,
+            ConnectedComponentLabelling.ConnectivityType.EIGHT : \
+                self._get_neighbour_function_8_connectivity
         }[connectivity_type]
         self._nodes = None
         self._set_nodes()
@@ -34,7 +36,10 @@ class ConnectedComponentLabelling:
         self._nodes = {}
         for y, row in enumerate(self.graph.raw_data):
             for x, graph_value in enumerate(row):
-                self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(Dim2D(x, y), graph_value not in self.graph.blocking_values)
+                self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(
+                    Dim2D(x, y),
+                    graph_value not in self.graph.blocking_values
+                )
 
     # TODO: Should return a graph?
     def get_labels_graph(self):
@@ -79,7 +84,14 @@ class ConnectedComponentLabelling:
         for current_node in self._nodes.values():
             if current_node.graph_binary_value:
                 new_labels = []
-                for neighbour_position in self.graph.get_available_neighbours(current_node.position, Graph.NeighbourData(Graph.NeighbourData.Type.CUSTOM, custom_function=self._get_neighbour_function), should_block=False):
+                for neighbour_position in self.graph.get_available_neighbours(
+                        current_node.position,
+                        Graph.NeighbourData(
+                            Graph.NeighbourData.Type.CUSTOM,
+                            custom_function=self._get_neighbour_function
+                        ),
+                        should_block=False
+                    ):
                     neighbour_node = self._nodes[neighbour_position]
                     if is_already_labelled(neighbour_node):
                         new_labels.append(neighbour_node.label_value)
@@ -97,7 +109,9 @@ class ConnectedComponentLabelling:
     def second_pass(self):
         for current_node in self._nodes.values():
             if current_node.graph_binary_value:
-                current_node.label_value = self._labels_disjoint_set.find(current_node.label_value).id_
+                current_node.label_value = self._labels_disjoint_set \
+                                            .find(current_node.label_value) \
+                                            .id_
 
     def get_regions(self):
         regions = {}

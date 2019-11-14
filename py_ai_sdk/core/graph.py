@@ -85,7 +85,13 @@ class Graph:
         candidates = Dim2D.convert_candiates_to_dimensions(candidates)
         return candidates
 
-    def get_available_neighbours(self, position, neighbour_data: NeighbourData, unreachable_positions=None, should_block=True):
+    def get_available_neighbours(
+            self,
+            position,
+            neighbour_data: NeighbourData,
+            unreachable_positions=None,
+            should_block=True
+        ):
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,

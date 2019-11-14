@@ -42,7 +42,8 @@ class Rectangle(Shape2D):
         self.height = height
 
     def __str__(self):
-        return f"top_left_corner = {self.top_left_corner}, width x height: {self.width}x{self.height}"
+        return f"top_left_corner = {self.top_left_corner}, \
+                width x height: {self.width}x{self.height}"
 
     def update_motion_physics(self):
         self.top_left_corner = super().update_motion_physics()
