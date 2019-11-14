@@ -10,7 +10,7 @@ def main():
     command = f"python -m coverage run --source={sources} -m unittest " \
     "discover -s py_ai_sdk/tests"
     returncode = ci_utils.run_process(command, "Tests with Coverage")
-    command = "python -m coverage report --show-missing --fail-under=80"
+    command = "python -m coverage report --show-missing --fail-under=90"
     returncode = ci_utils.run_process(command, "Coverage Report check")
     print("Return code is ", returncode)
     sys.exit(returncode)
