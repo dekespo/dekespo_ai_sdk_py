@@ -61,7 +61,10 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(Dim2D.get_euclid_distance(pos3, pos4), math.sqrt(10))
         self.assertEqual(Dim2D.get_euclid_distance(pos4, pos5), math.sqrt(52))
         self.assertEqual(Dim2D.get_euclid_distance(pos3, pos3), 0)
-        self.assertEqual(Dim2D.get_euclid_distance(pos1, pos3), Dim2D.get_euclid_distance(pos3, pos1))
+        self.assertEqual(
+            Dim2D.get_euclid_distance(pos1, pos3),
+            Dim2D.get_euclid_distance(pos3, pos1)
+        )
 
     def test_get_manathan_distance(self):
         pos1 = Dim2D(0, 0)
@@ -74,7 +77,10 @@ class Dimensions2D(unittest.TestCase):
         self.assertEqual(Dim2D.get_manathan_distance(pos3, pos4), 4)
         self.assertEqual(Dim2D.get_manathan_distance(pos4, pos5), 10)
         self.assertEqual(Dim2D.get_manathan_distance(pos3, pos3), 0)
-        self.assertEqual(Dim2D.get_manathan_distance(pos1, pos3), Dim2D.get_manathan_distance(pos3, pos1))
+        self.assertEqual(
+            Dim2D.get_manathan_distance(pos1, pos3),
+            Dim2D.get_manathan_distance(pos3, pos1)
+        )
 
     def test_simple_get_minimum_index_and_value(self):
         def local_sqrt_function(value):
@@ -94,11 +100,19 @@ class Dimensions2D(unittest.TestCase):
             return Dim2D.get_euclid_distance(value, current_point)
         extra_parameters = {"current_point": Dim2D(-2, -2)}
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
-        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, local_distance_function, **extra_parameters)
+        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(
+            poses1,
+            local_distance_function,
+            **extra_parameters
+        )
         self.assertEqual(minimum_value1, math.sqrt(18))
         self.assertEqual(chosen_pos1, Dim2D(1, 1))
         poses2 = [Dim2D(1, 1), Dim2D(-2, 2), Dim2D(3, 3), Dim2D(4, 0)]
-        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(poses2, local_distance_function, **extra_parameters)
+        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(
+            poses2,
+            local_distance_function,
+            **extra_parameters
+        )
         self.assertEqual(minimum_value2, math.sqrt(16))
         self.assertEqual(chosen_pos2, Dim2D(-2, 2))
 
@@ -110,17 +124,26 @@ class Dimensions2D(unittest.TestCase):
                 return 20
             if Dim2D.get_manathan_distance(value, point2) < 5:
                 return 50
-            return Dim2D.get_manathan_distance(value, point1) + Dim2D.get_manathan_distance(value, point2)
+            return Dim2D.get_manathan_distance(value, point1) + \
+                Dim2D.get_manathan_distance(value, point2)
         extra_parameters = {
             "point1": Dim2D(5, 5),
             "point2": Dim2D(0, 0)
         }
         poses1 = [Dim2D(2, 3), Dim2D(-1, -1), Dim2D(2, 2), Dim2D(3, 3)]
-        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(poses1, complex_function, **extra_parameters)
+        chosen_pos1, minimum_value1 = Dim2D.get_minimum_index_and_value(
+            poses1,
+            complex_function,
+            **extra_parameters
+        )
         self.assertEqual(minimum_value1, 10)
         self.assertEqual(chosen_pos1, Dim2D(2, 3))
         poses2 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3), Dim2D(4, 4), Dim2D(0, 0)]
-        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(poses2, complex_function, **extra_parameters)
+        chosen_pos2, minimum_value2 = Dim2D.get_minimum_index_and_value(
+            poses2,
+            complex_function,
+            **extra_parameters
+        )
         self.assertEqual(minimum_value2, 10)
         self.assertEqual(chosen_pos2, Dim2D(3, 3))
 
@@ -142,11 +165,19 @@ class Dimensions2D(unittest.TestCase):
             return Dim2D.get_euclid_distance(value, current_point)
         extra_parameters = {"current_point": Dim2D(-2, -2)}
         poses1 = [Dim2D(1, 1), Dim2D(2, 2), Dim2D(3, 3)]
-        chosen_pos1, maximum_value1 = Dim2D.get_maximum_index_and_value(poses1, local_distance_function, **extra_parameters)
+        chosen_pos1, maximum_value1 = Dim2D.get_maximum_index_and_value(
+            poses1,
+            local_distance_function,
+            **extra_parameters
+        )
         self.assertEqual(maximum_value1, math.sqrt(50))
         self.assertEqual(chosen_pos1, Dim2D(3, 3))
         poses2 = [Dim2D(1, 1), Dim2D(-2, 2), Dim2D(3, 3), Dim2D(5, 0)]
-        chosen_pos2, maximum_value2 = Dim2D.get_maximum_index_and_value(poses2, local_distance_function, **extra_parameters)
+        chosen_pos2, maximum_value2 = Dim2D.get_maximum_index_and_value(
+            poses2,
+            local_distance_function,
+            **extra_parameters
+        )
         self.assertEqual(maximum_value2, math.sqrt(53))
         self.assertEqual(chosen_pos2, Dim2D(5, 0))
 
@@ -158,17 +189,26 @@ class Dimensions2D(unittest.TestCase):
                 return 20
             if Dim2D.get_manathan_distance(value, point2) < 5:
                 return 50
-            return Dim2D.get_manathan_distance(value, point1) + Dim2D.get_manathan_distance(value, point2)
+            return Dim2D.get_manathan_distance(value, point1) + \
+                Dim2D.get_manathan_distance(value, point2)
         extra_parameters = {
             "point1": Dim2D(5, 5),
             "point2": Dim2D(0, 0)
         }
         poses1 = [Dim2D(2, 3), Dim2D(-1, -1), Dim2D(2, 2), Dim2D(3, 3)]
-        chosen_pos1, maximum_value1 = Dim2D.get_maximum_index_and_value(poses1, complex_function, **extra_parameters)
+        chosen_pos1, maximum_value1 = Dim2D.get_maximum_index_and_value(
+            poses1,
+            complex_function,
+            **extra_parameters
+        )
         self.assertEqual(maximum_value1, 50)
         self.assertEqual(chosen_pos1, Dim2D(2, 2))
         poses2 = [Dim2D(3, 2), Dim2D(4, 2)]
-        chosen_pos2, maximum_value2 = Dim2D.get_maximum_index_and_value(poses2, complex_function, **extra_parameters)
+        chosen_pos2, maximum_value2 = Dim2D.get_maximum_index_and_value(
+            poses2,
+            complex_function,
+            **extra_parameters
+        )
         self.assertEqual(maximum_value2, 10)
         self.assertEqual(chosen_pos2, Dim2D(3, 2))
 

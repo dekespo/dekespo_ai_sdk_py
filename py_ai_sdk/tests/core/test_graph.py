@@ -85,7 +85,10 @@ class GraphTest(unittest.TestCase):
 
     def test_get_neighbours_diamond(self):
         pos = Dim2D(1, 1)
-        poses = Graph.get_neighbours_diamond(pos, Graph.NeighbourData(Graph.NeighbourData.Type.DIAMOND, length=2))
+        poses = Graph.get_neighbours_diamond(
+            pos,
+            Graph.NeighbourData(Graph.NeighbourData.Type.DIAMOND, length=2)
+        )
         self.assertEqual(len(poses), 12)
         self.assertTrue(Dim2D(0, 1) in poses)
         self.assertTrue(Dim2D(-1, 1) in poses)

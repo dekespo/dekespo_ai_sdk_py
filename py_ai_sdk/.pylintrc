@@ -7,6 +7,5 @@ good-names = x, y, z
 
 # Coding standard violation
 # C0111 = Missing docstring # Won't happen anytime soon
-# C0301 = Line too long # Will be fixed when refactoring bad filenames
 
-disable=C0111, C0301, W0511
+disable=C0111, W0511

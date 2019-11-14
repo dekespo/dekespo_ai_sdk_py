@@ -11,7 +11,10 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
     def test_wiki_example(self):
         raw_data = example_wiki_ccl()
         graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[0])
-        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.EIGHT)
+        labeller = ConnectedComponentLabelling(
+            graph,
+            ConnectedComponentLabelling.ConnectivityType.EIGHT
+        )
         labeller.first_pass()
         first_pass_data = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -51,7 +54,10 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
     def test_different_regions_8_connectivity(self):
         raw_data = example_simple_different_regions()
         graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
-        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.EIGHT)
+        labeller = ConnectedComponentLabelling(
+            graph,
+            ConnectedComponentLabelling.ConnectivityType.EIGHT
+        )
         labeller.first_pass()
         labeller.second_pass()
         regions = labeller.get_regions()
@@ -72,7 +78,10 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
     def test_different_regions_4_connectivity(self):
         raw_data = example_simple_different_regions()
         graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
-        labeller = ConnectedComponentLabelling(graph, ConnectedComponentLabelling.ConnectivityType.FOUR)
+        labeller = ConnectedComponentLabelling(
+            graph,
+            ConnectedComponentLabelling.ConnectivityType.FOUR
+        )
         labeller.first_pass()
         labeller.second_pass()
         regions = labeller.get_regions()

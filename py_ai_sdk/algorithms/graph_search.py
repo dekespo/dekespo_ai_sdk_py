@@ -29,7 +29,10 @@ class GraphSearch:
             current_point = open_set.pop()
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
+                for new_candidate_point in self._get_available_neighbours(
+                        current_point,
+                        neighbour_data
+                    ):
                     open_set.append(new_candidate_point)
         return closed_set
 
@@ -40,7 +43,10 @@ class GraphSearch:
             current_point = open_set.pop(0)
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
+                for new_candidate_point in self._get_available_neighbours(
+                        current_point,
+                        neighbour_data
+                    ):
                     open_set.append(new_candidate_point)
         return closed_set
 
@@ -69,7 +75,11 @@ class GraphSearch:
             g_score = {}
             f_score = {}
             g_score[self.start_point] = 0
-            f_score[self.start_point] = g_score[self.start_point] + a_star_functions.run_heuristic_function(self.start_point, end_point)
+            f_score[self.start_point] = g_score[self.start_point] + \
+                a_star_functions.run_heuristic_function(
+                    self.start_point,
+                    end_point
+                )
             return closed_set, open_set, came_from, f_score, g_score
 
         def _get_minimum_f_score_index(open_set, f_score):
@@ -92,19 +102,34 @@ class GraphSearch:
             open_set.remove(current_point)
             closed_set.append(current_point)
 
-            for new_candidate_point in self._get_available_neighbours(current_point, neighbour_data):
+            for new_candidate_point in self._get_available_neighbours(
+                    current_point,
+                    neighbour_data
+                ):
                 if new_candidate_point not in closed_set:
-                    tentative_g_score = g_score[current_point] + a_star_functions.run_weight_function(new_candidate_point, current_point)
+                    tentative_g_score = g_score[current_point] + \
+                        a_star_functions.run_weight_function(
+                            new_candidate_point,
+                            current_point
+                        )
                     if new_candidate_point not in open_set:
                         open_set.append(new_candidate_point)
                         came_from[new_candidate_point] = current_point
                         g_score[new_candidate_point] = tentative_g_score
-                        f_score[new_candidate_point] = g_score[new_candidate_point] + a_star_functions.run_heuristic_function(new_candidate_point, end_point)
+                        f_score[new_candidate_point] = g_score[new_candidate_point] + \
+                            a_star_functions.run_heuristic_function(
+                                new_candidate_point,
+                                end_point
+                            )
                     else:
                         # TODO: It looks like it never passes this one
                         if tentative_g_score < g_score[new_candidate_point]:
                             came_from[new_candidate_point] = current_point
                             g_score[new_candidate_point] = tentative_g_score
-                            f_score[new_candidate_point] = g_score[new_candidate_point] + a_star_functions.run_heuristic_function(new_candidate_point, end_point)
+                            f_score[new_candidate_point] = g_score[new_candidate_point] + \
+                                a_star_functions.run_heuristic_function(
+                                    new_candidate_point,
+                                    end_point
+                                )
         error_print("A* cannot find the path, returning None")
         return []
