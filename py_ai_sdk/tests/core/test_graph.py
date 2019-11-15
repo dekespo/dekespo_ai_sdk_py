@@ -5,6 +5,8 @@ from py_ai_sdk.core.graph import Graph
 from py_ai_sdk.templates.rectangle_world import example_small_random, example_unreachable_positions
 from py_ai_sdk.core.shapes import Shape2D
 
+from py_ai_sdk.core.core_utils import error_print
+
 # TODO: Add non-blocking (empty) graph
 # TODO: Separate test_graph_data_with_blocking into small unittests with setup
 class GraphTest(unittest.TestCase):
@@ -64,6 +66,7 @@ class GraphTest(unittest.TestCase):
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)
         poses = Graph.get_neighbours_cross(pos)
+        poses = list(poses)
         self.assertEqual(len(poses), 4)
         self.assertTrue(Dim2D(0, 1) in poses)
         self.assertTrue(Dim2D(1, 2) in poses)
@@ -73,6 +76,8 @@ class GraphTest(unittest.TestCase):
     def test_get_neighbours_square(self):
         pos = Dim2D(1, 1)
         poses = Graph.get_neighbours_square(pos)
+        poses = list(poses)
+        error_print(poses)
         self.assertEqual(len(poses), 8)
         self.assertTrue(Dim2D(0, 1) in poses)
         self.assertTrue(Dim2D(1, 2) in poses)
@@ -89,6 +94,7 @@ class GraphTest(unittest.TestCase):
             pos,
             Graph.NeighbourData(Graph.NeighbourData.Type.DIAMOND, length=2)
         )
+        poses = list(poses)
         self.assertEqual(len(poses), 12)
         self.assertTrue(Dim2D(0, 1) in poses)
         self.assertTrue(Dim2D(-1, 1) in poses)
