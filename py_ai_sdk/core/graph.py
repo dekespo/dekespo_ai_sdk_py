@@ -53,37 +53,28 @@ class Graph:
     @staticmethod
     def get_neighbours_cross(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
-        candidates = []
         for distance in range(1, neighbour_data.length + 1):
-            candidates.append((x + distance, y))
-            candidates.append((x - distance, y))
-            candidates.append((x, y + distance))
-            candidates.append((x, y - distance))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
+            yield Dim2D(x + distance, y)
+            yield Dim2D(x - distance, y)
+            yield Dim2D(x, y + distance)
+            yield Dim2D(x, y - distance)
 
     @staticmethod
     def get_neighbours_square(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
-        candidates = []
         for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
             for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                candidates.append((x + x_distance, y + y_distance))
-        candidates.remove((x, y))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
+                if not (x_distance == 0 and y_distance == 0):
+                    yield Dim2D(x + x_distance, y + y_distance)
 
     @staticmethod
     def get_neighbours_diamond(position, neighbour_data: NeighbourData = NeighbourData()):
         x, y = position.x, position.y
-        candidates = []
         for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
             for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                if abs(x_distance) + abs(y_distance) <= neighbour_data.length:
-                    candidates.append((x + x_distance, y + y_distance))
-        candidates.remove((x, y))
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
+                if not (x_distance == 0 and y_distance == 0) and \
+                   abs(x_distance) + abs(y_distance) <= neighbour_data.length:
+                    yield Dim2D(x + x_distance, y + y_distance)
 
     def get_available_neighbours(
             self,
@@ -102,12 +93,14 @@ class Graph:
         if not unreachable_positions:
             unreachable_positions = []
 
-        for candidate_position in reversed(neighbours_positions):
+        new_candidates = list()
+        for candidate_position in neighbours_positions:
             is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
             if not is_inside_boundaries:
-                neighbours_positions.remove(candidate_position)
-            elif should_block and candidate_position in self.blocking_positions:
-                neighbours_positions.remove(candidate_position)
-            elif candidate_position in unreachable_positions:
-                neighbours_positions.remove(candidate_position)
-        return neighbours_positions
+                continue
+            if should_block and candidate_position in self.blocking_positions:
+                continue
+            if candidate_position in unreachable_positions:
+                continue
+            new_candidates.append(candidate_position)
+        return new_candidates
