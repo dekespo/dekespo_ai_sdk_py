@@ -1,18 +1,43 @@
 import math
+from abc import ABC, abstractmethod
 
-class Dim2D:
+class DimensionBase(ABC):
+    def __init__(self, *argv):
+        self.dimension = len(argv)
+        self.values = tuple(argv)
+
+    @abstractmethod
+    def __str__(self):
+        return NotImplementedError(f"{self.__class__.__name__} should not run __str__")
+
+    def __repr__(self):
+        self.__str__()
+
+    def __eq__(self, other):
+        # if not isinstance(DimensionBase, other):
+        #     return NotImplemented
+        if self.dimension != other.dimension:
+            raise ValueError(f"Dimensions do not match this {self.dimension}, \
+                              other {other.dimension}")
+        for idx in range(self.dimension):
+            if self.values[idx] != other.values[idx]:
+                return False
+        return True
+
+    def __hash__(self):
+        return hash(tuple([value for value in self.values]))
+
+class Dim2D(DimensionBase):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
+        self.x, self.y = self.values # pylint: disable=unbalanced-tuple-unpacking
+
+    @classmethod
+    def dim_2d_with_tuple(cls, comprehension):
+        return cls(comprehension[0], comprehension[1])
 
     def __str__(self):
         return f"(x: {self.x}, y: {self.y})"
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
 
     def __add__(self, other):
         return Dim2D(self.x + other.x, self.y + other.y)
@@ -28,10 +53,6 @@ class Dim2D:
 
     def constant_divide(self, other):
         return Dim2D(self.x / other, self.y / other)
-
-    def round(self):
-        self.x = round(self.x)
-        self.y = round(self.y)
 
     @staticmethod
     def convert_candiates_to_dimensions(candidates):
@@ -90,19 +111,12 @@ class Dim2D:
                 optimum_value = new_value
         return optimum_dimension, optimum_value
 
-    # Find a better hashing
-    def __hash__(self):
-        return hash((self.x, self.y))
 
-
-class Dim3D:
+# pylint: disable=too-few-public-methods
+class Dim3D(DimensionBase):
     def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+        super().__init__(x, y, z)
+        self.x, self.y, self.z = self.values # pylint: disable=unbalanced-tuple-unpacking
 
     def __str__(self):
         return "x: " + str(self.x) + ", y: " + str(self.y) + ", z: " + str(self.z)
-
-    def __repr__(self):
-        return self.__str__()

@@ -20,11 +20,6 @@ class Dimensions2D(unittest.TestCase):
         dim2 = Dim2D(-1, 1)
         self.assertEqual(dim1 + dim2, Dim2D(1, 4))
 
-    def test_round(self):
-        dim = Dim2D(2.4, 3.7)
-        dim.round()
-        self.assertEqual(dim, Dim2D(2, 4))
-
     def test_multiply(self):
         vec1 = Dim2D(2, 3)
         vec2 = Dim2D(-1, 1)
@@ -218,6 +213,13 @@ class Dimensions3D(unittest.TestCase):
         self.assertEqual(pos.x, 2)
         self.assertEqual(pos.y, 3)
         self.assertEqual(pos.z, 4)
+
+    def test_equal(self):
+        pos1 = Dim3D(3, 8, 9)
+        pos2 = Dim3D(4, 8, 7)
+        pos3 = Dim3D(3, 8, 9)
+        self.assertNotEqual(pos1, pos2)
+        self.assertEqual(pos1, pos3)
 
 if __name__ == "__main__":
     unittest.main()
