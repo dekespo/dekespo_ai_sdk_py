@@ -33,7 +33,7 @@ class Shape2D(ABC):
         return self.motion_physics.update()
 
 class Rectangle(Shape2D):
-    def __init__(self, top_left_corner, width, height):
+    def __init__(self, top_left_corner: Dim2D, width, height):
         super().__init__()
         self.top_left_corner = top_left_corner
         check_positive_value(width)
@@ -55,6 +55,15 @@ class Rectangle(Shape2D):
         or position.y >= self.top_left_corner.y + self.height:
             return False
         return True
+
+    def get_four_corner_points(self):
+        x, y = self.top_left_corner
+        return (
+            Dim2D(x, y),
+            Dim2D(x + self.width, y),
+            Dim2D(x, y + self.height),
+            Dim2D(x + self.width, y + self.height),
+        )
 
 class Circle(Shape2D):
     def __init__(self, centre, radius):

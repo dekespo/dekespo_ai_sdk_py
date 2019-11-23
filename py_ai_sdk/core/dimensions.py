@@ -90,9 +90,11 @@ class Dim2D:
                 optimum_value = new_value
         return optimum_dimension, optimum_value
 
-    # Find a better hashing
     def __hash__(self):
         return hash((self.x, self.y))
+
+    def __iter__(self):
+        return iter((self.x, self.y))
 
 
 class Dim3D:

@@ -10,6 +10,13 @@ class RectangleTest(unittest.TestCase):
         self.assertEqual(rec.top_left_corner, Dim2D(0, 1))
         self.assertEqual(rec.width, 20)
         self.assertEqual(rec.height, 30)
+        four_corner_points = (
+            Dim2D(0, 1),
+            Dim2D(20, 1),
+            Dim2D(0, 31),
+            Dim2D(20, 31)
+        )
+        self.assertEqual(rec.get_four_corner_points(), four_corner_points)
 
     def test_check_boundaries(self):
         top_left_corner = Dim2D(0, 0)
