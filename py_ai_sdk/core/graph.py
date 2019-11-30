@@ -1,5 +1,6 @@
 from enum import Enum, auto
 from dataclasses import dataclass
+import random
 
 from py_ai_sdk.core.dimensions import Dim2D
 from py_ai_sdk.core.shapes import Shape2D, Rectangle
@@ -18,6 +19,7 @@ class Graph:
         type_: Type = Type.NONE
         length: int = 1
         custom_function: 'typing.Any' = None
+        random_output: bool = False
 
     def __init__(self, raw_data, shape_type, blocking_values=None):
         self.raw_data = raw_data
@@ -103,4 +105,6 @@ class Graph:
             if candidate_position in unreachable_positions:
                 continue
             new_candidates.append(candidate_position)
+        if neighbour_data.random_output:
+            random.shuffle(new_candidates)
         return new_candidates
