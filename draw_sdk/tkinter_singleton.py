@@ -31,5 +31,9 @@ class TkinterSingleton:
         frame.grid(column=grid_index.x, row=grid_index.y)
 
     @staticmethod
+    def update(callback_function, in_milliseconds=1000):
+        TkinterSingleton.root.after(in_milliseconds, callback_function)
+
+    @staticmethod
     def loop():
         TkinterSingleton.root.mainloop()
