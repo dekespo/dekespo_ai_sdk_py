@@ -34,11 +34,11 @@ jobs:
       - run:
           name: run pylint
           command: |
-            pipenv run python3 -m py_ai_sdk.run_pylint
+            pipenv run python3 -m continuous_integration --pylint
       - run:
           name: run unit tests with coverage check
           command: |
-            pipenv run python3 -m py_ai_sdk.run_tests
+            pipenv run python3 -m continuous_integration --tests
       - run:
           name: run code cov
           command: |
