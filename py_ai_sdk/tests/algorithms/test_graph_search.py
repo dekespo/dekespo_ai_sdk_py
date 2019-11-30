@@ -1,4 +1,6 @@
 import unittest
+import random
+
 from py_ai_sdk.templates.rectangle_world import example_simple, example_blocked_in_the_middle
 from py_ai_sdk.algorithms.graph_search import GraphSearch
 from py_ai_sdk.core.graph import Graph
@@ -122,6 +124,31 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
         self.assertEqual(
             self.blocked_search_object.a_star_search(end_point, a_star_functions, neighbour_data),
+            correct_path_list
+        )
+
+    def test_randomized_depth_first_search(self):
+        # Have the same seed to test randomized output
+        random.seed(42)
+        correct_path_list = Dim2D.convert_candiates_to_dimensions([
+            (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (2, 1), (2, 2),
+            (3, 2), (3, 3), (2, 3), (1, 3), (0, 3), (0, 2), (0, 1),
+            (1, 1), (1, 2), (0, 4), (1, 4), (1, 5), (2, 5), (3, 5),
+            (3, 6), (2, 6), (2, 7), (2, 8), (3, 8), (3, 9), (4, 9),
+            (5, 9), (6, 9), (6, 8), (5, 8), (5, 7), (5, 6), (5, 5),
+            (6, 5), (7, 5), (7, 6), (7, 7), (7, 8), (8, 8), (8, 9),
+            (7, 9), (9, 9), (9, 8), (9, 7), (9, 6), (8, 6), (8, 5),
+            (8, 4), (8, 3), (8, 2), (9, 2), (9, 1), (8, 1), (8, 0),
+            (9, 0), (7, 0), (7, 1), (7, 2), (6, 2), (6, 3), (7, 3),
+            (7, 4), (6, 4), (5, 4), (5, 3), (5, 2), (5, 1), (5, 0),
+            (6, 0), (6, 1), (9, 3), (9, 4), (9, 5), (8, 7), (6, 7),
+            (6, 6), (4, 5), (2, 9), (1, 9), (1, 8), (1, 7), (0, 7),
+            (0, 6), (1, 6), (0, 5), (0, 8), (0, 9), (3, 7), (3, 4),
+            (2, 4)
+        ])
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+        self.assertEqual(
+            self.simple_search_object.depth_first_search(neighbour_data),
             correct_path_list
         )
 

@@ -8,6 +8,9 @@ class Dimensions2D(unittest.TestCase):
         pos = Dim2D(2, 3)
         self.assertEqual(pos.x, 2)
         self.assertEqual(pos.y, 3)
+        x, y = pos
+        self.assertEqual(x, 2)
+        self.assertEqual(y, 3)
 
     def test_convert_candiates_to_dimensions(self):
         candidates = [(2, 3), (0, 0), (-4, -5)]
