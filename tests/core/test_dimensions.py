@@ -222,5 +222,9 @@ class Dimensions3D(unittest.TestCase):
         self.assertEqual(pos.y, 3)
         self.assertEqual(pos.z, 4)
 
+    def test_str(self):
+        pos = Dim3D(2, 3, 4)
+        self.assertEqual(str(pos), "x: 2, y: 3, z: 4")
+
 if __name__ == "__main__":
     unittest.main()
