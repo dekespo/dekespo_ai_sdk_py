@@ -104,7 +104,7 @@ class Dim3D:
         self.z = z
 
     def __str__(self):
-        return "x: " + str(self.x) + ", y: " + str(self.y) + ", z: " + str(self.z)
+        return f"x: {self.x}, y: {self.y}, z: {self.z}"
 
     def __repr__(self):
         return self.__str__()
