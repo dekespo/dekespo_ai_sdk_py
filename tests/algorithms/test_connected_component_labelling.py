@@ -1,10 +1,10 @@
 import unittest
 
-from py_ai_sdk.templates.rectangle_world import example_wiki_ccl, example_simple_different_regions
-from py_ai_sdk.algorithms.connected_component_labelling import ConnectedComponentLabelling
-from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.core.shapes import Shape2D
-from py_ai_sdk.core.dimensions import Dim2D
+from templates.rectangle_world import example_wiki_ccl, example_simple_different_regions
+from algorithms.connected_component_labelling import ConnectedComponentLabelling
+from core.graph import Graph
+from core.shapes import Shape2D
+from core.dimensions import Dim2D
 
 class ConnectedComponentLabellingTest(unittest.TestCase):
 

@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.core.disjoint_set import DisjointSet
+from core.dimensions import Dim2D
+from core.graph import Graph
+from core.disjoint_set import DisjointSet
 
 class ConnectedComponentLabelling:
     '''

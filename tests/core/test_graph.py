@@ -1,9 +1,10 @@
 import unittest
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.templates.rectangle_world import example_small_random, example_unreachable_positions
-from py_ai_sdk.core.shapes import Shape2D
+from core.dimensions import Dim2D
+from core.graph import Graph
+from core.shapes import Shape2D
+
+from templates.rectangle_world import example_small_random, example_unreachable_positions
 
 # TODO: Add non-blocking (empty) graph
 # TODO: Separate test_graph_data_with_blocking into small unittests with setup

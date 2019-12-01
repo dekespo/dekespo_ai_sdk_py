@@ -1,8 +1,9 @@
 import unittest
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Point
-from py_ai_sdk.core.motion_physics import MotionPhysics2D
+from core.dimensions import Dim2D
+from core.shapes import Point
+
+from physics.motion import MotionPhysics2D
 
 class MotionPhysics2DTest(unittest.TestCase):
     def test_velocity(self):

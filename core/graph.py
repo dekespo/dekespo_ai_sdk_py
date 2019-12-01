@@ -2,8 +2,8 @@ from enum import Enum, auto
 from dataclasses import dataclass
 import random
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Shape2D, Rectangle
+from core.dimensions import Dim2D
+from core.shapes import Shape2D, Rectangle
 
 class Graph:
 

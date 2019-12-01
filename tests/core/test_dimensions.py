@@ -1,7 +1,7 @@
 import math
 
 import unittest
-from py_ai_sdk.core.dimensions import Dim2D, Dim3D
+from core.dimensions import Dim2D, Dim3D
 
 class Dimensions2D(unittest.TestCase):
     def test_simple(self):

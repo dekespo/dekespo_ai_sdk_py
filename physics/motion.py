@@ -1,4 +1,4 @@
-from py_ai_sdk.core.core_utils import check_positive_value
+from core.utils import check_positive_value
 
 # pylint: disable=too-many-instance-attributes
 class MotionPhysics2D:
