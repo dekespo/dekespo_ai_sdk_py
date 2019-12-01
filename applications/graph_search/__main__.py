@@ -1,13 +1,13 @@
 import random
 
-from draw_sdk.tkinter_singleton import TkinterSingleton
-from draw_sdk.colour import Colour
+from draw.tkinter_singleton import TkinterSingleton
+from draw.colour import Colour
 
-# TODO: There should be core and ai modules separately
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Shape2D
-from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.algorithms.graph_search import GraphSearch
+from core.dimensions import Dim2D
+from core.shapes import Shape2D
+from core.graph import Graph
+
+from algorithms.graph_search import GraphSearch
 
 def create_grid(tile_size: Dim2D, grid_size: Dim2D):
     raw_data = []

@@ -1,6 +1,6 @@
 import unittest
 
-from py_ai_sdk.core.disjoint_set import DisjointSet
+from core.disjoint_set import DisjointSet
 
 class DisjointSetTest(unittest.TestCase):
     def test_element(self):

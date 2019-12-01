@@ -1,9 +1,9 @@
 import tkinter as tk
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.core_utils import error_print
+from core.dimensions import Dim2D
+from core.utils import error_print
 
-from draw_sdk.colour import Colour
+from draw.colour import Colour
 
 class TkinterSingleton:
     root = None

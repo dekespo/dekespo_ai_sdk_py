@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.core_utils import check_positive_value
+from core.dimensions import Dim2D
+from core.utils import check_positive_value
 
 class Shape2D(ABC):
 

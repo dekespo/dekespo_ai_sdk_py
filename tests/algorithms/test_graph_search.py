@@ -1,11 +1,11 @@
 import unittest
 import random
 
-from py_ai_sdk.templates.rectangle_world import example_simple, example_blocked_in_the_middle
-from py_ai_sdk.algorithms.graph_search import GraphSearch
-from py_ai_sdk.core.graph import Graph
-from py_ai_sdk.core.dimensions import Dim2D
-from py_ai_sdk.core.shapes import Shape2D
+from templates.rectangle_world import example_simple, example_blocked_in_the_middle
+from algorithms.graph_search import GraphSearch
+from core.graph import Graph
+from core.dimensions import Dim2D
+from core.shapes import Shape2D
 
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):

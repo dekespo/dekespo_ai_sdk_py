@@ -1,6 +1,6 @@
 [MESSAGES CONTROL]
 
-good-names = x, y, z
+good-names = x, y, z, id
 
 # Warnings
 # W0511 = Fixme # Will keep it and check it regularly

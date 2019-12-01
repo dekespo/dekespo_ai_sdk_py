@@ -1,6 +1,15 @@
 from continuous_integration import utils
 
 def run_pylint():
-    command = "python -m pylint py_ai_sdk --rcfile=.pylintrc"
+    modules = " ".join([
+        "core",
+        "tests",
+        "templates",
+        "draw",
+        "applications",
+        "continuous_integration",
+        "physics"
+    ])
+    command = f"python -m pylint {modules} --rcfile=.pylintrc"
     returncode = utils.run_process(command, "Pylint")
     return returncode

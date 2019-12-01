@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 # TODO: Disjoint_set and graph might be moved to "data structure" folder
-from py_ai_sdk.core.core_utils import error_print
+from core.utils import error_print
 
 class DisjointSet:
 
