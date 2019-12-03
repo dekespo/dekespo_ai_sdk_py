@@ -1,7 +1,8 @@
-from core.utils import check_positive_value
+from core.utils import check_positive_value, error_print
+from core.shapes import Shape2D
 
 # pylint: disable=too-many-instance-attributes
-class MotionPhysics2D:
+class Motion2D:
     @property
     def position(self):
         return self._position
@@ -51,8 +52,9 @@ class MotionPhysics2D:
         check_positive_value(mass)
         self._mass = mass
 
-    def __init__(self, position):
-        self._position = position
+    def __init__(self, shape: Shape2D):
+        self.shape = shape
+        self._position = shape.get_position()
         self._velocity = None
         self._acceleration = None
         self._force = None
@@ -79,7 +81,7 @@ class MotionPhysics2D:
     def update(self):
         def update_velocity():
             if not self.velocity:
-                # TODO: Add error_print?
+                error_print("Velocity does not exist. Cannot update the velocity")
                 return
             if self.acceleration:
                 self.velocity += self.acceleration

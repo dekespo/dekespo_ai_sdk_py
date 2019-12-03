@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-# TODO: Disjoint_set and graph might be moved to "data structure" folder
 from core.utils import error_print
 
 class DisjointSet:
