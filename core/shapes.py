@@ -36,8 +36,8 @@ class Rectangle(Shape2D):
         self.height = height
 
     def __str__(self):
-        return f"top_left_corner = {self.top_left_corner}, \
-                width x height: {self.width}x{self.height}"
+        return (f"top_left_corner = {self.top_left_corner}, "
+                f"width x height: {self.width}x{self.height}")
 
     def check_boundaries(self, position):
         if position.x < self.top_left_corner.x \
