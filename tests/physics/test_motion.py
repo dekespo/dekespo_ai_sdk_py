@@ -25,12 +25,17 @@ class MotionPhysics2DTest(unittest.TestCase):
         motion.momentum = Dim2D(-9, 9)
         motion.mass = 6.5
         self.assertEqual(motion.position, Dim2D(3, 5))
-        self.assertEqual(motion.position, Dim2D(3, 5))
         self.assertEqual(motion.velocity, Dim2D(2, 2))
         self.assertEqual(motion.acceleration, Dim2D(1, -1))
         self.assertEqual(motion.force, Dim2D(-5, 0))
         self.assertEqual(motion.momentum, Dim2D(-9, 9))
         self.assertEqual(motion.mass, 6.5)
+        self.assertEqual(
+            str(motion),
+            ("Position: (x: 3, y: 5)\nVelocity: (x: 2, y: 2)\n"
+             "Acceleration: (x: 1, y: -1)\nForce: (x: -5, y: 0)\n"
+             "Momentum: (x: -9, y: 9)\nMass: 6.5")
+        )
 
     def test_update_motion(self):
         position = Dim2D(3, 5)

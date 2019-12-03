@@ -62,17 +62,17 @@ class Motion2D:
         self._mass = None
 
     def __str__(self):
-        string = "Position: " + self.position
+        string = f"Position: {self.position}"
         if self.velocity:
-            string += "\nVelocity: " + self.velocity
+            string += f"\nVelocity: {self.velocity}"
         if self.acceleration:
-            string += "\nAcceleration: " + self.acceleration
+            string += f"\nAcceleration: {self.acceleration}"
         if self.force:
-            string += "\nForce: " + self.force
+            string += f"\nForce: {self.force}"
         if self.momentum:
-            string += "\nMomentum: " + self.momentum
+            string += f"\nMomentum: {self.momentum}"
         if self.mass:
-            string += "\nMass: " + self.mass
+            string += f"\nMass: {self.mass}"
         return string
 
     def __repr__(self):
