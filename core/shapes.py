@@ -13,18 +13,18 @@ class Shape2D(ABC):
 
     @abstractmethod
     def __str__(self):
-        pass
+        """ Abstract """
 
     def __repr__(self):
         self.__str__()
 
     @abstractmethod
     def check_boundaries(self, position):
-        pass
+        """ Abstract """
 
     @abstractmethod
     def get_position(self):
-        pass
+        """ Abstract """
 
 # TODO: Can use classmethod here?
 class Rectangle(Shape2D):
@@ -69,7 +69,7 @@ class Circle(Shape2D):
         return f"centre: {self.centre}, radius: {self.radius}"
 
     def check_boundaries(self, position):
-        pass
+        """ Not filled yet """
 
     @staticmethod
     def circle_vs_circle_intersection_check(circle1, circle2):
@@ -88,7 +88,7 @@ class Point(Shape2D):
         return f"position: {self.position}"
 
     def check_boundaries(self, position):
-        pass
+        """ Not used """
 
     def get_position(self):
         return self.position

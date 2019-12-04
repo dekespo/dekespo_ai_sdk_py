@@ -70,8 +70,5 @@ class PointTest(unittest.TestCase):
         )
         self.assertEqual(point.get_position(), Dim2D(2, 1))
 
-class Shape2DTest(unittest.TestCase):
-    pass
-
 if __name__ == "__main__":
     unittest.main()
