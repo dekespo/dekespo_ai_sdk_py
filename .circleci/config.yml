@@ -34,10 +34,6 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
           key: pip-packages-v2-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-      - run:
-          # this can be removed
-          name: Locate site Packages
-          command: python -c "import site; print(site.getsitepackages())"
 
       - run:
           name: run pylint
