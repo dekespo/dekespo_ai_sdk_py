@@ -18,20 +18,17 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
-            - pipenv-packages-v3-{{ checksum "Pipfile" }}
-            - pipenv-packages-v3-
-      # - run:
-      #     command: |
-      #       sudo pip install pipenv
-      #       pipenv install pylint==2.3.1
-      #       pipenv install coverage==4.5.4
-      #       pipenv install codecov
+            - pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
+            - pipenv-packages-
+      - run:
+          command: |
+            python3 -m continuous_integration --install_or_skip_dependencies
       - save_cache:
           paths:
             - ".venv"
             - "Pipfile"
             - "Pipfile.lock"
-          key: pipenv-packages-v3-{{ checksum "Pipfile" }}
+          key: pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
 
       - run:
           name: run pylint
