@@ -20,12 +20,12 @@ jobs:
           keys:
             - pipenv-packages-v2-{{ checksum "Pipfile" }}
             - pipenv-packages-v2-
-      - run:
-          command: |
-            sudo pip install pipenv
-            pipenv install pylint==2.3.1
-            pipenv install coverage==4.5.4
-            pipenv install codecov
+      # - run:
+      #     command: |
+      #       sudo pip install pipenv
+      #       pipenv install pylint==2.3.1
+      #       pipenv install coverage==4.5.4
+      #       pipenv install codecov
       - save_cache:
           paths:
             - ".venv"
