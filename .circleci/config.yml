@@ -28,6 +28,7 @@ jobs:
             pipenv install codecov
       - save_cache:
           paths:
+            - ".venv"
             - "Pipfile"
             - "Pipfile.lock"
           key: pipenv-packages-{{ checksum "Pipfile" }}
