@@ -18,8 +18,8 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
-            - pipenv-packages-{{ checksum "Pipfile" }}
-            - pipenv-packages-
+            - pipenv-packages-v2-{{ checksum "Pipfile" }}
+            - pipenv-packages-v2-
       - run:
           command: |
             sudo pip install pipenv
@@ -31,7 +31,7 @@ jobs:
             - ".venv"
             - "Pipfile"
             - "Pipfile.lock"
-          key: pipenv-packages-{{ checksum "Pipfile" }}
+          key: pipenv-packages-v2-{{ checksum "Pipfile" }}
 
       - run:
           name: run pylint
