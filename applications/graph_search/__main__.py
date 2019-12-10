@@ -1,5 +1,7 @@
 import random
 
+from tkinter import Button
+
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
@@ -35,6 +37,29 @@ def main():
     tile_size = Dim2D(20, 20)
     grid_size = Dim2D(30, 30)
     raw_data = create_grid(tile_size, grid_size)
+
+    button = Button(
+        TkinterSingleton.root,
+        text='Button',
+        fg=Colour.GREEN.value,
+    )
+    button.grid(
+        column=0,
+        row=grid_size.y,
+        columnspan=grid_size.x // 2,
+        sticky="nsew"
+    )
+    button1 = Button(
+        TkinterSingleton.root,
+        text='Button',
+        fg=Colour.PURPLE.value
+    )
+    button1.grid(
+        column=grid_size.x // 2,
+        row=grid_size.y,
+        columnspan=grid_size.x // 2,
+        sticky="nsew"
+    )
 
     graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
     start_point = get_random_edge_point(grid_size)
