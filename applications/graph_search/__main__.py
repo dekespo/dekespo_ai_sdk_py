@@ -38,6 +38,9 @@ def create_buttons_layer(grid_size: Dim2D):
     number_of_buttons = len(button_data)
     for idx, button in enumerate(button_data):
         # TODO: Should not use division to put them in order, find another way
+        # TODO: nsew stickty can make use of rowconfigure and columnconfigure
+        # to expand correct all elements in the grid should need it. When it needs
+        # to "acquire" another grid element, then it should use rowspan or columnspan
         button.position = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
         button.span_size = Dim2D(grid_size.x // number_of_buttons, None)
         # TODO: Should use a dataclass to transfer the values for TkInter functions
@@ -60,6 +63,7 @@ def get_random_edge_point(grid_size):
 
 def main():
     TkinterSingleton.start()
+    TkinterSingleton.set_weight_of_grid_element(TkinterSingleton.root, Dim2D(0, 0))
 
     tile_size = Dim2D(20, 20)
     grid_size = Dim2D(30, 30)
