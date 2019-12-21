@@ -1,6 +1,6 @@
 import random
-from dataclasses import dataclass
 
+from draw.button import ButtonData, Button
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
@@ -21,18 +21,11 @@ def create_grid(tile_size: Dim2D, grid_size: Dim2D):
     return raw_data
 
 def create_buttons_layer(grid_size: Dim2D):
-    @dataclass
-    class ButtonData:
-        text: str
-        position: Dim2D = Dim2D(0, 0)
-        span_size: Dim2D = Dim2D(1, 1)
-        colour: Colour = Colour.BLACK
-
     button_data = [
-        ButtonData("back"),
-        ButtonData("play"),
-        ButtonData("stop"),
-        ButtonData("restart")
+        ButtonData("back", Button.back),
+        ButtonData("play", Button.play),
+        ButtonData("stop", Button.stop),
+        ButtonData("restart", Button.restart)
     ]
 
     number_of_buttons = len(button_data)
@@ -41,15 +34,10 @@ def create_buttons_layer(grid_size: Dim2D):
         # TODO: nsew stickty can make use of rowconfigure and columnconfigure
         # to expand correct all elements in the grid should need it. When it needs
         # to "acquire" another grid element, then it should use rowspan or columnspan
-        button.position = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
-        button.span_size = Dim2D(grid_size.x // number_of_buttons, None)
-        # TODO: Should use a dataclass to transfer the values for TkInter functions
-        TkinterSingleton.create_button_at(
-            button.position,
-            button.text,
-            button.colour,
-            grid_span_size=button.span_size
-        )
+        button.grid_index = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
+        button.grid_span_size = Dim2D(grid_size.x // number_of_buttons, None)
+
+        TkinterSingleton.create_button_at(button)
 
 def get_random_edge_point(grid_size):
     four_sides = ["top", "bottom", "left", "right"]
@@ -65,6 +53,7 @@ def main():
     TkinterSingleton.start()
     TkinterSingleton.set_weight_of_grid_element(TkinterSingleton.root, Dim2D(0, 0))
 
+    # TODO: Set the tile size and grid size with arguments (argparse)
     tile_size = Dim2D(20, 20)
     grid_size = Dim2D(30, 30)
     raw_data = create_grid(tile_size, grid_size)
