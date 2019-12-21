@@ -21,6 +21,11 @@ class TkinterSingleton:
         TkinterSingleton.root.geometry(f"{size.x}x{size.y}")
 
     @staticmethod
+    def set_weight_of_grid_element(element, grid_index: Dim2D, weight=1):
+        element.rowconfigure(grid_index.y, weight=weight)
+        element.columnconfigure(grid_index.x, weight=weight)
+
+    @staticmethod
     def create_frame_at(grid_index: Dim2D, frame_size: Dim2D, colour: Colour):
         frame = tk.Frame(
             TkinterSingleton.root,
@@ -29,6 +34,7 @@ class TkinterSingleton:
             background=colour.value
         )
         frame.grid(column=grid_index.x, row=grid_index.y)
+        TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
 
     @staticmethod
     def create_button_at(
@@ -46,6 +52,7 @@ class TkinterSingleton:
             rowspan=grid_span_size.y,
             sticky=sticky
         )
+        TkinterSingleton.set_weight_of_grid_element(button, grid_index)
 
 
     @staticmethod
