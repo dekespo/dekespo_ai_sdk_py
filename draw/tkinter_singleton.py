@@ -26,9 +26,27 @@ class TkinterSingleton:
             TkinterSingleton.root,
             width=frame_size.x,
             height=frame_size.y,
-            background=colour.name
+            background=colour.value
         )
         frame.grid(column=grid_index.x, row=grid_index.y)
+
+    @staticmethod
+    def create_button_at(
+            grid_index: Dim2D, text: str, colour: Colour,
+            sticky="nsew", grid_span_size=Dim2D(1, 1)):
+        button = tk.Button(
+            TkinterSingleton.root,
+            text=text,
+            fg=colour.value
+        )
+        button.grid(
+            column=grid_index.x,
+            row=grid_index.y,
+            columnspan=grid_span_size.x,
+            rowspan=grid_span_size.y,
+            sticky=sticky
+        )
+
 
     @staticmethod
     def update(callback_function, *args, in_milliseconds=1000):

@@ -7,3 +7,4 @@ class Colour(Enum):
     BROWN = "brown"
     GREEN = "green"
     BLACK = "black"
+    PURPLE = "purple"
