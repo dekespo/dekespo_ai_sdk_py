@@ -50,7 +50,7 @@ def get_random_edge_point(grid_size):
     }[chosen_side]
 
 def main():
-    TkinterSingleton.start()
+    TkinterSingleton.start(title="Graph Search Program")
     TkinterSingleton.set_weight_of_grid_element(TkinterSingleton.root, Dim2D(0, 0))
 
     # TODO: Set the tile size and grid size with arguments (argparse)
@@ -61,21 +61,28 @@ def main():
 
     graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
     start_point = get_random_edge_point(grid_size)
-    graph_search = GraphSearch(graph, start_point)
     neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
-    paths = graph_search.depth_first_search(neighbour_data)
+    # TODO: Add slider for the speed
     update_time_in_ms = 30
 
-    def pop_path(args=None):
-        current = paths.pop(0)
-        TkinterSingleton.create_frame_at(current, tile_size, Colour.RED)
+    def update_path(args=None):
         if args:
             previous = args[0]
             TkinterSingleton.create_frame_at(previous, tile_size, Colour.WHITE)
-        if paths:
-            TkinterSingleton.update(pop_path, current, in_milliseconds=update_time_in_ms)
+            current_point = previous
+        else:
+            current_point = start_point
+        x, y = current_point
+        graph.raw_data[y][x] = 1
+        graph.update_blocking_values([1])
+        graph_search = GraphSearch(graph, current_point)
+        next_points = graph_search.depth_first_search(neighbour_data, depth_size=2)
+        if len(next_points) == 2:
+            next_point = next_points[1]
+            TkinterSingleton.create_frame_at(next_point, tile_size, Colour.RED)
+            TkinterSingleton.update(update_path, next_point, in_milliseconds=update_time_in_ms)
 
-    TkinterSingleton.update(pop_path, in_milliseconds=update_time_in_ms)
+    TkinterSingleton.update(update_path, in_milliseconds=update_time_in_ms)
 
     TkinterSingleton.loop()
 

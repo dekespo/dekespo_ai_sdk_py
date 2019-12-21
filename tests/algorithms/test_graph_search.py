@@ -42,6 +42,11 @@ class SearchAlgorithmsTest(unittest.TestCase):
             self.simple_search_object.depth_first_search(neighbour_data),
             correct_path_list
         )
+        depth_size = 5
+        self.assertEqual(
+            self.simple_search_object.depth_first_search(neighbour_data, depth_size=depth_size),
+            correct_path_list[:depth_size]
+        )
 
     def test_breadth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([

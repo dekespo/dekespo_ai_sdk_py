@@ -10,9 +10,10 @@ class TkinterSingleton:
     root = None
 
     @staticmethod
-    def start():
+    def start(title):
         if TkinterSingleton.root is None:
             TkinterSingleton.root = tk.Tk()
+            TkinterSingleton.root.title(title)
             TkinterSingleton.root.resizable(width=False, height=False)
         else:
             error_print("Tk root is already initialised")

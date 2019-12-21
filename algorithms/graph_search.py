@@ -1,3 +1,5 @@
+import sys
+
 from core.utils import error_print
 from core.graph import Graph
 
@@ -22,10 +24,10 @@ class GraphSearch:
     def _get_available_neighbours(self, point, neighbour_data):
         return self.graph.get_available_neighbours(point, neighbour_data)
 
-    def depth_first_search(self, neighbour_data):
+    def depth_first_search(self, neighbour_data, depth_size=sys.maxsize):
         closed_set = []
         open_set = [self.start_point]
-        while open_set:
+        while open_set and depth_size > len(closed_set):
             current_point = open_set.pop()
             if current_point not in closed_set:
                 closed_set.append(current_point)
