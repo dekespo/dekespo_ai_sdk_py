@@ -3,6 +3,7 @@ import tkinter as tk
 from core.dimensions import Dim2D
 from core.utils import error_print
 
+from draw.button import ButtonData
 from draw.colour import Colour
 
 class TkinterSingleton:
@@ -37,22 +38,21 @@ class TkinterSingleton:
         TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
 
     @staticmethod
-    def create_button_at(
-            grid_index: Dim2D, text: str, colour: Colour,
-            sticky="nsew", grid_span_size=Dim2D(1, 1)):
+    def create_button_at(button_data: ButtonData):
         button = tk.Button(
             TkinterSingleton.root,
-            text=text,
-            fg=colour.value
+            text=button_data.text,
+            fg=button_data.colour.value,
+            command=button_data.callback_function
         )
         button.grid(
-            column=grid_index.x,
-            row=grid_index.y,
-            columnspan=grid_span_size.x,
-            rowspan=grid_span_size.y,
-            sticky=sticky
+            column=button_data.grid_index.x,
+            row=button_data.grid_index.y,
+            columnspan=button_data.grid_span_size.x,
+            rowspan=button_data.grid_span_size.y,
+            sticky=button_data.sticky
         )
-        TkinterSingleton.set_weight_of_grid_element(button, grid_index)
+        TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
 
     @staticmethod
