@@ -8,7 +8,7 @@ from core.dimensions import Dim2D
 from core.shapes import Shape2D
 from core.graph import Graph
 
-from algorithms.graph_search import GraphSearch
+from algorithms.graph_search.api import GraphSearch
 
 def create_grid(tile_size: Dim2D, grid_size: Dim2D):
     raw_data = []

@@ -2,7 +2,7 @@ import unittest
 import random
 
 from templates.rectangle_world import example_simple, example_blocked_in_the_middle
-from algorithms.graph_search import GraphSearch
+from algorithms.graph_search.api import GraphSearch
 from core.graph import Graph
 from core.dimensions import Dim2D
 from core.shapes import Shape2D
