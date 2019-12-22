@@ -35,20 +35,7 @@ class GraphSearch:
         )
         dfs.start()
         dfs.join()
-        return dfs.get_closed_set()
-        
-        # closed_set = []
-        # open_set = [self.start_point]
-        # while open_set and depth_size > len(closed_set):
-        #     current_point = open_set.pop()
-        #     if current_point not in closed_set:
-        #         closed_set.append(current_point)
-        #         for new_candidate_point in self._get_available_neighbours(
-        #                 current_point,
-        #                 neighbour_data
-        #             ):
-        #             open_set.append(new_candidate_point)
-        # return closed_set
+        return dfs.closed_set
 
     def breadth_first_search(self, neighbour_data):
         closed_set = []

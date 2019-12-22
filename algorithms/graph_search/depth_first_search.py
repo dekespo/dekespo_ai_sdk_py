@@ -15,22 +15,21 @@ class DepthFirstSearch(threading.Thread):
 
     def run(self):
         error_print(f"Running {self._thread_name}")
-        self._closed_set = self.depth_first_search()
+        self.depth_first_search()
         error_print(f"Finised running {self._thread_name}")
 
     def depth_first_search(self):
-        closed_set = []
         open_set = [self.start_point]
-        while open_set and self.depth_size > len(closed_set):
+        while open_set and self.depth_size > len(self._closed_set):
             current_point = open_set.pop()
-            if current_point not in closed_set:
-                closed_set.append(current_point)
+            if current_point not in self._closed_set:
+                self._closed_set.append(current_point)
                 for new_candidate_point in self.get_available_neighbours(
                         current_point,
                         self.neighbour_data
                     ):
                     open_set.append(new_candidate_point)
-        return closed_set
 
-    def get_closed_set(self):
+    @property
+    def closed_set(self):
         return self._closed_set
