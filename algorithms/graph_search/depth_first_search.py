@@ -1,35 +1,67 @@
 import threading
+from dataclasses import dataclass
 
 from core.dimensions import Dim2D
 from core.utils import error_print
+from core.graph import Graph
+
+@dataclass
+class DepthFirstSearchData:
+    start_point: Dim2D
+    get_available_neighbours: 'typing.Any'
+    neighbour_data: Graph.NeighbourData
+    depth_size: int
 
 class DepthFirstSearch(threading.Thread):
-    def __init__(self, start_point: Dim2D, get_available_neighbours, neighbour_data, depth_size):
-        threading.Thread.__init__(self)
-        self._thread_name = "DFS_thread"
-        self.start_point = start_point
-        self.get_available_neighbours = get_available_neighbours
-        self.neighbour_data = neighbour_data
-        self.depth_size = depth_size
+    def __init__(self, input_data: DepthFirstSearchData, runs_with_thread):
+        self.input_data = input_data
+        self.runs_with_thread = runs_with_thread
         self._closed_set = []
 
+        if self.runs_with_thread:
+            threading.Thread.__init__(self)
+            self._thread_name = "DFS_thread"
+            self._is_done = False
+            self._event = threading.Event()
+
     def run(self):
+        if not self.runs_with_thread:
+            error_print("You should set runs_with_thread as true in order to run this one")
+            return
         error_print(f"Running {self._thread_name}")
+        self._is_done = False
         self.depth_first_search()
-        error_print(f"Finised running {self._thread_name}")
+        self._is_done = True
+        error_print(f"Finished running {self._thread_name}")
+
+    def run_without_thread(self):
+        self.depth_first_search()
 
     def depth_first_search(self):
-        open_set = [self.start_point]
-        while open_set and self.depth_size > len(self._closed_set):
+        open_set = [self.input_data.start_point]
+        while open_set and self.input_data.depth_size > len(self._closed_set):
+            if self.runs_with_thread:
+                self._event.wait()
             current_point = open_set.pop()
             if current_point not in self._closed_set:
                 self._closed_set.append(current_point)
-                for new_candidate_point in self.get_available_neighbours(
+                for new_candidate_point in self.input_data.get_available_neighbours(
                         current_point,
-                        self.neighbour_data
+                        self.input_data.neighbour_data
                     ):
                     open_set.append(new_candidate_point)
 
+    def event_set(self):
+        self._event.set()
+
+    def event_clear(self):
+        self._event.clear()
+
     @property
     def closed_set(self):
+        error_print("DEKE size ", len(self._closed_set))
         return self._closed_set
+
+    @property
+    def is_done(self):
+        return self._is_done
