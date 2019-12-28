@@ -9,6 +9,8 @@ from draw.colour import Colour
 class TkinterSingleton:
     root = None
 
+    frames = {}
+
     @staticmethod
     def start(title):
         if TkinterSingleton.root is None:
@@ -29,14 +31,19 @@ class TkinterSingleton:
 
     @staticmethod
     def create_frame_at(grid_index: Dim2D, frame_size: Dim2D, colour: Colour):
-        frame = tk.Frame(
-            TkinterSingleton.root,
-            width=frame_size.x,
-            height=frame_size.y,
-            background=colour.value
-        )
-        frame.grid(column=grid_index.x, row=grid_index.y)
-        TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
+        if grid_index in TkinterSingleton.frames:
+            frame = TkinterSingleton.frames[grid_index]
+            frame.configure(background=colour.value)
+        else:
+            frame = tk.Frame(
+                TkinterSingleton.root,
+                width=frame_size.x,
+                height=frame_size.y,
+                background=colour.value
+            )
+            TkinterSingleton.frames[grid_index] = frame
+            frame.grid(column=grid_index.x, row=grid_index.y)
+            TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
 
     @staticmethod
     def create_button_at(button_data: ButtonData):
