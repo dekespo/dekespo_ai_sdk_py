@@ -54,37 +54,50 @@ def main():
     TkinterSingleton.set_weight_of_grid_element(TkinterSingleton.root, Dim2D(0, 0))
 
     # TODO: Set the tile size and grid size with arguments (argparse)
-    tile_size = Dim2D(20, 20)
-    grid_size = Dim2D(30, 30)
+    tile_size = Dim2D(5, 5)
+    grid_size = Dim2D(60, 60)
     raw_data = create_grid(tile_size, grid_size)
     create_buttons_layer(grid_size)
 
+    # Draw the elements before starting
+    TkinterSingleton.refresh()
+
+    # DFS functionality
     graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
     start_point = get_random_edge_point(grid_size)
     neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
-    # TODO: Add slider for the speed
-    update_time_in_ms = 30
+    dfs = GraphSearch(graph, start_point).depth_first_search(neighbour_data, runs_with_thread=True)
+    dfs.event_set()
+    dfs.start()
+
+    # TODO: Add slider for the speed (between 1 and 1000)
+    update_time_in_ms = 16 # for 60 fps
 
     def update_path(args=None):
         if args:
-            previous = args[0]
-            TkinterSingleton.create_frame_at(previous, tile_size, Colour.WHITE)
-            current_point = previous
+            current_path_index = args[0]
         else:
-            current_point = start_point
-        x, y = current_point
-        graph.raw_data[y][x] = 1
-        graph.update_blocking_values([1])
-        graph_search = GraphSearch(graph, current_point)
-        next_points = graph_search.depth_first_search(neighbour_data, depth_size=2)
-        if len(next_points) == 2:
-            next_point = next_points[1]
-            TkinterSingleton.create_frame_at(next_point, tile_size, Colour.RED)
-            TkinterSingleton.update(update_path, next_point, in_milliseconds=update_time_in_ms)
+            current_path_index = 0
+        if args:
+            previous = dfs.closed_set[current_path_index-1]
+            TkinterSingleton.create_frame_at(previous, tile_size, Colour.WHITE)
+        if current_path_index < len(dfs.closed_set):
+            current = dfs.closed_set[current_path_index]
+            TkinterSingleton.create_frame_at(current, tile_size, Colour.RED)
+            current_path_index += 1
+            TkinterSingleton.update(
+                update_path,
+                current_path_index,
+                in_milliseconds=update_time_in_ms
+            )
+        elif current_path_index == len(dfs.closed_set):
+            previous = dfs.closed_set[current_path_index-1]
+            TkinterSingleton.create_frame_at(previous, tile_size, Colour.RED)
 
     TkinterSingleton.update(update_path, in_milliseconds=update_time_in_ms)
 
     TkinterSingleton.loop()
+    dfs.join()
 
 if __name__ == "__main__":
     main()

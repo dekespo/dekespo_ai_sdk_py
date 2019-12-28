@@ -70,5 +70,9 @@ class TkinterSingleton:
         TkinterSingleton.root.after(in_milliseconds, function_to_call)
 
     @staticmethod
+    def refresh():
+        TkinterSingleton.root.update()
+
+    @staticmethod
     def loop():
         TkinterSingleton.root.mainloop()
