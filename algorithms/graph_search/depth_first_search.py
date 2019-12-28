@@ -59,7 +59,6 @@ class DepthFirstSearch(threading.Thread):
 
     @property
     def closed_set(self):
-        error_print("DEKE size ", len(self._closed_set))
         return self._closed_set
 
     @property

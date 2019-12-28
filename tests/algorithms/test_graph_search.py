@@ -38,13 +38,17 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 0)
         ])
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data)
+        dfs.run_without_thread()
         self.assertEqual(
-            self.simple_search_object.depth_first_search(neighbour_data),
+            dfs.closed_set,
             correct_path_list
         )
         depth_size = 5
+        dfs = self.simple_search_object.depth_first_search(neighbour_data, depth_size=depth_size)
+        dfs.run_without_thread()
         self.assertEqual(
-            self.simple_search_object.depth_first_search(neighbour_data, depth_size=depth_size),
+            dfs.closed_set,
             correct_path_list[:depth_size]
         )
 
@@ -152,8 +156,10 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (2, 4)
         ])
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data)
+        dfs.run_without_thread()
         self.assertEqual(
-            self.simple_search_object.depth_first_search(neighbour_data),
+            dfs.closed_set,
             correct_path_list
         )
 

@@ -27,7 +27,7 @@ class GraphSearch:
     def _get_available_neighbours(self, point, neighbour_data):
         return self.graph.get_available_neighbours(point, neighbour_data)
 
-    def depth_first_search(self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=True):
+    def depth_first_search(self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=False):
         dfs_data = DepthFirstSearchData(
             self.start_point,
             self._get_available_neighbours,
@@ -35,18 +35,7 @@ class GraphSearch:
             depth_size,
         )
         dfs = DepthFirstSearch(dfs_data, runs_with_thread)
-        if runs_with_thread:
-            dfs.event_clear()
-            dfs.start()
-            # time.sleep(0.1)
-            dfs.event_set()
-            # time.sleep(0.0005)
-            # time.sleep(0.001)
-            # dfs.event_set()
-            dfs.join() #TODO: Should let user to choose?
-        else:
-            dfs.run_without_thread()
-        return dfs.closed_set
+        return dfs
 
     def breadth_first_search(self, neighbour_data):
         closed_set = []
