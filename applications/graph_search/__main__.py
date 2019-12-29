@@ -20,6 +20,16 @@ def create_grid(tile_size: Dim2D, grid_size: Dim2D):
         raw_data.append(row_raw_data)
     return raw_data
 
+def create_rectangles(tile_size: Dim2D, grid_size: Dim2D):
+    raw_data = []
+    for y in range(grid_size.y):
+        row_raw_data = []
+        for x in range(grid_size.x):
+            TkinterSingleton.create_rectangle_at(Dim2D(x, y), tile_size, Colour.BLACK)
+            row_raw_data.append(0)
+        raw_data.append(row_raw_data)
+    return raw_data
+
 def create_buttons_layer(grid_size: Dim2D):
     button_data = [
         ButtonData("back", Button.back),
@@ -34,10 +44,22 @@ def create_buttons_layer(grid_size: Dim2D):
         # TODO: nsew stickty can make use of rowconfigure and columnconfigure
         # to expand correct all elements in the grid should need it. When it needs
         # to "acquire" another grid element, then it should use rowspan or columnspan
+        # This was with grid rectangle
         button.grid_index = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
         button.grid_span_size = Dim2D(grid_size.x // number_of_buttons, None)
 
         TkinterSingleton.create_button_at(button)
+
+def create_buttons_layer_canvas():
+    button_data = [
+        ButtonData("back", Button.back),
+        ButtonData("play", Button.play),
+        ButtonData("stop", Button.stop),
+        ButtonData("restart", Button.restart)
+    ]
+
+    for data in button_data:
+        TkinterSingleton.create_button_with_pack(data)
 
 def get_random_edge_point(grid_size):
     four_sides = ["top", "bottom", "left", "right"]
@@ -51,13 +73,20 @@ def get_random_edge_point(grid_size):
 
 def main():
     TkinterSingleton.start(title="Graph Search Program")
-    TkinterSingleton.set_weight_of_grid_element(TkinterSingleton.root, Dim2D(0, 0))
 
     # TODO: Set the tile size and grid size with arguments (argparse)
-    tile_size = Dim2D(5, 5)
+    tile_size = Dim2D(10, 10)
     grid_size = Dim2D(60, 60)
-    raw_data = create_grid(tile_size, grid_size)
-    create_buttons_layer(grid_size)
+
+    # TODO: put all first UI element creation into the same place
+    # Canvas with pack
+    TkinterSingleton.create_canvas(tile_size.vectoral_multiply(grid_size))
+    TkinterSingleton.canvas.configure(background=Colour.GREEN.value)
+    TkinterSingleton.canvas.pack(fill="both", expand=True)
+    create_buttons_layer_canvas()
+
+    # Create rectangles on the canvas
+    raw_data = create_rectangles(tile_size, grid_size)
 
     # Draw the elements before starting
     TkinterSingleton.refresh()
@@ -80,10 +109,11 @@ def main():
             current_path_index = 0
         if args:
             previous = dfs.closed_set[current_path_index-1]
-            TkinterSingleton.create_frame_at(previous, tile_size, Colour.WHITE)
+            TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
         if current_path_index < len(dfs.closed_set):
+            # TODO: This part goes up to some 33 ms until dfs thread is done, find what causes this?
             current = dfs.closed_set[current_path_index]
-            TkinterSingleton.create_frame_at(current, tile_size, Colour.RED)
+            TkinterSingleton.create_rectangle_at(current, tile_size, Colour.RED)
             current_path_index += 1
             TkinterSingleton.update(
                 update_path,
@@ -92,11 +122,12 @@ def main():
             )
         elif current_path_index == len(dfs.closed_set):
             previous = dfs.closed_set[current_path_index-1]
-            TkinterSingleton.create_frame_at(previous, tile_size, Colour.RED)
+            TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.RED)
 
     TkinterSingleton.update(update_path, in_milliseconds=update_time_in_ms)
 
     TkinterSingleton.loop()
+    dfs.kill_thread()
     dfs.join()
 
 if __name__ == "__main__":

@@ -23,6 +23,7 @@ class DepthFirstSearch(threading.Thread):
             self._thread_name = "DFS_thread"
             self._is_done = False
             self._event = threading.Event()
+            self._kill = False
 
     def run(self):
         if not self.runs_with_thread:
@@ -41,6 +42,9 @@ class DepthFirstSearch(threading.Thread):
         open_set = [self.input_data.start_point]
         while open_set and self.input_data.depth_size > len(self._closed_set):
             if self.runs_with_thread:
+                if self._kill:
+                    error_print(f"Killed the {self._thread_name} thread")
+                    break
                 self._event.wait()
             current_point = open_set.pop()
             if current_point not in self._closed_set:
@@ -64,3 +68,6 @@ class DepthFirstSearch(threading.Thread):
     @property
     def is_done(self):
         return self._is_done
+
+    def kill_thread(self):
+        self._kill = True

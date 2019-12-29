@@ -6,23 +6,30 @@ from core.utils import error_print
 from draw.button import ButtonData
 from draw.colour import Colour
 
+# TODO: Should not use singleton but inherit an abstract class with fundamental methods
 class TkinterSingleton:
     root = None
+    canvas = None
 
     frames = {}
+    rectangles = {}
 
     @staticmethod
-    def start(title):
+    def start(title, resizeable=(False, False)):
         if TkinterSingleton.root is None:
             TkinterSingleton.root = tk.Tk()
             TkinterSingleton.root.title(title)
-            TkinterSingleton.root.resizable(width=False, height=False)
+            TkinterSingleton.root.resizable(width=resizeable[0], height=resizeable[1])
         else:
             error_print("Tk root is already initialised")
 
     @staticmethod
     def set_geometry(size: Dim2D):
         TkinterSingleton.root.geometry(f"{size.x}x{size.y}")
+
+    @staticmethod
+    def create_canvas(size: Dim2D):
+        TkinterSingleton.canvas = tk.Canvas(TkinterSingleton.root, width=size.x, height=size.y)
 
     @staticmethod
     def set_weight_of_grid_element(element, grid_index: Dim2D, weight=1):
@@ -46,6 +53,25 @@ class TkinterSingleton:
             TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
 
     @staticmethod
+    def create_rectangle_at(grid_index: Dim2D, tile_size: Dim2D, colour: Colour):
+        if grid_index in TkinterSingleton.rectangles:
+            rectangle = TkinterSingleton.rectangles[grid_index]
+            TkinterSingleton.canvas.itemconfig(rectangle, fill=colour.value, outline=colour.value)
+        else:
+            coordinates = (
+                grid_index.x * tile_size.x + 1,
+                grid_index.y * tile_size.y + 1,
+                (grid_index.x + 1) * tile_size.x + 1,
+                (grid_index.y + 1) * tile_size.y + 1,
+            )
+            rectangle = TkinterSingleton.canvas.create_rectangle(
+                coordinates,
+                fill=colour.value,
+                outline=colour.value
+            )
+            TkinterSingleton.rectangles[grid_index] = rectangle
+
+    @staticmethod
     def create_button_at(button_data: ButtonData):
         button = tk.Button(
             TkinterSingleton.root,
@@ -62,6 +88,19 @@ class TkinterSingleton:
         )
         TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
+    @staticmethod
+    def create_button_with_pack(button_data: ButtonData):
+        button = tk.Button(
+            TkinterSingleton.root,
+            text=button_data.text,
+            fg=button_data.colour.value,
+            command=button_data.callback_function
+        )
+        button.pack(
+            side=button_data.side,
+            fill=button_data.fill,
+            expand=button_data.expand
+        )
 
     @staticmethod
     def update(callback_function, *args, in_milliseconds=1000):

@@ -7,10 +7,16 @@ from core.dimensions import Dim2D
 class ButtonData:
     text: str
     callback_function: 'typing.Any'
+    colour: Colour = Colour.BLACK
+    # Grid
     grid_index: Dim2D = Dim2D(0, 0)
     grid_span_size: Dim2D = Dim2D(1, 1)
-    colour: Colour = Colour.BLACK
     sticky: str = "nsew"
+    # Pack
+    side: str = "left"
+    fill: str = "both"
+    expand: bool = True
+
 
 class Button:
 
