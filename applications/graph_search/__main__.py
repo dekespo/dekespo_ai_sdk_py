@@ -1,6 +1,6 @@
 import random
 
-from draw.button import ButtonData, Button
+from draw.button import ButtonData, Button, GridData, PackData
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
@@ -45,8 +45,10 @@ def create_buttons_layer(grid_size: Dim2D):
         # to expand correct all elements in the grid should need it. When it needs
         # to "acquire" another grid element, then it should use rowspan or columnspan
         # This was with grid rectangle
-        button.grid_index = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
-        button.grid_span_size = Dim2D(grid_size.x // number_of_buttons, None)
+        grid_data = GridData()
+        grid_data.index = Dim2D(idx * (grid_size.x // number_of_buttons), grid_size.y)
+        grid_data.span_size = Dim2D(grid_size.x // number_of_buttons, None)
+        button.grid_data = grid_data
 
         TkinterSingleton.create_button_at(button)
 
@@ -59,6 +61,8 @@ def create_buttons_layer_canvas():
     ]
 
     for data in button_data:
+        pack_data = PackData()
+        data.pack_data = pack_data
         TkinterSingleton.create_button_with_pack(data)
 
 def get_random_edge_point(grid_size):

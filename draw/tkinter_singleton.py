@@ -80,11 +80,11 @@ class TkinterSingleton:
             command=button_data.callback_function
         )
         button.grid(
-            column=button_data.grid_index.x,
-            row=button_data.grid_index.y,
-            columnspan=button_data.grid_span_size.x,
-            rowspan=button_data.grid_span_size.y,
-            sticky=button_data.sticky
+            column=button_data.grid_data.index.x,
+            row=button_data.grid_data.index.y,
+            columnspan=button_data.grid_data.span_size.x,
+            rowspan=button_data.grid_data.span_size.y,
+            sticky=button_data.grid_data.sticky
         )
         TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
@@ -97,9 +97,9 @@ class TkinterSingleton:
             command=button_data.callback_function
         )
         button.pack(
-            side=button_data.side,
-            fill=button_data.fill,
-            expand=button_data.expand
+            side=button_data.pack_data.side,
+            fill=button_data.pack_data.fill,
+            expand=button_data.pack_data.expand
         )
 
     @staticmethod
