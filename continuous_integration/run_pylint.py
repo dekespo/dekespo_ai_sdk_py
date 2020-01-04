@@ -8,7 +8,8 @@ def run_pylint():
         "draw",
         "applications",
         "continuous_integration",
-        "physics"
+        "physics",
+        "algorithms"
     ])
     command = f"python -m pylint {modules} --rcfile=.pylintrc"
     returncode = utils.run_process(command, "Pylint")

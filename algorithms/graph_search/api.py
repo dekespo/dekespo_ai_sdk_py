@@ -1,5 +1,4 @@
 import sys
-import time
 
 from core.utils import error_print
 from core.graph import Graph
