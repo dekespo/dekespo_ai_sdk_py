@@ -1,5 +1,9 @@
+import sys
+
 from core.utils import error_print
 from core.graph import Graph
+
+from algorithms.graph_search.depth_first_search import DepthFirstSearch, DepthFirstSearchData
 
 class GraphSearch:
 
@@ -22,19 +26,15 @@ class GraphSearch:
     def _get_available_neighbours(self, point, neighbour_data):
         return self.graph.get_available_neighbours(point, neighbour_data)
 
-    def depth_first_search(self, neighbour_data):
-        closed_set = []
-        open_set = [self.start_point]
-        while open_set:
-            current_point = open_set.pop()
-            if current_point not in closed_set:
-                closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(
-                        current_point,
-                        neighbour_data
-                    ):
-                    open_set.append(new_candidate_point)
-        return closed_set
+    def depth_first_search(self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=False):
+        dfs_data = DepthFirstSearchData(
+            self.start_point,
+            self._get_available_neighbours,
+            neighbour_data,
+            depth_size,
+        )
+        dfs = DepthFirstSearch(dfs_data, runs_with_thread)
+        return dfs
 
     def breadth_first_search(self, neighbour_data):
         closed_set = []

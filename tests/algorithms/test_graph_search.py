@@ -2,7 +2,7 @@ import unittest
 import random
 
 from templates.rectangle_world import example_simple, example_blocked_in_the_middle
-from algorithms.graph_search import GraphSearch
+from algorithms.graph_search.api import GraphSearch
 from core.graph import Graph
 from core.dimensions import Dim2D
 from core.shapes import Shape2D
@@ -38,10 +38,63 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (9, 0)
         ])
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data)
+        dfs.run_without_thread()
         self.assertEqual(
-            self.simple_search_object.depth_first_search(neighbour_data),
+            dfs.get_closed_set(),
             correct_path_list
         )
+        depth_size = 5
+        dfs = self.simple_search_object.depth_first_search(neighbour_data, depth_size=depth_size)
+        dfs.run_without_thread()
+        self.assertEqual(
+            dfs.get_closed_set(),
+            correct_path_list[:depth_size]
+        )
+
+    def test_depth_first_search_with_thread(self):
+        correct_path_list = Dim2D.convert_candiates_to_dimensions([
+            (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6),
+            (0, 7), (0, 8), (0, 9), (1, 9), (1, 8), (1, 7), (1, 6),
+            (1, 5), (1, 4), (1, 3), (1, 2), (1, 1), (1, 0), (2, 0),
+            (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7),
+            (2, 8), (2, 9), (3, 9), (3, 8), (3, 7), (3, 6), (3, 5),
+            (3, 4), (3, 3), (3, 2), (3, 1), (3, 0), (4, 5), (5, 5),
+            (5, 4), (5, 3), (5, 2), (5, 1), (5, 0), (6, 0), (6, 1),
+            (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (6, 8),
+            (6, 9), (5, 9), (5, 8), (5, 7), (5, 6), (4, 9), (7, 9),
+            (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (7, 3), (7, 2),
+            (7, 1), (7, 0), (8, 0), (8, 1), (8, 2), (8, 3), (8, 4),
+            (8, 5), (8, 6), (8, 7), (8, 8), (8, 9), (9, 9), (9, 8),
+            (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2), (9, 1),
+            (9, 0)
+        ])
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data, runs_with_thread=True)
+        dfs.start()
+        dfs.event_set()
+        dfs.run()
+        dfs.join()
+        self.assertEqual(
+            dfs.get_closed_set(),
+            correct_path_list
+        )
+
+    def test_depth_first_search_with_thread_options(self):
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data)
+        # TODO: Also test the stderr prints
+        self.assertIsNone(dfs.run())
+        dfs = self.simple_search_object.depth_first_search(neighbour_data, runs_with_thread=True)
+        dfs.start()
+        dfs.event_set()
+        self.assertFalse(dfs.is_done())
+        # Before running thread due to not having big graph enough
+        dfs.kill_thread()
+        dfs.event_clear()
+        dfs.run()
+        dfs.join()
+        self.assertTrue(dfs.is_done())
 
     def test_breadth_first_search(self):
         correct_path_list = Dim2D.convert_candiates_to_dimensions([
@@ -147,8 +200,10 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (2, 4)
         ])
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+        dfs = self.simple_search_object.depth_first_search(neighbour_data)
+        dfs.run_without_thread()
         self.assertEqual(
-            self.simple_search_object.depth_first_search(neighbour_data),
+            dfs.get_closed_set(),
             correct_path_list
         )
 
