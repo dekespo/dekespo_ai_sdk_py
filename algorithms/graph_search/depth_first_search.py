@@ -61,11 +61,9 @@ class DepthFirstSearch(threading.Thread):
     def event_clear(self):
         self._event.clear()
 
-    @property
-    def closed_set(self):
+    def get_closed_set(self):
         return self._closed_set
 
-    @property
     def is_done(self):
         return self._is_done
 

@@ -111,12 +111,13 @@ def main():
             current_path_index = args[0]
         else:
             current_path_index = 0
+        closed_set = dfs.get_closed_set()
         if args:
-            previous = dfs.closed_set[current_path_index-1]
+            previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
-        if current_path_index < len(dfs.closed_set):
+        if current_path_index < len(closed_set):
             # TODO: This part goes up to some 33 ms until dfs thread is done, find what causes this?
-            current = dfs.closed_set[current_path_index]
+            current = closed_set[current_path_index]
             TkinterSingleton.create_rectangle_at(current, tile_size, Colour.RED)
             current_path_index += 1
             TkinterSingleton.update(
@@ -124,8 +125,8 @@ def main():
                 current_path_index,
                 in_milliseconds=update_time_in_ms
             )
-        elif current_path_index == len(dfs.closed_set):
-            previous = dfs.closed_set[current_path_index-1]
+        elif current_path_index == len(closed_set):
+            previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.RED)
 
     TkinterSingleton.update(update_path, in_milliseconds=update_time_in_ms)
