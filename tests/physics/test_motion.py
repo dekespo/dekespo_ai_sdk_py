@@ -58,18 +58,18 @@ class MotionPhysics2DTest(unittest.TestCase):
         motion_with_constant_acceleration_with_no_initial_velocity.velocity = Dim2D(0, 0)
         motion_with_constant_acceleration_with_no_initial_velocity.acceleration = Dim2D(1, 3)
 
-        for time in range(20):
+        for time in range(1, 21):
             motion_with_constant_velocity.update()
             self.assertEqual(
                 motion_with_constant_velocity.position,
-                Dim2D(3 + 2*(time+1), 5 + 2*(time+1))
+                Dim2D(3, 5) + Dim2D(2, 2).constant_multiply(time)
             )
             self.assertEqual(motion_with_constant_velocity.velocity, Dim2D(2, 2))
 
             motion_with_constant_acceleration_with_no_initial_velocity.update()
             self.assertEqual(
                 motion_with_constant_acceleration_with_no_initial_velocity.velocity,
-                Dim2D(0 + 1*(time+1), 0 + 3*(time+1))
+                Dim2D(0, 0) + Dim2D(1, 3).constant_multiply(time)
             )
 
 if __name__ == "__main__":
