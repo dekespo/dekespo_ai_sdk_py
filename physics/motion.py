@@ -87,9 +87,11 @@ class Motion2D:
                 self.velocity += self.acceleration
 
         def update_position():
+            if self.acceleration:
+                self.position += self.acceleration.constant_multiply(0.5)
             if self.velocity:
                 self.position += self.velocity
 
-        update_velocity()
         update_position()
+        update_velocity()
         return self.position
