@@ -19,7 +19,6 @@ class MotionPhysics2DTest(unittest.TestCase):
         position = Dim2D(2, 3)
         point = Point(position)
         motion = Motion2D(point)
-        motion.velocity = Dim2D(0, 0)
         motion.acceleration = Dim2D(3, 2)
         self.assertEqual(motion.position, Dim2D(2, 3))
         self.assertEqual(motion.velocity, Dim2D(0, 0))
@@ -54,9 +53,9 @@ class MotionPhysics2DTest(unittest.TestCase):
         motion_with_constant_velocity = Motion2D(point)
         motion_with_constant_velocity.velocity = Dim2D(2, 2)
 
-        motion_with_constant_acceleration_with_no_initial_velocity = Motion2D(point)
-        motion_with_constant_acceleration_with_no_initial_velocity.velocity = Dim2D(0, 0)
-        motion_with_constant_acceleration_with_no_initial_velocity.acceleration = Dim2D(1, 3)
+        motion_with_constant_acceleration = Motion2D(point)
+        motion_with_constant_acceleration.velocity = Dim2D(-1, 2)
+        motion_with_constant_acceleration.acceleration = Dim2D(1, 3)
 
         for time in range(1, 21):
             motion_with_constant_velocity.update()
@@ -66,14 +65,14 @@ class MotionPhysics2DTest(unittest.TestCase):
             )
             self.assertEqual(motion_with_constant_velocity.velocity, Dim2D(2, 2))
 
-            motion_with_constant_acceleration_with_no_initial_velocity.update()
+            motion_with_constant_acceleration.update()
             self.assertEqual(
-                motion_with_constant_acceleration_with_no_initial_velocity.velocity,
-                Dim2D(0, 0) + Dim2D(1, 3).constant_multiply(time)
+                motion_with_constant_acceleration.velocity,
+                Dim2D(-1, 2) + Dim2D(1, 3).constant_multiply(time)
             )
             self.assertEqual(
-                motion_with_constant_acceleration_with_no_initial_velocity.position,
-                Dim2D(3, 5) + Dim2D(0, 0).constant_multiply(time) + \
+                motion_with_constant_acceleration.position,
+                Dim2D(3, 5) + Dim2D(-1, 2).constant_multiply(time) + \
                     Dim2D(1, 3).constant_multiply(0.5 * time * time)
             )
 
