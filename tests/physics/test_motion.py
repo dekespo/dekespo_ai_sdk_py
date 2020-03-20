@@ -15,6 +15,16 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(motion.position, Dim2D(3, 5))
         self.assertEqual(motion.velocity, Dim2D(2, 2))
 
+    def test_acceleration_with_no_initial_velocity(self):
+        position = Dim2D(2, 3)
+        point = Point(position)
+        motion = Motion2D(point)
+        motion.velocity = Dim2D(0, 0)
+        motion.acceleration = Dim2D(3, 2)
+        self.assertEqual(motion.position, Dim2D(2, 3))
+        self.assertEqual(motion.velocity, Dim2D(0, 0))
+        self.assertEqual(motion.acceleration, Dim2D(3, 2))
+
     def test_all_motion_fields(self):
         position = Dim2D(3, 5)
         point = Point(position)
@@ -40,14 +50,27 @@ class MotionPhysics2DTest(unittest.TestCase):
     def test_update_motion(self):
         position = Dim2D(3, 5)
         point = Point(position)
-        motion = Motion2D(point)
-        motion.velocity = Dim2D(2, 2)
-        self.assertEqual(motion.position, Dim2D(3, 5))
-        self.assertEqual(motion.velocity, Dim2D(2, 2))
+
+        motion_with_constant_velocity = Motion2D(point)
+        motion_with_constant_velocity.velocity = Dim2D(2, 2)
+
+        motion_with_constant_acceleration_with_no_initial_velocity = Motion2D(point)
+        motion_with_constant_acceleration_with_no_initial_velocity.velocity = Dim2D(0, 0)
+        motion_with_constant_acceleration_with_no_initial_velocity.acceleration = Dim2D(1, 3)
+
         for time in range(20):
-            motion.update()
-            self.assertEqual(motion.position, Dim2D(3 + 2*(time+1), 5 + 2*(time+1)))
-            self.assertEqual(motion.velocity, Dim2D(2, 2))
+            motion_with_constant_velocity.update()
+            self.assertEqual(
+                motion_with_constant_velocity.position,
+                Dim2D(3 + 2*(time+1), 5 + 2*(time+1))
+            )
+            self.assertEqual(motion_with_constant_velocity.velocity, Dim2D(2, 2))
+
+            motion_with_constant_acceleration_with_no_initial_velocity.update()
+            self.assertEqual(
+                motion_with_constant_acceleration_with_no_initial_velocity.velocity,
+                Dim2D(0 + 1*(time+1), 0 + 3*(time+1))
+            )
 
 if __name__ == "__main__":
     unittest.main()
