@@ -15,6 +15,15 @@ class MotionPhysics2DTest(unittest.TestCase):
         self.assertEqual(motion.position, Dim2D(3, 5))
         self.assertEqual(motion.velocity, Dim2D(2, 2))
 
+    def test_acceleration_with_no_initial_velocity(self):
+        position = Dim2D(2, 3)
+        point = Point(position)
+        motion = Motion2D(point)
+        motion.acceleration = Dim2D(3, 2)
+        self.assertEqual(motion.position, Dim2D(2, 3))
+        self.assertEqual(motion.velocity, Dim2D(0, 0))
+        self.assertEqual(motion.acceleration, Dim2D(3, 2))
+
     def test_all_motion_fields(self):
         position = Dim2D(3, 5)
         point = Point(position)
@@ -40,14 +49,32 @@ class MotionPhysics2DTest(unittest.TestCase):
     def test_update_motion(self):
         position = Dim2D(3, 5)
         point = Point(position)
-        motion = Motion2D(point)
-        motion.velocity = Dim2D(2, 2)
-        self.assertEqual(motion.position, Dim2D(3, 5))
-        self.assertEqual(motion.velocity, Dim2D(2, 2))
-        for time in range(20):
-            motion.update()
-            self.assertEqual(motion.position, Dim2D(3 + 2*(time+1), 5 + 2*(time+1)))
-            self.assertEqual(motion.velocity, Dim2D(2, 2))
+
+        motion_with_constant_velocity = Motion2D(point)
+        motion_with_constant_velocity.velocity = Dim2D(2, 2)
+
+        motion_with_constant_acceleration = Motion2D(point)
+        motion_with_constant_acceleration.velocity = Dim2D(-1, 2)
+        motion_with_constant_acceleration.acceleration = Dim2D(1, 3)
+
+        for time in range(1, 21):
+            motion_with_constant_velocity.update()
+            self.assertEqual(
+                motion_with_constant_velocity.position,
+                Dim2D(3, 5) + Dim2D(2, 2).constant_multiply(time)
+            )
+            self.assertEqual(motion_with_constant_velocity.velocity, Dim2D(2, 2))
+
+            motion_with_constant_acceleration.update()
+            self.assertEqual(
+                motion_with_constant_acceleration.velocity,
+                Dim2D(-1, 2) + Dim2D(1, 3).constant_multiply(time)
+            )
+            self.assertEqual(
+                motion_with_constant_acceleration.position,
+                Dim2D(3, 5) + Dim2D(-1, 2).constant_multiply(time) + \
+                    Dim2D(1, 3).constant_multiply(0.5 * time * time)
+            )
 
 if __name__ == "__main__":
     unittest.main()

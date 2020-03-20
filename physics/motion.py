@@ -1,4 +1,5 @@
-from core.utils import check_positive_value, error_print
+from core.dimensions import Dim2D
+from core.utils import check_positive_value
 from core.shapes import Shape2D
 
 # pylint: disable=too-many-instance-attributes
@@ -55,18 +56,16 @@ class Motion2D:
     def __init__(self, shape: Shape2D):
         self.shape = shape
         self._position = shape.get_position()
-        self._velocity = None
-        self._acceleration = None
+        self._velocity = Dim2D(0, 0)
+        self._acceleration = Dim2D(0, 0)
         self._force = None
         self._momentum = None
         self._mass = None
 
     def __str__(self):
         string = f"Position: {self.position}"
-        if self.velocity:
-            string += f"\nVelocity: {self.velocity}"
-        if self.acceleration:
-            string += f"\nAcceleration: {self.acceleration}"
+        string += f"\nVelocity: {self.velocity}"
+        string += f"\nAcceleration: {self.acceleration}"
         if self.force:
             string += f"\nForce: {self.force}"
         if self.momentum:
@@ -80,16 +79,15 @@ class Motion2D:
 
     def update(self):
         def update_velocity():
-            if not self.velocity:
-                error_print("Velocity does not exist. Cannot update the velocity")
-                return
             if self.acceleration:
                 self.velocity += self.acceleration
 
         def update_position():
+            if self.acceleration:
+                self.position += self.acceleration.constant_multiply(0.5)
             if self.velocity:
                 self.position += self.velocity
 
-        update_velocity()
         update_position()
+        update_velocity()
         return self.position
