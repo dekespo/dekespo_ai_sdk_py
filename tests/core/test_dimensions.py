@@ -23,6 +23,17 @@ class Dimensions2D(unittest.TestCase):
         dim2 = Dim2D(-1, 1)
         self.assertEqual(dim1 + dim2, Dim2D(1, 4))
 
+    def test_substract(self):
+        dim1 = Dim2D(2, 3)
+        dim2 = Dim2D(-1, 1)
+        self.assertEqual(dim1 - dim2, Dim2D(3, 2))
+
+    def test_absolute(self):
+        dim1 = Dim2D(3, 4)
+        self.assertAlmostEqual(abs(dim1), 5)
+        dim2 = Dim2D(-1, 2)
+        self.assertAlmostEqual(abs(dim2), math.sqrt(-1 * -1 + 2 * 2))
+
     def test_round(self):
         dim = Dim2D(2.4, 3.7)
         dim.round()
