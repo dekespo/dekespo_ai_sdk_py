@@ -17,7 +17,7 @@ class DisjointSet:
         def __str__(self):
             return f"Rank: {self.rank}, Id: {self.id_}, Size: {self.size}"
 
-        def __repr__(self):
+        def __repr__(self): # pragma: no cover
             return self.__str__()
 
     def __init__(self):

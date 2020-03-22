@@ -8,7 +8,7 @@ class Dim2D:
     def __str__(self):
         return f"(x: {self.x}, y: {self.y})"
 
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         return self.__str__()
 
     def __eq__(self, other):
@@ -106,5 +106,5 @@ class Dim3D:
     def __str__(self):
         return f"x: {self.x}, y: {self.y}, z: {self.z}"
 
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         return self.__str__()
