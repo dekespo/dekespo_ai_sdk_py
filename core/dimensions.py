@@ -17,6 +17,9 @@ class Dim2D:
     def __add__(self, other):
         return Dim2D(self.x + other.x, self.y + other.y)
 
+    def __sub__(self, other):
+        return Dim2D(self.x - other.x, self.y - other.y)
+
     def vectoral_multiply(self, other):
         return Dim2D(self.x * other.x, self.y * other.y)
 
@@ -32,6 +35,9 @@ class Dim2D:
     def round(self):
         self.x = round(self.x)
         self.y = round(self.y)
+
+    def __abs__(self):
+        return math.sqrt(self.x ** 2 + self.y ** 2)
 
     @staticmethod
     def convert_candiates_to_dimensions(candidates):
