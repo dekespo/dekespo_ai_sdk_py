@@ -15,8 +15,8 @@ class Shape2D(ABC):
     def __str__(self):
         """ Abstract """
 
-    def __repr__(self):
-        self.__str__()
+    def __repr__(self): # pragma: no cover
+        return self.__str__()
 
     @abstractmethod
     def check_boundaries(self, position):

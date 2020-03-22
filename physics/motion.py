@@ -74,7 +74,7 @@ class Motion2D:
             string += f"\nMass: {self.mass}"
         return string
 
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         return self.__str__()
 
     def update(self):
