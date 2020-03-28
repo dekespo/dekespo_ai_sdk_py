@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from draw.colour import Colour
+
 from core.dimensions import Dim2D
 
 @dataclass
@@ -19,24 +20,7 @@ class PackData:
 class ButtonData:
     text: str
     callback_function: 'typing.Any'
+    parameters: 'typing.Any'
     colour: Colour = Colour.BLACK
     grid_data: GridData = None
     pack_data: PackData = None
-
-class Button:
-
-    @staticmethod
-    def back():
-        print("Pressed back")
-
-    @staticmethod
-    def play():
-        print("Pressed play")
-
-    @staticmethod
-    def stop():
-        print("Pressed stop")
-
-    @staticmethod
-    def restart():
-        print("Pressed restart")
