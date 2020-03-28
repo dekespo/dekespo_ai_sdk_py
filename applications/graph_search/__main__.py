@@ -89,7 +89,7 @@ def main():
     TkinterSingleton.create_canvas(tile_size.vectoral_multiply(grid_size))
     TkinterSingleton.canvas.configure(background=Colour.GREEN.value)
     TkinterSingleton.canvas.pack(fill="both", expand=True)
-    status_dictionary = {Status.ON_PAUSE: True}
+    status_dictionary = {Status.ON_PAUSE: True, Status.SHOULD_RESTART: False}
     create_buttons_layer_canvas(status_dictionary)
 
     # Create rectangles on the canvas
@@ -109,10 +109,10 @@ def main():
     # TODO: Add slider for the speed (between 1 and 1000)
     update_time_in_ms = 16 # for 60 fps
 
-    start_idx = 0
+    start_index = 0
+    closed_set = dfs.get_closed_set()
     def update_path(args):
         current_path_index = args[0]
-        closed_set = dfs.get_closed_set()
         if status_dictionary[Status.ON_PAUSE]:
             TkinterSingleton.update(
                 update_path,
@@ -120,7 +120,11 @@ def main():
                 in_milliseconds=update_time_in_ms
             )
             return
-        if current_path_index != start_idx:
+        if status_dictionary[Status.SHOULD_RESTART]:
+            create_rectangles(tile_size, grid_size)
+            current_path_index = start_index
+            status_dictionary[Status.SHOULD_RESTART] = False
+        if current_path_index != start_index:
             previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
         if current_path_index < len(closed_set):
@@ -138,7 +142,7 @@ def main():
             previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.RED)
 
-    TkinterSingleton.update(update_path, start_idx, in_milliseconds=update_time_in_ms)
+    TkinterSingleton.update(update_path, start_index, in_milliseconds=update_time_in_ms)
 
     TkinterSingleton.loop()
     dfs.kill_thread()
