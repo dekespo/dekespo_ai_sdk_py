@@ -77,7 +77,7 @@ class TkinterSingleton:
             TkinterSingleton.root,
             text=button_data.text,
             fg=button_data.colour.value,
-            command=button_data.callback_function
+            command=lambda: button_data.callback_function(button_data.parameters)
         )
         button.grid(
             column=button_data.grid_data.index.x,
@@ -94,7 +94,7 @@ class TkinterSingleton:
             TkinterSingleton.root,
             text=button_data.text,
             fg=button_data.colour.value,
-            command=button_data.callback_function
+            command=lambda: button_data.callback_function(button_data.parameters)
         )
         button.pack(
             side=button_data.pack_data.side,

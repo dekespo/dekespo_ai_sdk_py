@@ -1,6 +1,6 @@
 import random
 
-from draw.button import ButtonData, Button, GridData, PackData
+from draw.button import ButtonData, GridData, PackData
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
@@ -9,6 +9,8 @@ from core.shapes import Shape2D
 from core.graph import Graph
 
 from algorithms.graph_search.api import GraphSearch
+
+from .utils import Status, Button
 
 def create_grid(tile_size: Dim2D, grid_size: Dim2D):
     raw_data = []
@@ -52,12 +54,12 @@ def create_buttons_layer(grid_size: Dim2D):
 
         TkinterSingleton.create_button_at(button)
 
-def create_buttons_layer_canvas():
+def create_buttons_layer_canvas(status_dictionary):
     button_data = [
-        ButtonData("back", Button.back),
-        ButtonData("play", Button.play),
-        ButtonData("stop", Button.stop),
-        ButtonData("restart", Button.restart)
+        ButtonData("back", Button.back, status_dictionary),
+        ButtonData("play", Button.play, status_dictionary),
+        ButtonData("stop", Button.stop, status_dictionary),
+        ButtonData("restart", Button.restart, status_dictionary)
     ]
 
     for data in button_data:
@@ -87,7 +89,8 @@ def main():
     TkinterSingleton.create_canvas(tile_size.vectoral_multiply(grid_size))
     TkinterSingleton.canvas.configure(background=Colour.GREEN.value)
     TkinterSingleton.canvas.pack(fill="both", expand=True)
-    create_buttons_layer_canvas()
+    status_dictionary = {Status.ON_PAUSE: True}
+    create_buttons_layer_canvas(status_dictionary)
 
     # Create rectangles on the canvas
     raw_data = create_rectangles(tile_size, grid_size)
@@ -106,13 +109,18 @@ def main():
     # TODO: Add slider for the speed (between 1 and 1000)
     update_time_in_ms = 16 # for 60 fps
 
-    def update_path(args=None):
-        if args:
-            current_path_index = args[0]
-        else:
-            current_path_index = 0
+    start_idx = 0
+    def update_path(args):
+        current_path_index = args[0]
         closed_set = dfs.get_closed_set()
-        if args:
+        if status_dictionary[Status.ON_PAUSE]:
+            TkinterSingleton.update(
+                update_path,
+                current_path_index,
+                in_milliseconds=update_time_in_ms
+            )
+            return
+        if current_path_index != start_idx:
             previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
         if current_path_index < len(closed_set):
@@ -125,11 +133,12 @@ def main():
                 current_path_index,
                 in_milliseconds=update_time_in_ms
             )
-        elif current_path_index == len(closed_set):
+            return
+        if current_path_index == len(closed_set):
             previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.RED)
 
-    TkinterSingleton.update(update_path, in_milliseconds=update_time_in_ms)
+    TkinterSingleton.update(update_path, start_idx, in_milliseconds=update_time_in_ms)
 
     TkinterSingleton.loop()
     dfs.kill_thread()
