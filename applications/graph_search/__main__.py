@@ -89,7 +89,11 @@ def main():
     TkinterSingleton.create_canvas(tile_size.vectoral_multiply(grid_size))
     TkinterSingleton.canvas.configure(background=Colour.GREEN.value)
     TkinterSingleton.canvas.pack(fill="both", expand=True)
-    status_dictionary = {Status.ON_PAUSE: True, Status.SHOULD_RESTART: False}
+    status_dictionary = {
+        Status.ON_PAUSE: True,
+        Status.SHOULD_RESTART: False,
+        Status.SHOULD_GO_BACK: False
+    }
     create_buttons_layer_canvas(status_dictionary)
 
     # Create rectangles on the canvas
@@ -117,6 +121,15 @@ def main():
             create_rectangles(tile_size, grid_size)
             current_path_index = start_index
             status_dictionary[Status.SHOULD_RESTART] = False
+        if status_dictionary[Status.SHOULD_GO_BACK]:
+            if current_path_index > start_index + 1:
+                current_path_index -= 1
+                previous_point = closed_set[current_path_index-1]
+                TkinterSingleton.create_rectangle_at(previous_point, tile_size, Colour.RED)
+                current_point = closed_set[current_path_index]
+                TkinterSingleton.create_rectangle_at(current_point, tile_size, Colour.BLACK)
+            status_dictionary[Status.SHOULD_GO_BACK] = False
+            status_dictionary[Status.ON_PAUSE] = True
         if status_dictionary[Status.ON_PAUSE]:
             TkinterSingleton.update(
                 update_path,
@@ -124,9 +137,9 @@ def main():
                 in_milliseconds=update_time_in_ms
             )
             return
-        if current_path_index != start_index:
-            previous = closed_set[current_path_index-1]
-            TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
+        if current_path_index > start_index:
+            previous_point = closed_set[current_path_index-1]
+            TkinterSingleton.create_rectangle_at(previous_point, tile_size, Colour.WHITE)
         if current_path_index < len(closed_set):
             # TODO: This part goes up to some 33 ms until dfs thread is done, find what causes this?
             current = closed_set[current_path_index]

@@ -3,14 +3,18 @@ from enum import Enum, auto
 class Status(Enum):
     ON_PAUSE = auto()
     SHOULD_RESTART = auto()
+    SHOULD_GO_BACK = auto()
 
 class Button:
 
-    # TODO: Have forward button
     # TODO: Have reset button
     @staticmethod
     def back(status_dictionary):
-        print("Pressed back", status_dictionary)
+        status_dictionary[Status.SHOULD_GO_BACK] = True
+
+    @staticmethod
+    def forward(status_dictionary):
+        print("Pressed forward", status_dictionary)
 
     @staticmethod
     def play(status_dictionary):
