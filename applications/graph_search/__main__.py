@@ -113,6 +113,10 @@ def main():
     closed_set = dfs.get_closed_set()
     def update_path(args):
         current_path_index = args[0]
+        if status_dictionary[Status.SHOULD_RESTART]:
+            create_rectangles(tile_size, grid_size)
+            current_path_index = start_index
+            status_dictionary[Status.SHOULD_RESTART] = False
         if status_dictionary[Status.ON_PAUSE]:
             TkinterSingleton.update(
                 update_path,
@@ -120,10 +124,6 @@ def main():
                 in_milliseconds=update_time_in_ms
             )
             return
-        if status_dictionary[Status.SHOULD_RESTART]:
-            create_rectangles(tile_size, grid_size)
-            current_path_index = start_index
-            status_dictionary[Status.SHOULD_RESTART] = False
         if current_path_index != start_index:
             previous = closed_set[current_path_index-1]
             TkinterSingleton.create_rectangle_at(previous, tile_size, Colour.WHITE)
