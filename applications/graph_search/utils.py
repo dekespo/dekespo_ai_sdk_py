@@ -10,6 +10,7 @@ class Status(Enum):
     SHOULD_RESTART = auto()
     SHOULD_GO_BACK = auto()
     SHOULD_GO_NEXT = auto()
+    SHOULD_PLAY_FORWARD = auto()
 
 class Button:
 
@@ -23,8 +24,14 @@ class Button:
         status_dictionary[Status.SHOULD_GO_NEXT] = True
 
     @staticmethod
-    def play(status_dictionary):
+    def play_forward(status_dictionary):
         status_dictionary[Status.ON_PAUSE] = False
+        status_dictionary[Status.SHOULD_PLAY_FORWARD] = True
+
+    @staticmethod
+    def play_backward(status_dictionary):
+        status_dictionary[Status.ON_PAUSE] = False
+        status_dictionary[Status.SHOULD_PLAY_FORWARD] = False
 
     @staticmethod
     def stop(status_dictionary):
