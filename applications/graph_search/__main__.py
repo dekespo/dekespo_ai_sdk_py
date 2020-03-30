@@ -17,7 +17,8 @@ def create_buttons_layer_canvas(status_dictionary):
     button_data = [
         ButtonData("back", Button.back, status_dictionary),
         ButtonData("next", Button.next, status_dictionary),
-        ButtonData("play", Button.play, status_dictionary),
+        ButtonData("play_forward", Button.play_forward, status_dictionary),
+        ButtonData("play_backward", Button.play_backward, status_dictionary),
         ButtonData("stop", Button.stop, status_dictionary),
         ButtonData("restart", Button.restart, status_dictionary)
     ]
@@ -66,7 +67,8 @@ def main():
         Status.ON_PAUSE: True,
         Status.SHOULD_RESTART: False,
         Status.SHOULD_GO_BACK: False,
-        Status.SHOULD_GO_NEXT: False
+        Status.SHOULD_GO_NEXT: False,
+        Status.SHOULD_PLAY_FORWARD: True
     }
 
     raw_grid_data = initialize_gui(tile_size, grid_size, status_dictionary)
@@ -78,7 +80,6 @@ def main():
         update_frame_in_milliseconds=16,
         graph_search_closed_set=depth_first_search.get_closed_set())
     path_processor.set_tile_and_grid_size(tile_size, grid_size)
-
     path_processor.process()
 
     TkinterSingleton.loop()

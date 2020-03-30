@@ -29,8 +29,10 @@ class PathProcessor:
             self._on_pause()
         elif self._is_last_step():
             self._on_last_step()
+        elif self.status_dictionary[Status.SHOULD_PLAY_FORWARD]:
+            self._on_play_forward()
         else:
-            self._on_play()
+            self._on_play_backward()
 
 
     def _update_path(self):
@@ -46,12 +48,8 @@ class PathProcessor:
         self._update_path()
 
     def _go_back(self):
-        if self._current_path_index > self._start_path_index + 1:
-            self._current_path_index -= 1
-            previous_point = self.graph_search_closed_set[self._current_path_index-1]
-            TkinterSingleton.create_rectangle_at(previous_point, self.tile_size, Colour.RED)
-            current_point = self.graph_search_closed_set[self._current_path_index]
-            TkinterSingleton.create_rectangle_at(current_point, self.tile_size, Colour.BLACK)
+        self._back_red_colouring()
+        self._back_black_colouring()
         self.status_dictionary[Status.SHOULD_GO_BACK] = False
         self.status_dictionary[Status.ON_PAUSE] = True
         self._on_pause()
@@ -75,9 +73,14 @@ class PathProcessor:
         self.status_dictionary[Status.ON_PAUSE] = True
         self._update_path()
 
-    def _on_play(self):
+    def _on_play_forward(self):
         self._next_white_colouring()
         self._next_red_colouring()
+        self._update_path()
+
+    def _on_play_backward(self):
+        self._back_red_colouring()
+        self._back_black_colouring()
         self._update_path()
 
     def _next_white_colouring(self):
@@ -91,3 +94,13 @@ class PathProcessor:
             current_point = self.graph_search_closed_set[self._current_path_index]
             TkinterSingleton.create_rectangle_at(current_point, self.tile_size, Colour.RED)
             self._current_path_index += 1
+
+    def _back_red_colouring(self):
+        if self._current_path_index > self._start_path_index + 1:
+            self._current_path_index -= 1
+            previous_point = self.graph_search_closed_set[self._current_path_index-1]
+            TkinterSingleton.create_rectangle_at(previous_point, self.tile_size, Colour.RED)
+
+    def _back_black_colouring(self):
+        current_point = self.graph_search_closed_set[self._current_path_index]
+        TkinterSingleton.create_rectangle_at(current_point, self.tile_size, Colour.BLACK)
