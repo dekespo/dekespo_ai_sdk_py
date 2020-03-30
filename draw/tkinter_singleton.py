@@ -103,10 +103,8 @@ class TkinterSingleton:
         )
 
     @staticmethod
-    def update(callback_function, *args, in_milliseconds=1000):
-        def function_to_call():
-            return callback_function(args)
-        TkinterSingleton.root.after(in_milliseconds, function_to_call)
+    def update(callback_function, in_milliseconds=1000):
+        TkinterSingleton.root.after(in_milliseconds, callback_function)
 
     @staticmethod
     def refresh():
