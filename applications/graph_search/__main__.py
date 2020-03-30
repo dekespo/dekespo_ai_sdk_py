@@ -74,12 +74,10 @@ def main():
 
     path_processor = PathProcessor(
         status_dictionary,
-        start_path_index=0,
         # TODO: Add slider for the speed (between 1 and 1000)
         update_frame_in_milliseconds=16,
-        graph_search_closed_set=depth_first_search.get_closed_set(),
-        tile_size=tile_size,
-        grid_size=grid_size)
+        graph_search_closed_set=depth_first_search.get_closed_set())
+    path_processor.set_tile_and_grid_size(tile_size, grid_size)
 
     path_processor.process()
 
