@@ -1,25 +1,37 @@
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
-from .utils import Status, create_rectangle_canvas
+from .utils import Status, create_rectangle_canvas, initialize_depth_first_search
 
 class PathProcessor:
 
-    def __init__(self, status_dictionary, update_frame_in_milliseconds, graph_search_closed_set):
+    @property
+    def depth_first_search(self):
+        return self._depth_first_search
+
+    def __init__(self, status_dictionary, update_frame_in_milliseconds, graph, tile_size, grid_size):
         self.status_dictionary = status_dictionary
         self.update_frame_in_milliseconds = update_frame_in_milliseconds
-        self.graph_search_closed_set = graph_search_closed_set
-        self.tile_size = None
-        self.grid_size = None
-        self._start_path_index = 0
-        self._current_path_index = self._start_path_index
-
-    def set_tile_and_grid_size(self, tile_size, grid_size):
+        self.graph = graph
+        # TODO: Get them as UI data?
         self.tile_size = tile_size
         self.grid_size = grid_size
+        self._start_path_index = 0
+        self._current_path_index = self._start_path_index
+        self.run_dfs()
+
+    # def set_tile_and_grid_size(self, tile_size, grid_size):
+    #     self.tile_size = tile_size
+    #     self.grid_size = grid_size
+
+    def run_dfs(self):
+        self._depth_first_search = initialize_depth_first_search(self.graph, self.grid_size)
+        self.graph_search_closed_set = self._depth_first_search.get_closed_set()
 
     def process(self):
-        if self.status_dictionary[Status.SHOULD_RESTART]:
+        if self.status_dictionary[Status.SHOULD_RESET]:
+            self._reset()
+        elif self.status_dictionary[Status.SHOULD_RESTART]:
             self._restart()
         elif self.status_dictionary[Status.SHOULD_GO_BACK]:
             self._go_back()
@@ -40,6 +52,15 @@ class PathProcessor:
             self.process,
             in_milliseconds=self.update_frame_in_milliseconds
         )
+
+    def _reset(self):
+        self._depth_first_search.kill_thread()
+        self._depth_first_search.join()
+        create_rectangle_canvas(self.tile_size, self.grid_size)
+        self._current_path_index = self._start_path_index
+        self.run_dfs()
+        self.status_dictionary[Status.SHOULD_RESET] = False
+        self._update_path()
 
     def _restart(self):
         create_rectangle_canvas(self.tile_size, self.grid_size)

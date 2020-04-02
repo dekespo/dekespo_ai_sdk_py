@@ -1,9 +1,13 @@
+import random
 from enum import Enum, auto
 
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
 from core.dimensions import Dim2D
+from core.graph import Graph
+
+from algorithms.graph_search.api import GraphSearch
 
 class Status(Enum):
     ON_PAUSE = auto()
@@ -11,6 +15,7 @@ class Status(Enum):
     SHOULD_GO_BACK = auto()
     SHOULD_GO_NEXT = auto()
     SHOULD_PLAY_FORWARD = auto()
+    SHOULD_RESET = auto()
 
 class Button:
 
@@ -34,12 +39,16 @@ class Button:
         status_dictionary[Status.SHOULD_PLAY_FORWARD] = False
 
     @staticmethod
-    def stop(status_dictionary):
+    def pause(status_dictionary):
         status_dictionary[Status.ON_PAUSE] = True
 
     @staticmethod
     def restart(status_dictionary):
         status_dictionary[Status.SHOULD_RESTART] = True
+
+    @staticmethod
+    def reset(status_dictionary):
+        status_dictionary[Status.SHOULD_RESET] = True
 
 def create_rectangle_canvas(tile_size: Dim2D, grid_size: Dim2D):
     raw_data = []
@@ -50,3 +59,22 @@ def create_rectangle_canvas(tile_size: Dim2D, grid_size: Dim2D):
             row_raw_data.append(0)
         raw_data.append(row_raw_data)
     return raw_data
+
+def get_random_edge_point(grid_size):
+    four_sides = ["top", "bottom", "left", "right"]
+    chosen_side = four_sides[random.randint(0, len(four_sides) - 1)]
+    return {
+        "top": Dim2D(random.randint(0, grid_size.x - 1), 0),
+        "bottom": Dim2D(random.randint(0, grid_size.x - 1), grid_size.y - 1),
+        "left": Dim2D(0, random.randint(0, grid_size.y - 1)),
+        "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1))
+    }[chosen_side]
+
+def initialize_depth_first_search(graph, grid_size):
+    start_point = get_random_edge_point(grid_size)
+    neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+    depth_first_search = GraphSearch(graph, start_point) \
+                        .depth_first_search(neighbour_data, runs_with_thread=True)
+    depth_first_search.event_set()
+    depth_first_search.start()
+    return depth_first_search
