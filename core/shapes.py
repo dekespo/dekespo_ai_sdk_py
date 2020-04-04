@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum, auto
 
 from core.dimensions import Dim2D
-from core.utils import check_positive_value
+from core.assertion import check_positive_value
 
 class Shape2D(ABC):
 

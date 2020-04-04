@@ -3,8 +3,11 @@ from draw.colour import Colour
 
 from .utils import Status, Utils, GraphData
 
+# TODO: Make sure to have more user friendly (automatic start with reset,
+#  should first step show red and etc)
 class PathProcessor:
 
+    # TODO: Generalise this to any Graph Search Algorithm
     @property
     def depth_first_search(self):
         return self._depth_first_search
