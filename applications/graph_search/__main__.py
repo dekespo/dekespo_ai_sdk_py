@@ -37,6 +37,7 @@ def initialize_gui(graph_data: GraphData, status_dictionary):
 def main():
     TkinterSingleton.start(title="Graph Search Program")
 
+    # TODO: Add options data and check it
     # TODO: Set the tile size and grid size with arguments (argparse)
     tile_size = Dim2D(10, 10)
     grid_size = Dim2D(60, 60)
@@ -50,6 +51,7 @@ def main():
     }
 
     graph_data = GraphData(tile_size, grid_size, None)
+    # TODO: Have another button line-layer for reset and option
     raw_grid_data = initialize_gui(graph_data, status_dictionary)
     graph_data.graph = Graph(raw_grid_data, Shape2D.Type.RECTANGLE)
 

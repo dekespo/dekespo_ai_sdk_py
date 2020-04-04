@@ -1,5 +1,5 @@
 from core.dimensions import Dim2D
-from core.utils import check_positive_value
+from core.assertion import check_positive_value
 from core.shapes import Shape2D
 
 class Motion2D:
