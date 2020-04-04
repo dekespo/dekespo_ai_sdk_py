@@ -6,7 +6,7 @@ from core.dimensions import Dim2D
 from core.shapes import Shape2D
 from core.graph import Graph
 
-from .utils import Status, Button, create_rectangle_canvas, GraphData
+from .utils import Status, Button, Utils, GraphData
 from .path_processor import PathProcessor
 
 def create_buttons_layer_canvas(status_dictionary):
@@ -30,7 +30,7 @@ def initialize_gui(graph_data: GraphData, status_dictionary):
     TkinterSingleton.canvas.configure(background=Colour.GREEN.value)
     TkinterSingleton.canvas.pack(fill="both", expand=True)
     create_buttons_layer_canvas(status_dictionary)
-    raw_grid_data = create_rectangle_canvas(graph_data)
+    raw_grid_data = Utils.create_rectangle_canvas(graph_data)
     TkinterSingleton.refresh()
     return raw_grid_data
 
