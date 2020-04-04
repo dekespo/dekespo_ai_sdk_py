@@ -61,6 +61,7 @@ class DepthFirstSearch(threading.Thread):
     def event_clear(self):
         self._event.clear()
 
+    # TODO: Use property instead
     def get_closed_set(self):
         return self._closed_set
 
