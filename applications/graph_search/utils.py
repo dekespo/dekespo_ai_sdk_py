@@ -1,5 +1,6 @@
 import random
 from enum import Enum, auto
+from dataclasses import dataclass
 
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
@@ -16,6 +17,12 @@ class Status(Enum):
     SHOULD_GO_NEXT = auto()
     SHOULD_PLAY_FORWARD = auto()
     SHOULD_RESET = auto()
+
+@dataclass
+class GraphData:
+    tile_size: Dim2D
+    grid_size: Dim2D
+    graph: Graph
 
 class Button:
 
@@ -50,12 +57,12 @@ class Button:
     def reset(status_dictionary):
         status_dictionary[Status.SHOULD_RESET] = True
 
-def create_rectangle_canvas(tile_size: Dim2D, grid_size: Dim2D):
+def create_rectangle_canvas(graph_data: GraphData):
     raw_data = []
-    for y in range(grid_size.y):
+    for y in range(graph_data.grid_size.y):
         row_raw_data = []
-        for x in range(grid_size.x):
-            TkinterSingleton.create_rectangle_at(Dim2D(x, y), tile_size, Colour.BLACK)
+        for x in range(graph_data.grid_size.x):
+            TkinterSingleton.create_rectangle_at(Dim2D(x, y), graph_data.tile_size, Colour.BLACK)
             row_raw_data.append(0)
         raw_data.append(row_raw_data)
     return raw_data
@@ -70,10 +77,10 @@ def get_random_edge_point(grid_size):
         "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1))
     }[chosen_side]
 
-def initialize_depth_first_search(graph, grid_size):
-    start_point = get_random_edge_point(grid_size)
+def initialize_depth_first_search(graph_data: GraphData):
+    start_point = get_random_edge_point(graph_data.grid_size)
     neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
-    depth_first_search = GraphSearch(graph, start_point) \
+    depth_first_search = GraphSearch(graph_data.graph, start_point) \
                         .depth_first_search(neighbour_data, runs_with_thread=True)
     depth_first_search.event_set()
     depth_first_search.start()
