@@ -57,31 +57,40 @@ class Button:
     def reset(status_dictionary):
         status_dictionary[Status.SHOULD_RESET] = True
 
-def create_rectangle_canvas(graph_data: GraphData):
-    raw_data = []
-    for y in range(graph_data.grid_size.y):
-        row_raw_data = []
-        for x in range(graph_data.grid_size.x):
-            TkinterSingleton.create_rectangle_at(Dim2D(x, y), graph_data.tile_size, Colour.BLACK)
-            row_raw_data.append(0)
-        raw_data.append(row_raw_data)
-    return raw_data
+class Utils:
 
-def get_random_edge_point(grid_size):
-    four_sides = ["top", "bottom", "left", "right"]
-    chosen_side = four_sides[random.randint(0, len(four_sides) - 1)]
-    return {
-        "top": Dim2D(random.randint(0, grid_size.x - 1), 0),
-        "bottom": Dim2D(random.randint(0, grid_size.x - 1), grid_size.y - 1),
-        "left": Dim2D(0, random.randint(0, grid_size.y - 1)),
-        "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1))
-    }[chosen_side]
+    @staticmethod
+    def create_rectangle_canvas(graph_data: GraphData):
+        raw_data = []
+        for y in range(graph_data.grid_size.y):
+            row_raw_data = []
+            for x in range(graph_data.grid_size.x):
+                TkinterSingleton.create_rectangle_at(
+                    Dim2D(x, y),
+                    graph_data.tile_size,
+                    Colour.BLACK
+                )
+                row_raw_data.append(0)
+            raw_data.append(row_raw_data)
+        return raw_data
 
-def initialize_depth_first_search(graph_data: GraphData):
-    start_point = get_random_edge_point(graph_data.grid_size)
-    neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
-    depth_first_search = GraphSearch(graph_data.graph, start_point) \
-                        .depth_first_search(neighbour_data, runs_with_thread=True)
-    depth_first_search.event_set()
-    depth_first_search.start()
-    return depth_first_search
+    @staticmethod
+    def get_random_edge_point(grid_size):
+        four_sides = ["top", "bottom", "left", "right"]
+        chosen_side = four_sides[random.randint(0, len(four_sides) - 1)]
+        return {
+            "top": Dim2D(random.randint(0, grid_size.x - 1), 0),
+            "bottom": Dim2D(random.randint(0, grid_size.x - 1), grid_size.y - 1),
+            "left": Dim2D(0, random.randint(0, grid_size.y - 1)),
+            "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1))
+        }[chosen_side]
+
+    @staticmethod
+    def initialize_depth_first_search(graph_data: GraphData):
+        start_point = Utils.get_random_edge_point(graph_data.grid_size)
+        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+        depth_first_search = GraphSearch(graph_data.graph, start_point) \
+                            .depth_first_search(neighbour_data, runs_with_thread=True)
+        depth_first_search.event_set()
+        depth_first_search.start()
+        return depth_first_search

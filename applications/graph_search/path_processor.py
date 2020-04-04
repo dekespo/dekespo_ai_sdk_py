@@ -1,7 +1,7 @@
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
-from .utils import Status, create_rectangle_canvas, initialize_depth_first_search, GraphData
+from .utils import Status, Utils, GraphData
 
 class PathProcessor:
 
@@ -18,7 +18,7 @@ class PathProcessor:
         self._run_dfs()
 
     def _run_dfs(self):
-        self._depth_first_search = initialize_depth_first_search(self.graph_data)
+        self._depth_first_search = Utils.initialize_depth_first_search(self.graph_data)
         self.graph_search_closed_set = self._depth_first_search.get_closed_set()
 
     def process(self):
@@ -49,14 +49,14 @@ class PathProcessor:
     def _reset(self):
         self._depth_first_search.kill_thread()
         self._depth_first_search.join()
-        create_rectangle_canvas(self.graph_data)
+        Utils.create_rectangle_canvas(self.graph_data)
         self._current_path_index = self._start_path_index
         self._run_dfs()
         self.status_dictionary[Status.SHOULD_RESET] = False
         self._update_path()
 
     def _restart(self):
-        create_rectangle_canvas(self.graph_data)
+        Utils.create_rectangle_canvas(self.graph_data)
         self._current_path_index = self._start_path_index
         self.status_dictionary[Status.SHOULD_RESTART] = False
         self._update_path()
