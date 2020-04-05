@@ -10,20 +10,31 @@ from .utils import Status, Button, Utils, GraphData
 from .path_processor import PathProcessor
 
 def create_buttons_layer_canvas(status_dictionary):
-    button_data = [
+
+    def create_buttons(buttons, frame):
+        default_pack_data = PackData()
+        for data in buttons:
+            if data.pack_data is None:
+                data.pack_data = default_pack_data
+            TkinterSingleton.create_button_with_pack(data, frame)
+
+    player_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
+    player_buttons = [
         ButtonData("back", Button.back, status_dictionary),
         ButtonData("next", Button.next, status_dictionary),
         ButtonData("play_forward", Button.play_forward, status_dictionary),
         ButtonData("play_backward", Button.play_backward, status_dictionary),
         ButtonData("pause", Button.pause, status_dictionary),
-        ButtonData("restart", Button.restart, status_dictionary),
-        ButtonData("reset", Button.reset, status_dictionary)
+        ButtonData("restart", Button.restart, status_dictionary)
     ]
+    create_buttons(player_buttons, player_frame)
 
-    for data in button_data:
-        pack_data = PackData()
-        data.pack_data = pack_data
-        TkinterSingleton.create_button_with_pack(data)
+    others_frames = TkinterSingleton.create_frame_with_pack(PackData(side=None))
+    others_buttons = [
+        ButtonData("reset", Button.reset, status_dictionary),
+        ButtonData("options", Button.open_options, status_dictionary)
+    ]
+    create_buttons(others_buttons, others_frames)
 
 def initialize_gui(graph_data: GraphData, status_dictionary):
     TkinterSingleton.create_canvas(graph_data.tile_size.vectoral_multiply(graph_data.grid_size))
