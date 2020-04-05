@@ -57,6 +57,11 @@ class Button:
     def reset(status_dictionary):
         status_dictionary[Status.SHOULD_RESET] = True
 
+    # TODO: Open a menu to enter different input values
+    @staticmethod
+    def open_options(status_dictionary):
+        print("open options", status_dictionary)
+
 class Utils:
 
     @staticmethod

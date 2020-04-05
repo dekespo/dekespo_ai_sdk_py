@@ -3,7 +3,7 @@ import tkinter as tk
 from core.dimensions import Dim2D
 from core.utils import error_print
 
-from draw.button import ButtonData
+from draw.button import ButtonData, PackData
 from draw.colour import Colour
 
 # TODO: Should not use singleton but inherit an abstract class with fundamental methods
@@ -89,9 +89,23 @@ class TkinterSingleton:
         TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
     @staticmethod
-    def create_button_with_pack(button_data: ButtonData):
+    def create_frame_with_pack(pack_data: PackData, root=None):
+        if root is None:
+            root = TkinterSingleton.root
+        frame = tk.Frame(root)
+        frame.pack(
+            side=pack_data.side,
+            fill=pack_data.fill,
+            expand=pack_data.expand
+        )
+        return frame
+
+    @staticmethod
+    def create_button_with_pack(button_data: ButtonData, root=None):
+        if root is None:
+            root = TkinterSingleton.root
         button = tk.Button(
-            TkinterSingleton.root,
+            root,
             text=button_data.text,
             fg=button_data.colour.value,
             command=lambda: button_data.callback_function(button_data.parameters)
