@@ -1,9 +1,11 @@
 import random
 from enum import Enum, auto
 from dataclasses import dataclass
+from typing import List
 
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
+from draw.widget import PackData, ButtonData, WidgetData, TextData, LabelData
 
 from core.dimensions import Dim2D
 from core.graph import Graph
@@ -17,6 +19,11 @@ class Status(Enum):
     SHOULD_GO_NEXT = auto()
     SHOULD_PLAY_FORWARD = auto()
     SHOULD_RESET = auto()
+    OPTIONS_SET = auto()
+
+class Options(Enum):
+    TILE_SIZE = auto()
+    GRID_SIZE = auto()
 
 @dataclass
 class GraphData:
@@ -26,7 +33,6 @@ class GraphData:
 
 class Button:
 
-    # TODO: Have reset button
     @staticmethod
     def back(status_dictionary):
         status_dictionary[Status.SHOULD_GO_BACK] = True
@@ -57,10 +63,56 @@ class Button:
     def reset(status_dictionary):
         status_dictionary[Status.SHOULD_RESET] = True
 
-    # TODO: Open a menu to enter different input values
     @staticmethod
-    def open_options(status_dictionary):
-        print("open options", status_dictionary)
+    def open_options(args):
+        # TODO: Instead use a button and use this for cancelling
+        def remove_window(args):
+            menu_window, status_dictionary = args
+            current_options[Options.TILE_SIZE].x = int(
+                TkinterSingleton.widgets["tile_size_x"].get("1.0", "end-1c")
+            )
+            current_options[Options.TILE_SIZE].y = int(
+                TkinterSingleton.widgets["tile_size_y"].get("1.0", "end-1c")
+            )
+            current_options[Options.GRID_SIZE].x = int(
+                TkinterSingleton.widgets["grid_size_x"].get("1.0", "end-1c")
+            )
+            current_options[Options.GRID_SIZE].y = int(
+                TkinterSingleton.widgets["grid_size_y"].get("1.0", "end-1c")
+            )
+            status_dictionary[Status.OPTIONS_SET] = True
+            menu_window.destroy()
+        status_dictionary, current_options = args
+        menu_window = TkinterSingleton.create_menu_window("Options")
+        def create_text_data(value, id_, number_of_characters=3, number_of_lines=1):
+            return TextData(
+                value,
+                id=id_,
+                number_of_characters=number_of_characters,
+                number_of_lines=number_of_lines
+            )
+        tile_size_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None), menu_window)
+        tile_size_widgets = [
+            LabelData("Tile Size: "),
+            create_text_data(current_options[Options.TILE_SIZE].x, "tile_size_x"),
+            LabelData("x"),
+            create_text_data(current_options[Options.TILE_SIZE].y, "tile_size_y")
+        ]
+        GuiUtils.create_widgets(tile_size_widgets, tile_size_frame)
+        grid_size_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None), menu_window)
+        grid_size_widgets = [
+            LabelData("Grid Size: "),
+            create_text_data(current_options[Options.GRID_SIZE].x, "grid_size_x"),
+            LabelData("x"),
+            create_text_data(current_options[Options.GRID_SIZE].y, "grid_size_y"),
+        ]
+        GuiUtils.create_widgets(grid_size_widgets, grid_size_frame)
+        menu_window.protocol(
+            'WM_DELETE_WINDOW',
+            lambda args=[menu_window, status_dictionary]: remove_window(args)
+        )
+        menu_window.focus_set()
+        menu_window.grab_set()
 
 class Utils:
 
@@ -99,3 +151,53 @@ class Utils:
         depth_first_search.event_set()
         depth_first_search.start()
         return depth_first_search
+
+    @staticmethod
+    def get_default_status_dictionary():
+        return {
+            Status.ON_PAUSE: True,
+            Status.SHOULD_RESTART: False,
+            Status.SHOULD_GO_BACK: False,
+            Status.SHOULD_GO_NEXT: False,
+            Status.SHOULD_PLAY_FORWARD: True,
+            Status.SHOULD_RESET: False,
+            Status.OPTIONS_SET: False
+        }
+
+    @staticmethod
+    def get_default_options_dictionary():
+        return {
+            Options.TILE_SIZE: Dim2D(10, 10),
+            Options.GRID_SIZE: Dim2D(60, 60)
+        }
+
+class GuiUtils:
+
+    @staticmethod
+    def create_widgets(widgets_data: List[WidgetData], frame):
+        default_pack_data = PackData()
+        for data in widgets_data:
+            if data.pack_data is None:
+                data.pack_data = default_pack_data
+            TkinterSingleton.create_widget_with_pack(data, frame)
+
+    # TODO: Make this more resuable for different windows
+    @staticmethod
+    def create_buttons_layer_canvas(status_dictionary, current_options):
+        player_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
+        player_buttons = [
+            ButtonData("back", Button.back, status_dictionary),
+            ButtonData("next", Button.next, status_dictionary),
+            ButtonData("play_forward", Button.play_forward, status_dictionary),
+            ButtonData("play_backward", Button.play_backward, status_dictionary),
+            ButtonData("pause", Button.pause, status_dictionary),
+            ButtonData("restart", Button.restart, status_dictionary)
+        ]
+        GuiUtils.create_widgets(player_buttons, player_frame)
+
+        others_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
+        others_buttons = [
+            ButtonData("reset", Button.reset, status_dictionary),
+            ButtonData("options", Button.open_options, [status_dictionary, current_options])
+        ]
+        GuiUtils.create_widgets(others_buttons, others_frame)

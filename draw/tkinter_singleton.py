@@ -3,7 +3,7 @@ import tkinter as tk
 from core.dimensions import Dim2D
 from core.utils import error_print
 
-from draw.button import ButtonData, PackData
+from draw.widget import ButtonData, PackData, TextData, LabelData, WidgetData
 from draw.colour import Colour
 
 # TODO: Should not use singleton but inherit an abstract class with fundamental methods
@@ -11,8 +11,9 @@ class TkinterSingleton:
     root = None
     canvas = None
 
-    frames = {}
-    rectangles = {}
+    grid_frames = {}
+    canvas_rectangles = {}
+    widgets = {}
 
     @staticmethod
     def start(title, resizeable=(False, False)):
@@ -28,8 +29,19 @@ class TkinterSingleton:
         TkinterSingleton.root.geometry(f"{size.x}x{size.y}")
 
     @staticmethod
-    def create_canvas(size: Dim2D):
-        TkinterSingleton.canvas = tk.Canvas(TkinterSingleton.root, width=size.x, height=size.y)
+    def create_canvas(size=Dim2D(1, 1)):
+        if TkinterSingleton.canvas is None:
+            TkinterSingleton.canvas = tk.Canvas(TkinterSingleton.root)
+            TkinterSingleton.resize_canvas(size)
+        else:
+            error_print("Canvas is already created")
+
+    @staticmethod
+    def resize_canvas(size: Dim2D):
+        if TkinterSingleton.canvas is None:
+            error_print("It should create canvas first")
+        else:
+            TkinterSingleton.canvas.configure(width=size.x, height=size.y)
 
     @staticmethod
     def set_weight_of_grid_element(element, grid_index: Dim2D, weight=1):
@@ -37,9 +49,9 @@ class TkinterSingleton:
         element.columnconfigure(grid_index.x, weight=weight)
 
     @staticmethod
-    def create_frame_at(grid_index: Dim2D, frame_size: Dim2D, colour: Colour):
-        if grid_index in TkinterSingleton.frames:
-            frame = TkinterSingleton.frames[grid_index]
+    def create_frame_with_grid(grid_index: Dim2D, frame_size: Dim2D, colour: Colour):
+        if grid_index in TkinterSingleton.grid_frames:
+            frame = TkinterSingleton.grid_frames[grid_index]
             frame.configure(background=colour.value)
         else:
             frame = tk.Frame(
@@ -48,14 +60,14 @@ class TkinterSingleton:
                 height=frame_size.y,
                 background=colour.value
             )
-            TkinterSingleton.frames[grid_index] = frame
+            TkinterSingleton.grid_frames[grid_index] = frame
             frame.grid(column=grid_index.x, row=grid_index.y)
             TkinterSingleton.set_weight_of_grid_element(frame, grid_index)
 
     @staticmethod
     def create_rectangle_at(grid_index: Dim2D, tile_size: Dim2D, colour: Colour):
-        if grid_index in TkinterSingleton.rectangles:
-            rectangle = TkinterSingleton.rectangles[grid_index]
+        if grid_index in TkinterSingleton.canvas_rectangles:
+            rectangle = TkinterSingleton.canvas_rectangles[grid_index]
             TkinterSingleton.canvas.itemconfig(rectangle, fill=colour.value, outline=colour.value)
         else:
             coordinates = (
@@ -69,14 +81,18 @@ class TkinterSingleton:
                 fill=colour.value,
                 outline=colour.value
             )
-            TkinterSingleton.rectangles[grid_index] = rectangle
+            TkinterSingleton.canvas_rectangles[grid_index] = rectangle
+
+    # TODO: Should be handled in a better way
+    @staticmethod
+    def clear_rectangle():
+        TkinterSingleton.canvas_rectangles = {}
 
     @staticmethod
-    def create_button_at(button_data: ButtonData):
+    def create_button_with_grid(button_data: ButtonData):
         button = tk.Button(
             TkinterSingleton.root,
             text=button_data.text,
-            fg=button_data.colour.value,
             command=lambda: button_data.callback_function(button_data.parameters)
         )
         button.grid(
@@ -101,19 +117,43 @@ class TkinterSingleton:
         return frame
 
     @staticmethod
-    def create_button_with_pack(button_data: ButtonData, root=None):
+    def create_widget_with_pack(widget_data: WidgetData, root=None):
         if root is None:
             root = TkinterSingleton.root
-        button = tk.Button(
+        widget = None
+        if isinstance(widget_data, ButtonData):
+            widget = TkinterSingleton.create_button(root, widget_data)
+        elif isinstance(widget_data, TextData):
+            widget = TkinterSingleton.create_text(root, widget_data)
+        elif isinstance(widget_data, LabelData):
+            widget = TkinterSingleton.create_label(root, widget_data)
+        widget.pack(
+            side=widget_data.pack_data.side,
+            fill=widget_data.pack_data.fill,
+            expand=widget_data.pack_data.expand
+        )
+        TkinterSingleton.widgets[widget_data.id] = widget
+
+    @staticmethod
+    def create_button(root, button_data: ButtonData):
+        return tk.Button(
             root,
             text=button_data.text,
-            fg=button_data.colour.value,
             command=lambda: button_data.callback_function(button_data.parameters)
         )
-        button.pack(
-            side=button_data.pack_data.side,
-            fill=button_data.pack_data.fill,
-            expand=button_data.pack_data.expand
+
+    @staticmethod
+    def create_text(root, text_data: TextData):
+        text = tk.Text(root, height=text_data.number_of_lines, width=text_data.number_of_characters)
+        text.delete(1.0, "end-1c")
+        text.insert("end-1c", text_data.text)
+        return text
+
+    @staticmethod
+    def create_label(root, label_data: LabelData):
+        return tk.Label(
+            root,
+            text=label_data.text,
         )
 
     @staticmethod
@@ -127,3 +167,10 @@ class TkinterSingleton:
     @staticmethod
     def loop():
         TkinterSingleton.root.mainloop()
+
+    @staticmethod
+    def create_menu_window(title):
+        menu_window = tk.Toplevel(TkinterSingleton.root)
+        menu_window.title(title)
+        menu_window.resizable(width=False, height=False)
+        return menu_window
