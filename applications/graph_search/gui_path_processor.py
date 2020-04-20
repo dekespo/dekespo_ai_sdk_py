@@ -20,10 +20,9 @@ class GuiPathProcessor:
         self._status_dictionary = Utils.get_default_status_dictionary()
         self._current_options = Utils.get_default_options_dictionary()
         TkinterSingleton.create_canvas()
-        # TODO: Add slider for the FPS speed
-        self._update_frame_in_milliseconds = 16
         self._graph_data = GuiPathProcessor._set_gui(self._current_options)
-        GuiUtils.create_buttons_layer_canvas(self._status_dictionary, self._current_options)
+        GuiUtils.create_buttons_layer(self._status_dictionary, self._current_options)
+        GuiUtils.create_slider_layer(self._current_options)
         TkinterSingleton.refresh()
         self._start_path_index = 0
         self._current_path_index = self._start_path_index
@@ -76,7 +75,7 @@ class GuiPathProcessor:
     def _update_path(self):
         TkinterSingleton.update(
             self.process,
-            in_milliseconds=self._update_frame_in_milliseconds
+            in_milliseconds=round(1000 / self._current_options[Options.STEPS_PER_SECOND])
         )
 
     def _reset(self):

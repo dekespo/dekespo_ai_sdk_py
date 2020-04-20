@@ -3,7 +3,7 @@ import tkinter as tk
 from core.dimensions import Dim2D
 from core.utils import error_print
 
-from draw.widget import ButtonData, PackData, TextData, LabelData, WidgetData
+from draw.widget import ButtonData, PackData, TextData, LabelData, WidgetData, ScaleData
 from draw.colour import Colour
 
 # TODO: Should not use singleton but inherit an abstract class with fundamental methods
@@ -104,6 +104,7 @@ class TkinterSingleton:
         )
         TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
+    # TODO: Merge this with create widget with pack?
     @staticmethod
     def create_frame_with_pack(pack_data: PackData, root=None):
         if root is None:
@@ -127,12 +128,14 @@ class TkinterSingleton:
             widget = TkinterSingleton.create_text(root, widget_data)
         elif isinstance(widget_data, LabelData):
             widget = TkinterSingleton.create_label(root, widget_data)
+        elif isinstance(widget_data, ScaleData):
+            widget = TkinterSingleton.create_scale(root, widget_data)
         widget.pack(
             side=widget_data.pack_data.side,
             fill=widget_data.pack_data.fill,
             expand=widget_data.pack_data.expand
         )
-        TkinterSingleton.widgets[widget_data.id] = widget
+        TkinterSingleton.widgets[widget_data.id_] = widget
 
     @staticmethod
     def create_button(root, button_data: ButtonData):
@@ -154,6 +157,19 @@ class TkinterSingleton:
         return tk.Label(
             root,
             text=label_data.text,
+        )
+
+    @staticmethod
+    def create_scale(root, scale_data: ScaleData):
+        return tk.Scale(
+            root,
+            label=scale_data.text,
+            from_=scale_data.from_,
+            to=scale_data.to,
+            orient=scale_data.orientation,
+            command=lambda steps_per_second: scale_data.callback_function(
+                scale_data.parameters, steps_per_second
+            )
         )
 
     @staticmethod
