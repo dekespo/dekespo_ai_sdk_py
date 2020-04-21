@@ -5,7 +5,7 @@ from typing import List
 
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
-from draw.widget import PackData, ButtonData, WidgetData, TextData, LabelData
+from draw.widget import PackData, ButtonData, WidgetData, TextData, LabelData, ScaleData
 
 from core.dimensions import Dim2D
 from core.graph import Graph
@@ -24,12 +24,19 @@ class Status(Enum):
 class Options(Enum):
     TILE_SIZE = auto()
     GRID_SIZE = auto()
+    STEPS_PER_SECOND = auto()
 
 @dataclass
 class GraphData:
     tile_size: Dim2D
     grid_size: Dim2D
     graph: Graph
+
+# pylint: disable=too-few-public-methods
+class Scale:
+    @staticmethod
+    def on_scale(current_options, steps_per_second):
+        current_options[Options.STEPS_PER_SECOND] = int(steps_per_second)
 
 class Button:
 
@@ -87,7 +94,7 @@ class Button:
         def create_text_data(value, id_, number_of_characters=3, number_of_lines=1):
             return TextData(
                 value,
-                id=id_,
+                id_=id_,
                 number_of_characters=number_of_characters,
                 number_of_lines=number_of_lines
             )
@@ -168,7 +175,8 @@ class Utils:
     def get_default_options_dictionary():
         return {
             Options.TILE_SIZE: Dim2D(10, 10),
-            Options.GRID_SIZE: Dim2D(60, 60)
+            Options.GRID_SIZE: Dim2D(60, 60),
+            Options.STEPS_PER_SECOND: 60
         }
 
 class GuiUtils:
@@ -183,7 +191,7 @@ class GuiUtils:
 
     # TODO: Make this more resuable for different windows
     @staticmethod
-    def create_buttons_layer_canvas(status_dictionary, current_options):
+    def create_buttons_layer(status_dictionary, current_options):
         player_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
         player_buttons = [
             ButtonData("back", Button.back, status_dictionary),
@@ -201,3 +209,20 @@ class GuiUtils:
             ButtonData("options", Button.open_options, [status_dictionary, current_options])
         ]
         GuiUtils.create_widgets(others_buttons, others_frame)
+
+    @staticmethod
+    def create_slider_layer(current_options):
+        slider_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
+        sliders = [
+            ScaleData(
+                text="Number of steps in second",
+                id_="speed_scaler",
+                callback_function=Scale.on_scale,
+                parameters=current_options,
+                from_=1,
+                to=1000,
+                orientation="horizontal",
+            )
+        ]
+        GuiUtils.create_widgets(sliders, slider_frame)
+        TkinterSingleton.widgets["speed_scaler"].set(current_options[Options.STEPS_PER_SECOND])
