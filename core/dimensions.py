@@ -66,7 +66,7 @@ class Dim2D:
     def get_minimum_index_and_value(dimensions, criteria_function, **kwargs):
         def minimum_operator(value, minimum):
             return value < minimum
-        return Dim2D.get_optimum_index_and_value(
+        return Dim2D._get_optimum_index_and_value(
             dimensions,
             criteria_function,
             minimum_operator,
@@ -77,7 +77,7 @@ class Dim2D:
     def get_maximum_index_and_value(dimensions, criteria_function, **kwargs):
         def maximum_operator(value, maximum):
             return value > maximum
-        return Dim2D.get_optimum_index_and_value(
+        return Dim2D._get_optimum_index_and_value(
             dimensions,
             criteria_function,
             maximum_operator,
@@ -85,7 +85,7 @@ class Dim2D:
         )
 
     @staticmethod
-    def get_optimum_index_and_value(dimensions, criteria_function, operator_function, **kwargs):
+    def _get_optimum_index_and_value(dimensions, criteria_function, operator_function, **kwargs):
         start_index = 0
         optimum_dimension = dimensions[start_index]
         optimum_value = criteria_function(dimensions[start_index], **kwargs)
