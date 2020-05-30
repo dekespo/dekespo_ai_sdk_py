@@ -5,12 +5,13 @@ from algorithms.connected_component_labelling import ConnectedComponentLabelling
 from core.graph import Graph
 from core.shapes import Shape2D
 from core.dimensions import Dim2D
+from core.raw_data_handler import RawDataHandler
 
 class ConnectedComponentLabellingTest(unittest.TestCase):
 
     def test_wiki_example(self):
-        raw_data = example_wiki_ccl()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[0])
+        raw_data_handler = RawDataHandler(example_wiki_ccl())
+        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[0])
         labeller = ConnectedComponentLabelling(
             graph,
             ConnectedComponentLabelling.ConnectivityType.EIGHT
@@ -52,8 +53,8 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
         self.assertTrue(Dim2D(13, 5) in regions[4])
 
     def test_different_regions_8_connectivity(self):
-        raw_data = example_simple_different_regions()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        raw_data_handler = RawDataHandler(example_simple_different_regions())
+        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[1])
         labeller = ConnectedComponentLabelling(
             graph,
             ConnectedComponentLabelling.ConnectivityType.EIGHT
@@ -76,8 +77,8 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
         self.assertTrue(Dim2D(3, 2) in regions[4])
 
     def test_different_regions_4_connectivity(self):
-        raw_data = example_simple_different_regions()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        raw_data_handler = RawDataHandler(example_simple_different_regions())
+        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[1])
         labeller = ConnectedComponentLabelling(
             graph,
             ConnectedComponentLabelling.ConnectivityType.FOUR

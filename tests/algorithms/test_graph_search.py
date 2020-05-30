@@ -6,14 +6,15 @@ from algorithms.graph_search.api import GraphSearch
 from core.graph import Graph
 from core.dimensions import Dim2D
 from core.shapes import Shape2D
+from core.raw_data_handler import RawDataHandler
 
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):
     def setUp(self):
         def generate_graph_search(example_function):
-            raw_data = example_function()
+            raw_data_handler = RawDataHandler(example_function())
             blocking_values = set([1])
-            graph = Graph(raw_data, Shape2D.Type.RECTANGLE, blocking_values)
+            graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values)
             start_point = Dim2D(0, 0)
             return GraphSearch(graph, start_point)
 

@@ -3,6 +3,7 @@ import unittest
 from core.dimensions import Dim2D
 from core.graph import Graph
 from core.shapes import Shape2D
+from core.raw_data_handler import RawDataHandler
 
 from templates.rectangle_world import example_small_random, example_unreachable_positions
 
@@ -10,9 +11,17 @@ from templates.rectangle_world import example_small_random, example_unreachable_
 # TODO: Separate test_graph_data_with_blocking into small unittests with setup
 class GraphTest(unittest.TestCase):
     def test_graph_data_with_blocking(self):
-        raw_data = example_small_random()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE)
-        self.assertTrue(graph.raw_data, example_small_random())
+        raw_data_handler = RawDataHandler(example_small_random())
+        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE)
+        self.assertTrue(str(graph), """
+                                    Shape Type: Type.RECTANGLE
+                                    Raw data:
+                                    0 |1 |0 |1
+                                    1 |0 |0 |0
+                                    0 |0 |0 |0
+                                    """
+                        )
+        self.assertTrue(graph.raw_data_handler, example_small_random())
         self.assertIsNone(graph.blocking_values)
         self.assertListEqual(graph.blocking_positions, [])
         new_blocking_values = set([1])
@@ -49,8 +58,8 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(Dim2D(3, 2) in available_poses)
 
     def test_unreachable_graph_data(self):
-        raw_data = example_unreachable_positions()
-        graph = Graph(raw_data, Shape2D.Type.RECTANGLE, set([1]))
+        raw_data_handler = RawDataHandler(example_unreachable_positions())
+        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, set([1]))
         self.assertTrue(graph.blocking_values, set([1]))
         self.assertTrue(graph.blocking_positions, [Dim2D(2, 1), Dim2D(3, 1), Dim2D(2, 2)])
         pos = Dim2D(1, 2)

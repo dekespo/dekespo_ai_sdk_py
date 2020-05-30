@@ -34,7 +34,7 @@ class ConnectedComponentLabelling:
 
     def _set_nodes(self):
         self._nodes = {}
-        for y, row in enumerate(self.graph.raw_data):
+        for y, row in enumerate(self.graph.raw_data_handler.raw_data):
             for x, graph_value in enumerate(row):
                 self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(
                     Dim2D(x, y),
@@ -44,7 +44,7 @@ class ConnectedComponentLabelling:
     # TODO: Should return a graph?
     def get_labels_graph(self):
         new_grid = []
-        for y, row in enumerate(self.graph.raw_data):
+        for y, row in enumerate(self.graph.raw_data_handler.raw_data):
             row_list = []
             for x, _ in enumerate(row):
                 row_list.append(self._nodes[Dim2D(x, y)].label_value)
