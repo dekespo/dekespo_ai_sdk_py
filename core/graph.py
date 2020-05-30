@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import random
 
 from core.dimensions import Dim2D
+from core.raw_data_handler import RawDataHandler
 from core.shapes import Shape2D, Rectangle
 
 class Graph:
@@ -21,8 +22,13 @@ class Graph:
         custom_function: 'typing.Any' = None
         random_output: bool = False
 
-    def __init__(self, raw_data, shape_type, blocking_values=None):
-        self.raw_data = raw_data
+    # TODO: Possible move shape_type to raw_data_handler?
+    def __init__(self,
+                 raw_data_handler: RawDataHandler,
+                 shape_type: Shape2D.Type,
+                 blocking_values=None
+                ):
+        self.raw_data_handler = raw_data_handler
         self.shape_type = shape_type
         self._get_shape(shape_type)
         self.update_blocking_values(blocking_values)
@@ -34,7 +40,7 @@ class Graph:
         self.graph_shape = get_shape_function()
 
     def _get_rectangle_graph(self):
-        width, height = len(self.raw_data[0]), len(self.raw_data)
+        width, height = len(self.raw_data_handler.raw_data[0]), len(self.raw_data_handler.raw_data)
         top_left_corner = Dim2D(0, 0)
         return Rectangle(top_left_corner, width, height)
 
@@ -42,7 +48,7 @@ class Graph:
         positions = []
         if not self.blocking_values:
             return positions
-        for y, row in enumerate(self.raw_data):
+        for y, row in enumerate(self.raw_data_handler.raw_data):
             for x, value in enumerate(row):
                 if value in self.blocking_values:
                     positions.append(Dim2D(x, y))
@@ -108,3 +114,9 @@ class Graph:
         if neighbour_data.random_output:
             random.shuffle(new_candidates)
         return new_candidates
+
+    def __str__(self):
+        return f"Shape Type: {self.shape_type}\nRaw data:\n{self.raw_data_handler}"
+
+    def __repr__(self): # pragma: no cover
+        return self.__str__()
