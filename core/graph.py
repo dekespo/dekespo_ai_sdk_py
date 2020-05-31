@@ -84,28 +84,22 @@ class Graph:
                    or is_blocked(should_block, candidate_position)
                    or is_unreachable(should_reach, candidate_position))
 
-    def get_available_neighbours(
-            self,
-            position: Dim2D,
-            neighbour_data: Neighbour.Data,
-            should_reach: bool = False,
-            should_block: bool = True
-        ):
+    def get_available_neighbours(self, position: Dim2D, neighbour_data: Neighbour.Data):
         get_neighbours_type_function = {
             Neighbour.Data.Type.CROSS: Neighbour.get_neighbours_cross,
             Neighbour.Data.Type.SQUARE: Neighbour.get_neighbours_square,
             Neighbour.Data.Type.DIAMOND: Neighbour.get_neighbours_diamond,
             Neighbour.Data.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
-        neighbours_positions = get_neighbours_type_function(position, neighbour_data)
+        neighbours_positions = list(get_neighbours_type_function(
+            position,
+            self._is_position_valid,
+            neighbour_data
+        ))
 
-        new_candidates = list()
-        for candidate_position in neighbours_positions:
-            if self._is_position_valid(candidate_position, should_block, should_reach):
-                new_candidates.append(candidate_position)
         if neighbour_data.random_output:
-            shuffle(new_candidates)
-        return new_candidates
+            shuffle(neighbours_positions)
+        return neighbours_positions
 
     def __str__(self):
         return f"Shape Type: {self.shape_type}\nRaw data:\n{self.raw_data_handler}"

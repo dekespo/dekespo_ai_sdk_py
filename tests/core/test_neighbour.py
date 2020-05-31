@@ -6,7 +6,7 @@ from core.neighbour import Neighbour
 class NeighbourTest(unittest.TestCase):
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)
-        poses = Neighbour.get_neighbours_cross(pos)
+        poses = Neighbour.get_neighbours_cross(pos, lambda *_: True)
         poses = list(poses)
         self.assertEqual(len(poses), 4)
         self.assertTrue(Dim2D(0, 1) in poses)
@@ -16,7 +16,7 @@ class NeighbourTest(unittest.TestCase):
 
     def test_get_neighbours_square(self):
         pos = Dim2D(1, 1)
-        poses = Neighbour.get_neighbours_square(pos)
+        poses = Neighbour.get_neighbours_square(pos, lambda *_: True)
         poses = list(poses)
         self.assertEqual(len(poses), 8)
         self.assertTrue(Dim2D(0, 1) in poses)
@@ -32,6 +32,7 @@ class NeighbourTest(unittest.TestCase):
         pos = Dim2D(1, 1)
         poses = Neighbour.get_neighbours_diamond(
             pos,
+            lambda *_: True,
             Neighbour.Data(Neighbour.Data.Type.DIAMOND, radius=2)
         )
         poses = list(poses)
