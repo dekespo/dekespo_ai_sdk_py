@@ -43,10 +43,10 @@ class GraphSearch:
             current_point = open_set.pop(0)
             if current_point not in closed_set:
                 closed_set.append(current_point)
-                for new_candidate_point in self._get_available_neighbours(
+                for new_candidate_point, _ in self._get_available_neighbours(
                         current_point,
                         neighbour_data
-                    ):
+                    ).items():
                     open_set.append(new_candidate_point)
         return closed_set
 
@@ -102,10 +102,10 @@ class GraphSearch:
             open_set.remove(current_point)
             closed_set.append(current_point)
 
-            for new_candidate_point in self._get_available_neighbours(
+            for new_candidate_point, _ in self._get_available_neighbours(
                     current_point,
                     neighbour_data
-                ):
+                ).items():
                 if new_candidate_point not in closed_set:
                     tentative_g_score = g_score[current_point] + \
                         a_star_functions.run_weight_function(

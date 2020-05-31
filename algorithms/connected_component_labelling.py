@@ -62,7 +62,7 @@ class ConnectedComponentLabelling:
         for current_node in self._nodes.values():
             if current_node.graph_binary_value:
                 new_labels = []
-                for neighbour_position in self.graph.get_available_neighbours(
+                for neighbour_position, _ in self.graph.get_available_neighbours(
                         current_node.position,
                         Neighbour.Data(
                             Neighbour.Data.Type.CUSTOM,
@@ -70,7 +70,7 @@ class ConnectedComponentLabelling:
                             should_block=False,
                             should_reach=True
                         )
-                    ):
+                    ).items():
                     neighbour_node = self._nodes[neighbour_position]
                     if is_already_labelled(neighbour_node):
                         new_labels.append(neighbour_node.label_value)

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from random import shuffle
 from typing import Tuple
+from collections import OrderedDict
 
 from core.dimensions import Dim2D
 from core.raw_data_handler import RawDataHandler
@@ -84,22 +85,25 @@ class Graph:
                    or is_blocked(should_block, candidate_position)
                    or is_unreachable(should_reach, candidate_position))
 
-    def get_available_neighbours(self, position: Dim2D, neighbour_data: Neighbour.Data):
+    def get_available_neighbours(self, position: Dim2D, neighbour_data: Neighbour.Data) \
+                                -> 'OrderedDict[Dim2D, int]':
         get_neighbours_type_function = {
             Neighbour.Data.Type.CROSS: Neighbour.get_neighbours_cross,
             Neighbour.Data.Type.SQUARE: Neighbour.get_neighbours_square,
             Neighbour.Data.Type.DIAMOND: Neighbour.get_neighbours_diamond,
             Neighbour.Data.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
-        neighbours_positions = list(get_neighbours_type_function(
+        neighbours_positions_ordered_dic = OrderedDict(get_neighbours_type_function(
             position,
             self._is_position_valid,
             neighbour_data
         ))
 
         if neighbour_data.random_output:
-            shuffle(neighbours_positions)
-        return neighbours_positions
+            items = list(neighbours_positions_ordered_dic.items())
+            shuffle(items)
+            neighbours_positions_ordered_dic = OrderedDict(items)
+        return neighbours_positions_ordered_dic
 
     def __str__(self):
         return f"Shape Type: {self.shape_type}\nRaw data:\n{self.raw_data_handler}"
