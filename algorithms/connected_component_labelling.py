@@ -25,9 +25,9 @@ class ConnectedComponentLabelling:
         self.graph = graph
         self._get_neighbour_function = {
             ConnectedComponentLabelling.ConnectivityType.FOUR : \
-                self._get_neighbour_function_4_connectivity,
+                Neighbour.get_neighbour_function_4_connectivity,
             ConnectedComponentLabelling.ConnectivityType.EIGHT : \
-                self._get_neighbour_function_8_connectivity
+                Neighbour.get_neighbour_function_8_connectivity
         }[connectivity_type]
         self._nodes = None
         self._set_nodes()
@@ -52,29 +52,6 @@ class ConnectedComponentLabelling:
             new_grid.append(row_list)
         return new_grid
 
-    # TODO: Maybe move them to grpah class with better function names
-    @staticmethod
-    def _get_neighbour_function_8_connectivity(position, _):
-        x, y = position.x, position.y
-        candidates = [
-            (x - 1, y),
-            (x - 1, y - 1),
-            (x, y - 1),
-            (x + 1, y - 1)
-        ]
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
-
-    @staticmethod
-    def _get_neighbour_function_4_connectivity(position, _):
-        x, y = position.x, position.y
-        candidates = [
-            (x - 1, y),
-            (x, y - 1)
-        ]
-        candidates = Dim2D.convert_candiates_to_dimensions(candidates)
-        return candidates
-
 
     def first_pass(self):
 
@@ -89,9 +66,10 @@ class ConnectedComponentLabelling:
                         current_node.position,
                         Neighbour.Data(
                             Neighbour.Data.Type.CUSTOM,
-                            custom_function=self._get_neighbour_function
-                        ),
-                        should_block=False
+                            custom_function=self._get_neighbour_function,
+                            should_block=False,
+                            should_reach=True
+                        )
                     ):
                     neighbour_node = self._nodes[neighbour_position]
                     if is_already_labelled(neighbour_node):

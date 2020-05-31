@@ -19,29 +19,93 @@ class Neighbour:
         radius: int = 1
         custom_function: 'typing.Any' = None
         random_output: bool = False
+        should_reach: bool = False
+        should_block: bool = True
 
     @staticmethod
-    def get_neighbours_square(position: Dim2D, neighbour_data: Data = Data()):
+    def get_neighbours_square(
+            position: Dim2D,
+            is_position_valid_function,
+            neighbour_data: Data = Data()
+        ):
         x, y = position.x, position.y
         for y_distance in range(-neighbour_data.radius, neighbour_data.radius + 1):
             for x_distance in range(-neighbour_data.radius, neighbour_data.radius + 1):
-                if not (x_distance == 0 and y_distance == 0):
-                    yield Dim2D(x + x_distance, y + y_distance)
+                new_position = Dim2D(x + x_distance, y + y_distance)
+                if not(x_distance == 0 and y_distance == 0) \
+                   and is_position_valid_function(
+                           new_position,
+                           neighbour_data.should_block,
+                           neighbour_data.should_reach):
+                    yield new_position
 
     @staticmethod
-    def get_neighbours_diamond(position: Dim2D, neighbour_data: Data = Data()):
+    def get_neighbours_diamond(
+            position: Dim2D,
+            is_position_valid_function,
+            neighbour_data: Data = Data()
+        ):
         x, y = position.x, position.y
         for y_distance in range(-neighbour_data.radius, neighbour_data.radius + 1):
             for x_distance in range(-neighbour_data.radius, neighbour_data.radius + 1):
-                if not (x_distance == 0 and y_distance == 0) and \
-                   abs(x_distance) + abs(y_distance) <= neighbour_data.radius:
-                    yield Dim2D(x + x_distance, y + y_distance)
+                new_position = Dim2D(x + x_distance, y + y_distance)
+                if not (x_distance == 0 and y_distance == 0) \
+                   and abs(x_distance) + abs(y_distance) <= neighbour_data.radius \
+                   and is_position_valid_function(
+                           new_position,
+                           neighbour_data.should_block,
+                           neighbour_data.should_reach):
+                    yield new_position
 
     @staticmethod
-    def get_neighbours_cross(position: Dim2D, neighbour_data: Data = Data()):
+    def get_neighbours_cross(
+            position: Dim2D,
+            is_position_valid_function,
+            neighbour_data: Data = Data()
+        ):
         x, y = position.x, position.y
         for distance in range(1, neighbour_data.radius + 1):
-            yield Dim2D(x + distance, y)
-            yield Dim2D(x - distance, y)
-            yield Dim2D(x, y + distance)
-            yield Dim2D(x, y - distance)
+            for new_position in (
+                    Dim2D(x + distance, y),
+                    Dim2D(x - distance, y),
+                    Dim2D(x, y + distance),
+                    Dim2D(x, y - distance)):
+                if is_position_valid_function(
+                        new_position,
+                        neighbour_data.should_block,
+                        neighbour_data.should_reach):
+                    yield new_position
+
+    @staticmethod
+    def get_neighbour_function_8_connectivity(
+            position: Dim2D,
+            is_position_valid_function,
+            neighbour_data: Data = Data()
+        ):
+        x, y = position.x, position.y
+        for new_position in (
+                Dim2D(x - 1, y),
+                Dim2D(x - 1, y - 1),
+                Dim2D(x, y - 1),
+                Dim2D(x + 1, y - 1)):
+            if is_position_valid_function(
+                    new_position,
+                    neighbour_data.should_block,
+                    neighbour_data.should_reach):
+                yield new_position
+
+    @staticmethod
+    def get_neighbour_function_4_connectivity(
+            position: Dim2D,
+            is_position_valid_function,
+            neighbour_data: Data = Data()
+        ):
+        x, y = position.x, position.y
+        for new_position in (
+                Dim2D(x - 1, y),
+                Dim2D(x, y - 1)):
+            if is_position_valid_function(
+                    new_position,
+                    neighbour_data.should_block,
+                    neighbour_data.should_reach):
+                yield new_position
