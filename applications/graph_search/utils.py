@@ -9,6 +9,7 @@ from draw.widget import PackData, ButtonData, WidgetData, TextData, LabelData, S
 
 from core.dimensions import Dim2D
 from core.graph import Graph
+from core.neighbour import Neighbour
 
 from algorithms.graph_search.api import GraphSearch
 
@@ -152,7 +153,7 @@ class Utils:
     @staticmethod
     def initialize_depth_first_search(graph_data: GraphData):
         start_point = Utils.get_random_edge_point(graph_data.grid_size)
-        neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, random_output=True)
+        neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS, random_output=True)
         depth_first_search = GraphSearch(graph_data.graph, start_point) \
                             .depth_first_search(neighbour_data, runs_with_thread=True)
         depth_first_search.event_set()

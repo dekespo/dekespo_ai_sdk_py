@@ -4,6 +4,7 @@ from enum import Enum, auto
 from core.dimensions import Dim2D
 from core.graph import Graph
 from core.disjoint_set import DisjointSet
+from core.neighbour import Neighbour
 
 class ConnectedComponentLabelling:
     '''
@@ -86,8 +87,8 @@ class ConnectedComponentLabelling:
                 new_labels = []
                 for neighbour_position in self.graph.get_available_neighbours(
                         current_node.position,
-                        Graph.NeighbourData(
-                            Graph.NeighbourData.Type.CUSTOM,
+                        Neighbour.Data(
+                            Neighbour.Data.Type.CUSTOM,
                             custom_function=self._get_neighbour_function
                         ),
                         should_block=False

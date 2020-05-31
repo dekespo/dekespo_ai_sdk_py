@@ -1,27 +1,13 @@
-from enum import Enum, auto
 from dataclasses import dataclass
-import random
+from random import shuffle
 from typing import Tuple
 
 from core.dimensions import Dim2D
 from core.raw_data_handler import RawDataHandler
 from core.shapes import Shape2D, Rectangle
+from core.neighbour import Neighbour
 
 class Graph:
-
-    @dataclass
-    class NeighbourData:
-        class Type(Enum):
-            NONE = auto()
-            CROSS = auto()
-            DIAMOND = auto()
-            SQUARE = auto()
-            CUSTOM = auto()
-
-        type_: Type = Type.NONE
-        length: int = 1
-        custom_function: 'typing.Any' = None
-        random_output: bool = False
 
     @dataclass
     class BlockingData:
@@ -83,31 +69,10 @@ class Graph:
         self._unreachable_positions = tuple(set(positions)) \
                                       if positions is not None else tuple()
 
-    @staticmethod
-    def get_neighbours_cross(position, neighbour_data: NeighbourData = NeighbourData()):
-        x, y = position.x, position.y
-        for distance in range(1, neighbour_data.length + 1):
-            yield Dim2D(x + distance, y)
-            yield Dim2D(x - distance, y)
-            yield Dim2D(x, y + distance)
-            yield Dim2D(x, y - distance)
-
-    @staticmethod
-    def get_neighbours_square(position, neighbour_data: NeighbourData = NeighbourData()):
-        x, y = position.x, position.y
-        for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-            for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                if not (x_distance == 0 and y_distance == 0):
-                    yield Dim2D(x + x_distance, y + y_distance)
-
-    @staticmethod
-    def get_neighbours_diamond(position, neighbour_data: NeighbourData = NeighbourData()):
-        x, y = position.x, position.y
-        for y_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-            for x_distance in range(-neighbour_data.length, neighbour_data.length + 1):
-                if not (x_distance == 0 and y_distance == 0) and \
-                   abs(x_distance) + abs(y_distance) <= neighbour_data.length:
-                    yield Dim2D(x + x_distance, y + y_distance)
+    def _is_position_valid(self, candidate_position: Dim2D, should_block: bool, should_reach: bool):
+        return not(self._is_outside_of_boundaries(candidate_position)
+                   or self._is_blocked(should_block, candidate_position)
+                   or self._is_unreachable(should_reach, candidate_position))
 
     def _is_blocked(self, should_block: bool, candidate_position: Dim2D):
         return should_block and candidate_position in self.blocking_positions
@@ -122,29 +87,24 @@ class Graph:
     def get_available_neighbours(
             self,
             position: Dim2D,
-            neighbour_data: NeighbourData,
-            should_reach=False,
-            should_block=True
+            neighbour_data: Neighbour.Data,
+            should_reach: bool = False,
+            should_block: bool = True
         ):
         get_neighbours_type_function = {
-            Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
-            Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
-            Graph.NeighbourData.Type.DIAMOND: Graph.get_neighbours_diamond,
-            Graph.NeighbourData.Type.CUSTOM: neighbour_data.custom_function
+            Neighbour.Data.Type.CROSS: Neighbour.get_neighbours_cross,
+            Neighbour.Data.Type.SQUARE: Neighbour.get_neighbours_square,
+            Neighbour.Data.Type.DIAMOND: Neighbour.get_neighbours_diamond,
+            Neighbour.Data.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
         neighbours_positions = get_neighbours_type_function(position, neighbour_data)
 
         new_candidates = list()
         for candidate_position in neighbours_positions:
-            if self._is_outside_of_boundaries(candidate_position):
-                continue
-            if self._is_blocked(should_block, candidate_position):
-                continue
-            if self._is_unreachable(should_reach, candidate_position):
-                continue
-            new_candidates.append(candidate_position)
+            if self._is_position_valid(candidate_position, should_block, should_reach):
+                new_candidates.append(candidate_position)
         if neighbour_data.random_output:
-            random.shuffle(new_candidates)
+            shuffle(new_candidates)
         return new_candidates
 
     def __str__(self):
