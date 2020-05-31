@@ -42,14 +42,14 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertEqual(
+        self.assertSequenceEqual(
             dfs.get_closed_set(),
             correct_path_list
         )
         depth_size = 5
         dfs = self.simple_search_object.depth_first_search(neighbour_data, depth_size=depth_size)
         dfs.run_without_thread()
-        self.assertEqual(
+        self.assertSequenceEqual(
             dfs.get_closed_set(),
             correct_path_list[:depth_size]
         )
@@ -77,7 +77,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         dfs.event_set()
         dfs.run()
         dfs.join()
-        self.assertEqual(
+        self.assertSequenceEqual(
             dfs.get_closed_set(),
             correct_path_list
         )
@@ -112,7 +112,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (8, 0), (9, 0)
         ])
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
-        self.assertEqual(
+        self.assertSequenceEqual(
             self.simple_search_object.breadth_first_search(neighbour_data),
             correct_path_list
         )
@@ -125,7 +125,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (3, 4), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (7, 6)
         ])
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
-        self.assertEqual(
+        self.assertSequenceEqual(
             self.simple_search_object.dijkstra_search(end_point, weight_function, neighbour_data),
             correct_path_list
         )
@@ -142,7 +142,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (7, 5), (7, 6)
         ])
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
-        self.assertEqual(
+        self.assertSequenceEqual(
             self.simple_search_object.a_star_search(end_point, a_star_functions, neighbour_data),
             correct_path_list
         )
@@ -164,7 +164,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
             (5, 9), (6, 9), (7, 9), (7, 8), (7, 7), (7, 6)
         ])
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
-        self.assertEqual(
+        self.assertSequenceEqual(
             self.simple_search_object.a_star_search(end_point, a_star_functions, neighbour_data),
             correct_path_list
         )
@@ -177,7 +177,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         )
         correct_path_list = []
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS)
-        self.assertEqual(
+        self.assertSequenceEqual(
             self.blocked_search_object.a_star_search(end_point, a_star_functions, neighbour_data),
             correct_path_list
         )
@@ -204,7 +204,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS, random_output=True)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertEqual(
+        self.assertSequenceEqual(
             dfs.get_closed_set(),
             correct_path_list
         )

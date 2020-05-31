@@ -49,10 +49,10 @@ class DepthFirstSearch(threading.Thread):
             current_point = open_set.pop()
             if current_point not in self._closed_set:
                 self._closed_set.append(current_point)
-                for new_candidate_point in self.input_data.get_available_neighbours(
+                for new_candidate_point, _ in self.input_data.get_available_neighbours(
                         current_point,
                         self.input_data.neighbour_data
-                    ):
+                    ).items():
                     open_set.append(new_candidate_point)
 
     def event_set(self):

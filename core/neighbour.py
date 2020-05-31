@@ -37,7 +37,7 @@ class Neighbour:
                            new_position,
                            neighbour_data.should_block,
                            neighbour_data.should_reach):
-                    yield new_position
+                    yield new_position, abs(x_distance) + abs(y_distance)
 
     @staticmethod
     def get_neighbours_diamond(
@@ -55,7 +55,7 @@ class Neighbour:
                            new_position,
                            neighbour_data.should_block,
                            neighbour_data.should_reach):
-                    yield new_position
+                    yield new_position, abs(x_distance) + abs(y_distance)
 
     @staticmethod
     def get_neighbours_cross(
@@ -74,7 +74,7 @@ class Neighbour:
                         new_position,
                         neighbour_data.should_block,
                         neighbour_data.should_reach):
-                    yield new_position
+                    yield new_position, distance
 
     @staticmethod
     def get_neighbour_function_8_connectivity(
@@ -92,7 +92,7 @@ class Neighbour:
                     new_position,
                     neighbour_data.should_block,
                     neighbour_data.should_reach):
-                yield new_position
+                yield new_position, -1
 
     @staticmethod
     def get_neighbour_function_4_connectivity(
@@ -108,4 +108,4 @@ class Neighbour:
                     new_position,
                     neighbour_data.should_block,
                     neighbour_data.should_reach):
-                yield new_position
+                yield new_position, -1
