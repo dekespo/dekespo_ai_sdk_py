@@ -70,19 +70,19 @@ class Graph:
                                       if positions is not None else tuple()
 
     def _is_position_valid(self, candidate_position: Dim2D, should_block: bool, should_reach: bool):
-        return not(self._is_outside_of_boundaries(candidate_position)
-                   or self._is_blocked(should_block, candidate_position)
-                   or self._is_unreachable(should_reach, candidate_position))
+        def is_blocked(should_block: bool, candidate_position: Dim2D):
+            return should_block and candidate_position in self.blocking_positions
 
-    def _is_blocked(self, should_block: bool, candidate_position: Dim2D):
-        return should_block and candidate_position in self.blocking_positions
+        def is_unreachable(should_reach: bool, candidate_position: Dim2D):
+            return not should_reach and candidate_position in self._unreachable_positions
 
-    def _is_unreachable(self, should_reach: bool, candidate_position: Dim2D):
-        return not should_reach and candidate_position in self._unreachable_positions
+        # TODO: Check if the graph is connected via boundaries
+        def is_outside_of_boundaries(candidate_position: Dim2D):
+            return not self.graph_shape.is_inside_boundaries(candidate_position)
 
-    # TODO: Check if the graph is connected via boundaries
-    def _is_outside_of_boundaries(self, candidate_position: Dim2D):
-        return not self.graph_shape.is_inside_boundaries(candidate_position)
+        return not(is_outside_of_boundaries(candidate_position)
+                   or is_blocked(should_block, candidate_position)
+                   or is_unreachable(should_reach, candidate_position))
 
     def get_available_neighbours(
             self,
