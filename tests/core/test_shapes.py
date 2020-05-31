@@ -26,14 +26,14 @@ class RectangleTest(unittest.TestCase):
     def test_check_boundaries(self):
         top_left_corner = Dim2D(0, 0)
         rectangle = Rectangle(top_left_corner, 200, 100)
-        self.assertTrue(rectangle.check_boundaries(Dim2D(2, 3)))
-        self.assertTrue(rectangle.check_boundaries(Dim2D(199, 99)))
-        self.assertTrue(rectangle.check_boundaries(Dim2D(100, 99)))
-        self.assertTrue(rectangle.check_boundaries(Dim2D(100, 75)))
-        self.assertFalse(rectangle.check_boundaries(Dim2D(199, 100)))
-        self.assertFalse(rectangle.check_boundaries(Dim2D(202, 100)))
-        self.assertFalse(rectangle.check_boundaries(Dim2D(-1, 3)))
-        self.assertFalse(rectangle.check_boundaries(Dim2D(-1, -4)))
+        self.assertTrue(rectangle.is_inside_boundaries(Dim2D(2, 3)))
+        self.assertTrue(rectangle.is_inside_boundaries(Dim2D(199, 99)))
+        self.assertTrue(rectangle.is_inside_boundaries(Dim2D(100, 99)))
+        self.assertTrue(rectangle.is_inside_boundaries(Dim2D(100, 75)))
+        self.assertFalse(rectangle.is_inside_boundaries(Dim2D(199, 100)))
+        self.assertFalse(rectangle.is_inside_boundaries(Dim2D(202, 100)))
+        self.assertFalse(rectangle.is_inside_boundaries(Dim2D(-1, 3)))
+        self.assertFalse(rectangle.is_inside_boundaries(Dim2D(-1, -4)))
 
 class CircleTest(unittest.TestCase):
     def test_simple(self):
