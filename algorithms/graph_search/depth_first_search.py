@@ -3,13 +3,13 @@ from dataclasses import dataclass
 
 from core.dimensions import Dim2D
 from core.utils import error_print
-from core.graph import Graph
+from core.neighbour import Neighbour
 
 @dataclass
 class DepthFirstSearchData:
     start_point: Dim2D
     get_available_neighbours: 'typing.Any'
-    neighbour_data: Graph.NeighbourData
+    neighbour_data: Neighbour.Data
     depth_size: int
 
 class DepthFirstSearch(threading.Thread):
