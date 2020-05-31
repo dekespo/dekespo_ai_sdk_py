@@ -19,7 +19,7 @@ class Shape2D(ABC):
         return self.__str__()
 
     @abstractmethod
-    def check_boundaries(self, position):
+    def is_inside_boundaries(self, position):
         """ Abstract """
 
     @abstractmethod
@@ -39,7 +39,7 @@ class Rectangle(Shape2D):
         return (f"top_left_corner = {self.top_left_corner}, "
                 f"width x height: {self.width}x{self.height}")
 
-    def check_boundaries(self, position):
+    def is_inside_boundaries(self, position):
         if position.x < self.top_left_corner.x \
         or position.x >= self.top_left_corner.x + self.width \
         or position.y < self.top_left_corner.y \
@@ -68,7 +68,7 @@ class Circle(Shape2D):
     def __str__(self):
         return f"centre: {self.centre}, radius: {self.radius}"
 
-    def check_boundaries(self, position):
+    def is_inside_boundaries(self, position):
         """ Not filled yet """
 
     @staticmethod
@@ -87,7 +87,7 @@ class Point(Shape2D):
     def __str__(self):
         return f"position: {self.position}"
 
-    def check_boundaries(self, position):
+    def is_inside_boundaries(self, position):
         """ Not used """
 
     def get_position(self):

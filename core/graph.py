@@ -84,6 +84,9 @@ class Graph:
                    abs(x_distance) + abs(y_distance) <= neighbour_data.length:
                     yield Dim2D(x + x_distance, y + y_distance)
 
+    def _is_blocked(self, should_block: bool, candidate_position: Dim2D):
+        return should_block and candidate_position in self.blocking_positions
+
     def get_available_neighbours(
             self,
             position,
@@ -91,6 +94,8 @@ class Graph:
             unreachable_positions=None,
             should_block=True
         ):
+        if not unreachable_positions:
+            unreachable_positions = []
         get_neighbours_type_function = {
             Graph.NeighbourData.Type.CROSS: Graph.get_neighbours_cross,
             Graph.NeighbourData.Type.SQUARE: Graph.get_neighbours_square,
@@ -98,15 +103,12 @@ class Graph:
             Graph.NeighbourData.Type.CUSTOM: neighbour_data.custom_function
         }[neighbour_data.type_]
         neighbours_positions = get_neighbours_type_function(position, neighbour_data)
-        if not unreachable_positions:
-            unreachable_positions = []
 
         new_candidates = list()
         for candidate_position in neighbours_positions:
-            is_inside_boundaries = self.graph_shape.check_boundaries(candidate_position)
-            if not is_inside_boundaries:
+            if not self.graph_shape.is_inside_boundaries(candidate_position):
                 continue
-            if should_block and candidate_position in self.blocking_positions:
+            if self._is_blocked(should_block, candidate_position):
                 continue
             if candidate_position in unreachable_positions:
                 continue
