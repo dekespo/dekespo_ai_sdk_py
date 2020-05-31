@@ -25,7 +25,7 @@ class GraphTest(unittest.TestCase):
         self.assertIsNone(graph.blocking_values)
         self.assertListEqual(graph.blocking_positions, [])
         new_blocking_values = set([1])
-        graph.update_blocking_values(new_blocking_values)
+        graph.update_blocking_data(new_blocking_values)
         self.assertTrue(graph.blocking_values, set([1]))
         self.assertTrue(graph.blocking_positions, [Dim2D(1, 0), Dim2D(3, 0), Dim2D(1, 1)])
         self.assertTrue(graph.graph_shape.is_inside_boundaries(Dim2D(1, 1)))
@@ -59,13 +59,19 @@ class GraphTest(unittest.TestCase):
 
     def test_unreachable_graph_data(self):
         raw_data_handler = RawDataHandler(example_unreachable_positions())
-        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, set([1]))
-        self.assertTrue(graph.blocking_values, set([1]))
+        blocking_set = set([1])
+        unreachable_positions_set = set([Dim2D(3, 2)])
+        graph = Graph(raw_data_handler,
+                      Shape2D.Type.RECTANGLE,
+                      blocking_set,
+                      unreachable_positions_set
+                     )
+        self.assertTrue(graph.blocking_values, tuple(blocking_set))
         self.assertTrue(graph.blocking_positions, [Dim2D(2, 1), Dim2D(3, 1), Dim2D(2, 2)])
+        self.assertTrue(graph.unreachable_positions, tuple(unreachable_positions_set))
         pos = Dim2D(1, 2)
-        unreachable_positions = [Dim2D(3, 2)]
         neighbour_data = Graph.NeighbourData(Graph.NeighbourData.Type.CROSS, 2)
-        available_poses = graph.get_available_neighbours(pos, neighbour_data, unreachable_positions)
+        available_poses = graph.get_available_neighbours(pos, neighbour_data)
         self.assertEqual(len(available_poses), 3)
         self.assertTrue(Dim2D(1, 0) in available_poses)
         self.assertTrue(Dim2D(1, 1) in available_poses)
