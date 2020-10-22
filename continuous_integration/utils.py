@@ -17,3 +17,15 @@ def remove_extension_if_exists(string, extension):
     if string.endswith(extension):
         return string[:-len(extension)]
     return string
+
+def get_common_modules() -> str:
+    return " ".join([
+        "core",
+        "tests",
+        "templates",
+        "draw",
+        "applications",
+        "continuous_integration",
+        "physics",
+        "algorithms"
+    ])
