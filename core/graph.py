@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from random import shuffle
-from typing import Tuple
+from typing import List, Tuple, Union
 from collections import OrderedDict
 
 from core.dimensions import Dim2D
@@ -12,15 +12,15 @@ class Graph:
 
     @dataclass
     class BlockingData:
-        values = tuple()
-        positions = tuple()
+        values: Union[Tuple, None] = ()
+        positions: Union[Tuple, None] = ()
 
     # TODO: Possible move shape_type to raw_data_handler?
     def __init__(self,
                  raw_data_handler: RawDataHandler,
                  shape_type: Shape2D.Type,
-                 blocking_values: tuple = None,
-                 unreachable_positions: Tuple[Dim2D] = None
+                 blocking_values: Tuple = (),
+                 unreachable_positions: Tuple = ()
                 ):
         self.raw_data_handler = raw_data_handler
         self.shape_type = shape_type
@@ -39,10 +39,10 @@ class Graph:
         top_left_corner = Dim2D(0, 0)
         return Rectangle(top_left_corner, width, height)
 
-    def update_blocking_data(self, blocking_values: tuple):
-        def update_blocking_positions(blocking_values: tuple):
-            positions = []
-            if blocking_values is None:
+    def update_blocking_data(self, blocking_values: Tuple):
+        def update_blocking_positions(blocking_values: Tuple):
+            positions: List[Dim2D] = []
+            if not blocking_values:
                 return positions
             for y, row in enumerate(self.raw_data_handler.raw_data):
                 for x, value in enumerate(row):

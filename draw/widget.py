@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any, Union
 
 from core.dimensions import Dim2D
 
@@ -20,14 +21,14 @@ class WidgetData:
 
 @dataclass
 class _WidgetDataDefaults:
-    id_: str = -1
-    grid_data: GridData = None
-    pack_data: PackData = None
+    id_: int = -1
+    grid_data: Union[GridData, None] = None
+    pack_data: Union[PackData, None] = None
 
 @dataclass
 class _ButtonDataBase:
-    callback_function: 'typing.Any'
-    parameters: 'typing.Any'
+    callback_function: Any
+    parameters: Any
 
 @dataclass
 class _TextDataBase:
@@ -36,8 +37,8 @@ class _TextDataBase:
 
 @dataclass
 class _ScaleDataBase:
-    callback_function: 'typing.Any'
-    parameters: 'typing.Any'
+    callback_function: Any
+    parameters: Any
     from_: int
     to: int
     orientation: str

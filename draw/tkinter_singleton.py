@@ -1,4 +1,5 @@
 import tkinter as tk
+from typing import Any, Dict
 
 from core.dimensions import Dim2D
 from core.utils import error_print
@@ -7,13 +8,15 @@ from draw.widget import ButtonData, PackData, TextData, LabelData, WidgetData, S
 from draw.colour import Colour
 
 # TODO: Should not use singleton but inherit an abstract class with fundamental methods
+# TODO: Singleton should have been in a different structure hence disabled mypy
+# mypy: ignore-errors
 class TkinterSingleton:
     root = None
     canvas = None
 
-    grid_frames = {}
-    canvas_rectangles = {}
-    widgets = {}
+    grid_frames: Dict[Dim2D, tk.Frame] = {}
+    canvas_rectangles: Dict[Dim2D, Any] = {}
+    widgets: Dict[int, Any] = {}
 
     @staticmethod
     def start(title, resizeable=(False, False)):

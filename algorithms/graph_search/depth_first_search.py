@@ -1,5 +1,6 @@
 import threading
 from dataclasses import dataclass
+from typing import Any, List
 
 from core.dimensions import Dim2D
 from core.utils import error_print
@@ -8,15 +9,15 @@ from core.neighbour import Neighbour
 @dataclass
 class DepthFirstSearchData:
     start_point: Dim2D
-    get_available_neighbours: 'typing.Any'
+    get_available_neighbours: Any
     neighbour_data: Neighbour.Data
     depth_size: int
 
 class DepthFirstSearch(threading.Thread):
-    def __init__(self, input_data: DepthFirstSearchData, runs_with_thread):
+    def __init__(self, input_data: DepthFirstSearchData, runs_with_thread: bool):
         self.input_data = input_data
         self.runs_with_thread = runs_with_thread
-        self._closed_set = []
+        self._closed_set: List[Dim2D] = []
 
         if self.runs_with_thread:
             threading.Thread.__init__(self)

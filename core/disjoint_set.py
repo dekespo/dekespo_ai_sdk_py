@@ -1,15 +1,16 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Any, Union
 from core.utils import error_print
 
 class DisjointSet:
 
     @dataclass
     class Element:
-        id_: 'typing.Any'
+        id_: Any
         rank: int = 0
         size: int = 1
-        parent: 'typing.Any' = field(init=False)
+        parent: Any = field(init=False)
 
         def __post_init__(self):
             self.parent = self
@@ -32,13 +33,13 @@ class DisjointSet:
     def _is_element_id_in(self, element_id):
         return element_id in self._set.keys()
 
-    def get_element(self, element_id) -> DisjointSet.Element:
+    def get_element(self, element_id: Any) -> Union[DisjointSet.Element, None]:
         if self._is_element_id_in(element_id):
             return self._set[element_id]
         return None
 
     # TODO: Separate into different types such as path_compression, path_halving, path_splitting
-    def find(self, element_id) -> DisjointSet.Element:
+    def find(self, element_id: Any) -> Union[DisjointSet.Element, None]:
         if self._is_element_id_in(element_id):
             element = self._set[element_id]
         else:
