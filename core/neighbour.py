@@ -1,5 +1,6 @@
 from enum import Enum, auto
 from dataclasses import dataclass
+from typing import Any
 
 from core.dimensions import Dim2D
 
@@ -17,7 +18,7 @@ class Neighbour:
 
         type_: Type = Type.NONE
         radius: int = 1
-        custom_function: 'typing.Any' = None
+        custom_function: Any = None
         random_output: bool = False
         should_reach: bool = False
         should_block: bool = True

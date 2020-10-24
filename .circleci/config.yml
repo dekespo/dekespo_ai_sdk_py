@@ -22,7 +22,7 @@ jobs:
             - pipenv-packages-
       - run:
           command: |
-            python3 -m continuous_integration --install_or_skip_dependencies
+            python -m continuous_integration --install_or_skip_dependencies
       - save_cache:
           paths:
             - ".venv"
@@ -33,15 +33,15 @@ jobs:
       - run:
           name: run pylint
           command: |
-            pipenv run python3 -m continuous_integration --pylint
+            pipenv run python -m continuous_integration --pylint
       - run:
           name: run mypy
           command: |
-            pipenv run python3 -m continuous_integration --mypy
+            pipenv run python -m continuous_integration --mypy
       - run:
           name: run unit tests with coverage check
           command: |
-            pipenv run python3 -m continuous_integration --tests
+            pipenv run python -m continuous_integration --tests
       - run:
           name: run code cov
           command: |
