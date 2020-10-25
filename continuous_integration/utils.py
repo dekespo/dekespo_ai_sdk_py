@@ -28,7 +28,7 @@ def get_common_modules() -> str:
             "tests",
             "templates",
             "draw",
-            "applications",
+            "applications_py",
             "continuous_integration",
             "physics",
             "algorithms",
