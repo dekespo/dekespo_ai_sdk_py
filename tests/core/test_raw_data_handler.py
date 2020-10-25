@@ -5,6 +5,7 @@ from core.dimensions import Dim2D
 
 from templates.rectangle_world import example_simple
 
+
 class RawDataHandlerTest(unittest.TestCase):
     def test_simple_raw_data(self):
         def stringfy_data(data):

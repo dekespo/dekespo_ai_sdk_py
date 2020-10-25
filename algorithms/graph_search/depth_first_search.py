@@ -6,12 +6,14 @@ from core.dimensions import Dim2D
 from core.utils import error_print
 from core.neighbour import Neighbour
 
+
 @dataclass
 class DepthFirstSearchData:
     start_point: Dim2D
     get_available_neighbours: Any
     neighbour_data: Neighbour.Data
     depth_size: int
+
 
 class DepthFirstSearch(threading.Thread):
     def __init__(self, input_data: DepthFirstSearchData, runs_with_thread: bool):
@@ -28,7 +30,9 @@ class DepthFirstSearch(threading.Thread):
 
     def run(self):
         if not self.runs_with_thread:
-            error_print("You should set runs_with_thread as true in order to run this one")
+            error_print(
+                "You should set runs_with_thread as true in order to run this one"
+            )
             return
         error_print(f"Running {self._thread_name}")
         self._is_done = False
@@ -51,9 +55,8 @@ class DepthFirstSearch(threading.Thread):
             if current_point not in self._closed_set:
                 self._closed_set.append(current_point)
                 for new_candidate_point, _ in self.input_data.get_available_neighbours(
-                        current_point,
-                        self.input_data.neighbour_data
-                    ).items():
+                    current_point, self.input_data.neighbour_data
+                ).items():
                     open_set.append(new_candidate_point)
 
     def event_set(self):

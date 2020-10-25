@@ -3,11 +3,14 @@ import sys
 from core.utils import error_print
 from core.graph import Graph
 
-from algorithms.graph_search.depth_first_search import DepthFirstSearch, DepthFirstSearchData
+from algorithms.graph_search.depth_first_search import (
+    DepthFirstSearch,
+    DepthFirstSearchData,
+)
+
 
 class GraphSearch:
-
-    class AStarFunctions():
+    class AStarFunctions:
         def __init__(self, heuristic_function, weight_function):
             self.heuristic_function = heuristic_function
             self.weight_function = weight_function
@@ -26,7 +29,9 @@ class GraphSearch:
     def _get_available_neighbours(self, point, neighbour_data):
         return self.graph.get_available_neighbours(point, neighbour_data)
 
-    def depth_first_search(self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=False):
+    def depth_first_search(
+        self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=False
+    ):
         dfs_data = DepthFirstSearchData(
             self.start_point,
             self._get_available_neighbours,
@@ -44,17 +49,15 @@ class GraphSearch:
             if current_point not in closed_set:
                 closed_set.append(current_point)
                 for new_candidate_point, _ in self._get_available_neighbours(
-                        current_point,
-                        neighbour_data
-                    ).items():
+                    current_point, neighbour_data
+                ).items():
                     open_set.append(new_candidate_point)
         return closed_set
 
     def dijkstra_search(self, end_point, weight_function, neighbour_data):
         no_heuristic_function = lambda *_: 0
         a_star_functions = GraphSearch.AStarFunctions(
-            heuristic_function=no_heuristic_function,
-            weight_function=weight_function
+            heuristic_function=no_heuristic_function, weight_function=weight_function
         )
         return self.a_star_search(end_point, a_star_functions, neighbour_data)
 
@@ -75,11 +78,9 @@ class GraphSearch:
             g_score = {}
             f_score = {}
             g_score[self.start_point] = 0
-            f_score[self.start_point] = g_score[self.start_point] + \
-                a_star_functions.run_heuristic_function(
-                    self.start_point,
-                    end_point
-                )
+            f_score[self.start_point] = g_score[
+                self.start_point
+            ] + a_star_functions.run_heuristic_function(self.start_point, end_point)
             return closed_set, open_set, came_from, f_score, g_score
 
         def _get_minimum_f_score_index(open_set, f_score):
@@ -103,33 +104,32 @@ class GraphSearch:
             closed_set.append(current_point)
 
             for new_candidate_point, _ in self._get_available_neighbours(
-                    current_point,
-                    neighbour_data
-                ).items():
+                current_point, neighbour_data
+            ).items():
                 if new_candidate_point not in closed_set:
-                    tentative_g_score = g_score[current_point] + \
-                        a_star_functions.run_weight_function(
-                            new_candidate_point,
-                            current_point
-                        )
+                    tentative_g_score = g_score[
+                        current_point
+                    ] + a_star_functions.run_weight_function(
+                        new_candidate_point, current_point
+                    )
                     if new_candidate_point not in open_set:
                         open_set.append(new_candidate_point)
                         came_from[new_candidate_point] = current_point
                         g_score[new_candidate_point] = tentative_g_score
-                        f_score[new_candidate_point] = g_score[new_candidate_point] + \
-                            a_star_functions.run_heuristic_function(
-                                new_candidate_point,
-                                end_point
-                            )
+                        f_score[new_candidate_point] = g_score[
+                            new_candidate_point
+                        ] + a_star_functions.run_heuristic_function(
+                            new_candidate_point, end_point
+                        )
                     else:
                         # TODO: It looks like it never passes this one
                         if tentative_g_score < g_score[new_candidate_point]:
                             came_from[new_candidate_point] = current_point
                             g_score[new_candidate_point] = tentative_g_score
-                            f_score[new_candidate_point] = g_score[new_candidate_point] + \
-                                a_star_functions.run_heuristic_function(
-                                    new_candidate_point,
-                                    end_point
-                                )
+                            f_score[new_candidate_point] = g_score[
+                                new_candidate_point
+                            ] + a_star_functions.run_heuristic_function(
+                                new_candidate_point, end_point
+                            )
         error_print("A* cannot find the path, returning None")
         return []

@@ -75,7 +75,9 @@ class GuiPathProcessor:
     def _update_path(self):
         TkinterSingleton.update(
             self.process,
-            in_milliseconds=round(1000 / self._current_options[Options.STEPS_PER_SECOND])
+            in_milliseconds=round(
+                1000 / self._current_options[Options.STEPS_PER_SECOND]
+            ),
         )
 
     def _reset(self):
@@ -114,7 +116,7 @@ class GuiPathProcessor:
         return self._current_path_index == len(self._graph_search_closed_set)
 
     def _on_last_step(self):
-        previous_point = self._graph_search_closed_set[self._current_path_index-1]
+        previous_point = self._graph_search_closed_set[self._current_path_index - 1]
         self._create_rectangle_at(previous_point, Colour.RED)
         self._status_dictionary[Status.ON_PAUSE] = True
         self._update_path()
@@ -131,7 +133,7 @@ class GuiPathProcessor:
 
     def _next_white_colouring(self):
         if self._current_path_index > self._start_path_index:
-            previous_point = self._graph_search_closed_set[self._current_path_index-1]
+            previous_point = self._graph_search_closed_set[self._current_path_index - 1]
             self._create_rectangle_at(previous_point, Colour.WHITE)
 
     def _next_red_colouring(self):
@@ -144,7 +146,7 @@ class GuiPathProcessor:
     def _back_red_colouring(self):
         if self._current_path_index > self._start_path_index + 1:
             self._current_path_index -= 1
-            previous_point = self._graph_search_closed_set[self._current_path_index-1]
+            previous_point = self._graph_search_closed_set[self._current_path_index - 1]
             self._create_rectangle_at(previous_point, Colour.RED)
 
     def _back_black_colouring(self):

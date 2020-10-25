@@ -1,5 +1,6 @@
 from continuous_integration import utils
 
+
 def run_mypy():
     modules = utils.get_common_modules()
     # TODO: Ignore the applications folder for now

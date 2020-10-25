@@ -25,17 +25,20 @@ jobs:
             python -m continuous_integration --install_or_skip_dependencies
       - save_cache:
           paths:
-            - ".venv"
             - "Pipfile"
             - "Pipfile.lock"
           key: pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
 
       - run:
-          name: run pylint
+          name: run black - format checker
+          command: |
+            pipenv run python -m continuous_integration --black
+      - run:
+          name: run pylint - lint checker
           command: |
             pipenv run python -m continuous_integration --pylint
       - run:
-          name: run mypy
+          name: run mypy - static analysis checker
           command: |
             pipenv run python -m continuous_integration --mypy
       - run:

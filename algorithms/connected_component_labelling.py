@@ -6,10 +6,16 @@ from core.graph import Graph
 from core.disjoint_set import DisjointSet
 from core.neighbour import Neighbour
 
+
+class ConnectivityType(Enum):
+    FOUR = auto()
+    EIGHT = auto()
+
+
 class ConnectedComponentLabelling:
-    '''
+    """
     Works in only binary format data
-    '''
+    """
 
     @dataclass
     class _Node:
@@ -17,17 +23,11 @@ class ConnectedComponentLabelling:
         graph_binary_value: bool
         label_value: int = 0
 
-    class ConnectivityType(Enum):
-        FOUR = auto()
-        EIGHT = auto()
-
     def __init__(self, graph: Graph, connectivity_type: ConnectivityType):
         self.graph = graph
         self._get_neighbour_function = {
-            ConnectedComponentLabelling.ConnectivityType.FOUR : \
-                Neighbour.get_neighbour_function_4_connectivity,
-            ConnectedComponentLabelling.ConnectivityType.EIGHT : \
-                Neighbour.get_neighbour_function_8_connectivity
+            ConnectivityType.FOUR: Neighbour.get_neighbour_function_4_connectivity,
+            ConnectivityType.EIGHT: Neighbour.get_neighbour_function_8_connectivity,
         }[connectivity_type]
         self._nodes = None
         self._set_nodes()
@@ -38,8 +38,7 @@ class ConnectedComponentLabelling:
         for y, row in enumerate(self.graph.raw_data_handler.raw_data):
             for x, graph_value in enumerate(row):
                 self._nodes[Dim2D(x, y)] = ConnectedComponentLabelling._Node(
-                    Dim2D(x, y),
-                    graph_value not in self.graph.blocking_values
+                    Dim2D(x, y), graph_value not in self.graph.blocking_values
                 )
 
     # TODO: Should return a graph?
@@ -52,9 +51,7 @@ class ConnectedComponentLabelling:
             new_grid.append(row_list)
         return new_grid
 
-
     def first_pass(self):
-
         def is_already_labelled(node):
             return node.label_value > 0
 
@@ -63,14 +60,14 @@ class ConnectedComponentLabelling:
             if current_node.graph_binary_value:
                 new_labels = []
                 for neighbour_position, _ in self.graph.get_available_neighbours(
-                        current_node.position,
-                        Neighbour.Data(
-                            Neighbour.Data.Type.CUSTOM,
-                            custom_function=self._get_neighbour_function,
-                            should_block=False,
-                            should_reach=True
-                        )
-                    ).items():
+                    current_node.position,
+                    Neighbour.Data(
+                        Neighbour.Data.Type.CUSTOM,
+                        custom_function=self._get_neighbour_function,
+                        should_block=False,
+                        should_reach=True,
+                    ),
+                ).items():
                     neighbour_node = self._nodes[neighbour_position]
                     if is_already_labelled(neighbour_node):
                         new_labels.append(neighbour_node.label_value)
@@ -78,7 +75,9 @@ class ConnectedComponentLabelling:
                 if not new_labels:
                     current_label += 1
                     current_node.label_value = current_label
-                    self._labels_disjoint_set.make_set(DisjointSet.Element(current_label))
+                    self._labels_disjoint_set.make_set(
+                        DisjointSet.Element(current_label)
+                    )
                 else:
                     minimum_label = min(new_labels)
                     current_node.label_value = minimum_label
@@ -88,9 +87,9 @@ class ConnectedComponentLabelling:
     def second_pass(self):
         for current_node in self._nodes.values():
             if current_node.graph_binary_value:
-                current_node.label_value = self._labels_disjoint_set \
-                                            .find(current_node.label_value) \
-                                            .id_
+                current_node.label_value = self._labels_disjoint_set.find(
+                    current_node.label_value
+                ).id_
 
     def get_regions(self):
         regions = {}
