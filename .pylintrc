@@ -7,5 +7,6 @@ good-names = x, y, z, to
 
 # Coding standard violation
 # C0111 = Missing docstring # Won't happen anytime soon
+# C0330 = Wrong hanging indentation before block (add 4 spaces). (There is conflict over pep8 between pylint and black)
 
-disable=C0111, W0511
+disable=C0111, W0511, C0330

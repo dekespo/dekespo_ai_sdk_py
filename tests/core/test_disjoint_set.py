@@ -2,6 +2,7 @@ import unittest
 
 from core.disjoint_set import DisjointSet
 
+
 class DisjointSetTest(unittest.TestCase):
     def test_element(self):
         element1 = DisjointSet.Element(3)
@@ -26,7 +27,7 @@ class DisjointSetTest(unittest.TestCase):
         self.assertEqual("Rank: 0, Id: 2, Size: 1", str(disjoint_set.get_element(2)))
         self.assertEqual("Rank: 0, Id: 3, Size: 1", str(disjoint_set.get_element(3)))
         disjoint_set.union(2, 3)
-        disjoint_set.union(3, 2) # Ineffective
+        disjoint_set.union(3, 2)  # Ineffective
         self.assertEqual("Rank: 1, Id: 0, Size: 2", str(disjoint_set.get_element(0)))
         self.assertEqual("Rank: 0, Id: 1, Size: 1", str(disjoint_set.get_element(1)))
         self.assertEqual("Rank: 1, Id: 2, Size: 2", str(disjoint_set.get_element(2)))
@@ -36,8 +37,8 @@ class DisjointSetTest(unittest.TestCase):
         self.assertEqual("Rank: 0, Id: 1, Size: 1", str(disjoint_set.get_element(1)))
         self.assertEqual("Rank: 2, Id: 2, Size: 4", str(disjoint_set.get_element(2)))
         self.assertEqual("Rank: 0, Id: 3, Size: 1", str(disjoint_set.get_element(3)))
-        disjoint_set.union(0, 2) # Ineffective
-        disjoint_set.union(1, 2) # Ineffective
+        disjoint_set.union(0, 2)  # Ineffective
+        disjoint_set.union(1, 2)  # Ineffective
         self.assertEqual("Rank: 1, Id: 0, Size: 2", str(disjoint_set.get_element(0)))
         self.assertEqual("Rank: 0, Id: 1, Size: 1", str(disjoint_set.get_element(1)))
         self.assertEqual("Rank: 2, Id: 2, Size: 4", str(disjoint_set.get_element(2)))
@@ -78,6 +79,7 @@ class DisjointSetTest(unittest.TestCase):
         self.assertEqual("Rank: 1, Id: 0, Size: 3", str(disjoint_set.get_element(0)))
         self.assertEqual("Rank: 0, Id: 1, Size: 1", str(disjoint_set.get_element(1)))
         self.assertEqual("Rank: 0, Id: 2, Size: 1", str(disjoint_set.get_element(2)))
+
 
 if __name__ == "__main__":
     unittest.main()

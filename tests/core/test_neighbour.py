@@ -3,6 +3,7 @@ import unittest
 from core.dimensions import Dim2D
 from core.neighbour import Neighbour
 
+
 class NeighbourTest(unittest.TestCase):
     def test_get_neighbours_cross(self):
         pos = Dim2D(1, 1)
@@ -40,11 +41,13 @@ class NeighbourTest(unittest.TestCase):
 
     def test_get_neighbours_diamond(self):
         pos = Dim2D(1, 1)
-        poses_dic = dict(Neighbour.get_neighbours_diamond(
-            pos,
-            lambda *_: True,
-            Neighbour.Data(Neighbour.Data.Type.DIAMOND, radius=2)
-        ))
+        poses_dic = dict(
+            Neighbour.get_neighbours_diamond(
+                pos,
+                lambda *_: True,
+                Neighbour.Data(Neighbour.Data.Type.DIAMOND, radius=2),
+            )
+        )
         self.assertEqual(len(poses_dic), 12)
         self.assertIn(Dim2D(0, 1), poses_dic)
         self.assertEqual(poses_dic[Dim2D(0, 1)], 1)
@@ -70,6 +73,7 @@ class NeighbourTest(unittest.TestCase):
         self.assertEqual(poses_dic[Dim2D(0, 2)], 2)
         self.assertIn(Dim2D(2, 0), poses_dic)
         self.assertEqual(poses_dic[Dim2D(2, 0)], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

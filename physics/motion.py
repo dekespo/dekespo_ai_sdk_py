@@ -2,6 +2,7 @@ from core.dimensions import Dim2D
 from core.assertion import check_positive_value
 from core.shapes import Shape2D
 
+
 class Motion2D:
     @property
     def position(self):
@@ -23,7 +24,9 @@ class Motion2D:
     def mass(self):
         return self._mass
 
-    def __init__(self, shape: Shape2D, velocity=Dim2D(0, 0), acceleration=Dim2D(0, 0), mass=None):
+    def __init__(
+        self, shape: Shape2D, velocity=Dim2D(0, 0), acceleration=Dim2D(0, 0), mass=None
+    ):
         self.shape = shape
         self._position = shape.get_position()
         self._velocity = velocity
@@ -42,7 +45,7 @@ class Motion2D:
         string += f"\nMomentum: {self.momentum}"
         return string
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
     def _calculate_momentum(self):
@@ -57,7 +60,7 @@ class Motion2D:
 
     def update(self):
         def update_position():
-            self._position += self._jerk.constant_multiply(1/6)
+            self._position += self._jerk.constant_multiply(1 / 6)
             self._position += self._acceleration.constant_multiply(0.5)
             self._position += self._velocity
 

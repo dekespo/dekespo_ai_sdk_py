@@ -1,5 +1,6 @@
 import math
 
+
 class Dim2D:
     def __init__(self, x, y):
         self.x = x
@@ -8,7 +9,7 @@ class Dim2D:
     def __str__(self):
         return f"(x: {self.x}, y: {self.y})"
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
     def __eq__(self, other):
@@ -66,26 +67,24 @@ class Dim2D:
     def get_minimum_index_and_value(dimensions, criteria_function, **kwargs):
         def minimum_operator(value, minimum):
             return value < minimum
+
         return Dim2D._get_optimum_index_and_value(
-            dimensions,
-            criteria_function,
-            minimum_operator,
-            **kwargs
+            dimensions, criteria_function, minimum_operator, **kwargs
         )
 
     @staticmethod
     def get_maximum_index_and_value(dimensions, criteria_function, **kwargs):
         def maximum_operator(value, maximum):
             return value > maximum
+
         return Dim2D._get_optimum_index_and_value(
-            dimensions,
-            criteria_function,
-            maximum_operator,
-            **kwargs
+            dimensions, criteria_function, maximum_operator, **kwargs
         )
 
     @staticmethod
-    def _get_optimum_index_and_value(dimensions, criteria_function, operator_function, **kwargs):
+    def _get_optimum_index_and_value(
+        dimensions, criteria_function, operator_function, **kwargs
+    ):
         start_index = 0
         optimum_dimension = dimensions[start_index]
         optimum_value = criteria_function(dimensions[start_index], **kwargs)
@@ -112,5 +111,5 @@ class Dim3D:
     def __str__(self):
         return f"x: {self.x}, y: {self.y}, z: {self.z}"
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return self.__str__()

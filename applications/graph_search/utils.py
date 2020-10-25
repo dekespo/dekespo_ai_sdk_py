@@ -13,6 +13,7 @@ from core.neighbour import Neighbour
 
 from algorithms.graph_search.api import GraphSearch
 
+
 class Status(Enum):
     ON_PAUSE = auto()
     SHOULD_RESTART = auto()
@@ -22,10 +23,12 @@ class Status(Enum):
     SHOULD_RESET = auto()
     OPTIONS_SET = auto()
 
+
 class Options(Enum):
     TILE_SIZE = auto()
     GRID_SIZE = auto()
     STEPS_PER_SECOND = auto()
+
 
 @dataclass
 class GraphData:
@@ -33,14 +36,15 @@ class GraphData:
     grid_size: Dim2D
     graph: Graph
 
+
 # pylint: disable=too-few-public-methods
 class Scale:
     @staticmethod
     def on_scale(current_options, steps_per_second):
         current_options[Options.STEPS_PER_SECOND] = int(steps_per_second)
 
-class Button:
 
+class Button:
     @staticmethod
     def back(status_dictionary):
         status_dictionary[Status.SHOULD_GO_BACK] = True
@@ -90,24 +94,31 @@ class Button:
             )
             status_dictionary[Status.OPTIONS_SET] = True
             menu_window.destroy()
+
         status_dictionary, current_options = args
         menu_window = TkinterSingleton.create_menu_window("Options")
+
         def create_text_data(value, id_, number_of_characters=3, number_of_lines=1):
             return TextData(
                 value,
                 id_=id_,
                 number_of_characters=number_of_characters,
-                number_of_lines=number_of_lines
+                number_of_lines=number_of_lines,
             )
-        tile_size_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None), menu_window)
+
+        tile_size_frame = TkinterSingleton.create_frame_with_pack(
+            PackData(side=None), menu_window
+        )
         tile_size_widgets = [
             LabelData("Tile Size: "),
             create_text_data(current_options[Options.TILE_SIZE].x, "tile_size_x"),
             LabelData("x"),
-            create_text_data(current_options[Options.TILE_SIZE].y, "tile_size_y")
+            create_text_data(current_options[Options.TILE_SIZE].y, "tile_size_y"),
         ]
         GuiUtils.create_widgets(tile_size_widgets, tile_size_frame)
-        grid_size_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None), menu_window)
+        grid_size_frame = TkinterSingleton.create_frame_with_pack(
+            PackData(side=None), menu_window
+        )
         grid_size_widgets = [
             LabelData("Grid Size: "),
             create_text_data(current_options[Options.GRID_SIZE].x, "grid_size_x"),
@@ -116,14 +127,14 @@ class Button:
         ]
         GuiUtils.create_widgets(grid_size_widgets, grid_size_frame)
         menu_window.protocol(
-            'WM_DELETE_WINDOW',
-            lambda args=[menu_window, status_dictionary]: remove_window(args)
+            "WM_DELETE_WINDOW",
+            lambda args=[menu_window, status_dictionary]: remove_window(args),
         )
         menu_window.focus_set()
         menu_window.grab_set()
 
-class Utils:
 
+class Utils:
     @staticmethod
     def create_rectangle_canvas(graph_data: GraphData):
         raw_data = []
@@ -131,9 +142,7 @@ class Utils:
             row_raw_data = []
             for x in range(graph_data.grid_size.x):
                 TkinterSingleton.create_rectangle_at(
-                    Dim2D(x, y),
-                    graph_data.tile_size,
-                    Colour.BLACK
+                    Dim2D(x, y), graph_data.tile_size, Colour.BLACK
                 )
                 row_raw_data.append(0)
             raw_data.append(row_raw_data)
@@ -147,15 +156,16 @@ class Utils:
             "top": Dim2D(random.randint(0, grid_size.x - 1), 0),
             "bottom": Dim2D(random.randint(0, grid_size.x - 1), grid_size.y - 1),
             "left": Dim2D(0, random.randint(0, grid_size.y - 1)),
-            "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1))
+            "right": Dim2D(grid_size.x - 1, random.randint(0, grid_size.y - 1)),
         }[chosen_side]
 
     @staticmethod
     def initialize_depth_first_search(graph_data: GraphData):
         start_point = Utils.get_random_edge_point(graph_data.grid_size)
         neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS, random_output=True)
-        depth_first_search = GraphSearch(graph_data.graph, start_point) \
-                            .depth_first_search(neighbour_data, runs_with_thread=True)
+        depth_first_search = GraphSearch(
+            graph_data.graph, start_point
+        ).depth_first_search(neighbour_data, runs_with_thread=True)
         depth_first_search.event_set()
         depth_first_search.start()
         return depth_first_search
@@ -169,7 +179,7 @@ class Utils:
             Status.SHOULD_GO_NEXT: False,
             Status.SHOULD_PLAY_FORWARD: True,
             Status.SHOULD_RESET: False,
-            Status.OPTIONS_SET: False
+            Status.OPTIONS_SET: False,
         }
 
     @staticmethod
@@ -177,11 +187,11 @@ class Utils:
         return {
             Options.TILE_SIZE: Dim2D(10, 10),
             Options.GRID_SIZE: Dim2D(60, 60),
-            Options.STEPS_PER_SECOND: 60
+            Options.STEPS_PER_SECOND: 60,
         }
 
-class GuiUtils:
 
+class GuiUtils:
     @staticmethod
     def create_widgets(widgets_data: List[WidgetData], frame):
         default_pack_data = PackData()
@@ -200,14 +210,16 @@ class GuiUtils:
             ButtonData("play_forward", Button.play_forward, status_dictionary),
             ButtonData("play_backward", Button.play_backward, status_dictionary),
             ButtonData("pause", Button.pause, status_dictionary),
-            ButtonData("restart", Button.restart, status_dictionary)
+            ButtonData("restart", Button.restart, status_dictionary),
         ]
         GuiUtils.create_widgets(player_buttons, player_frame)
 
         others_frame = TkinterSingleton.create_frame_with_pack(PackData(side=None))
         others_buttons = [
             ButtonData("reset", Button.reset, status_dictionary),
-            ButtonData("options", Button.open_options, [status_dictionary, current_options])
+            ButtonData(
+                "options", Button.open_options, [status_dictionary, current_options]
+            ),
         ]
         GuiUtils.create_widgets(others_buttons, others_frame)
 
@@ -226,4 +238,6 @@ class GuiUtils:
             )
         ]
         GuiUtils.create_widgets(sliders, slider_frame)
-        TkinterSingleton.widgets["speed_scaler"].set(current_options[Options.STEPS_PER_SECOND])
+        TkinterSingleton.widgets["speed_scaler"].set(
+            current_options[Options.STEPS_PER_SECOND]
+        )

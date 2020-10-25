@@ -61,7 +61,7 @@ class TkinterSingleton:
                 TkinterSingleton.root,
                 width=frame_size.x,
                 height=frame_size.y,
-                background=colour.value
+                background=colour.value,
             )
             TkinterSingleton.grid_frames[grid_index] = frame
             frame.grid(column=grid_index.x, row=grid_index.y)
@@ -71,7 +71,9 @@ class TkinterSingleton:
     def create_rectangle_at(grid_index: Dim2D, tile_size: Dim2D, colour: Colour):
         if grid_index in TkinterSingleton.canvas_rectangles:
             rectangle = TkinterSingleton.canvas_rectangles[grid_index]
-            TkinterSingleton.canvas.itemconfig(rectangle, fill=colour.value, outline=colour.value)
+            TkinterSingleton.canvas.itemconfig(
+                rectangle, fill=colour.value, outline=colour.value
+            )
         else:
             coordinates = (
                 grid_index.x * tile_size.x + 1,
@@ -80,9 +82,7 @@ class TkinterSingleton:
                 (grid_index.y + 1) * tile_size.y + 1,
             )
             rectangle = TkinterSingleton.canvas.create_rectangle(
-                coordinates,
-                fill=colour.value,
-                outline=colour.value
+                coordinates, fill=colour.value, outline=colour.value
             )
             TkinterSingleton.canvas_rectangles[grid_index] = rectangle
 
@@ -96,14 +96,14 @@ class TkinterSingleton:
         button = tk.Button(
             TkinterSingleton.root,
             text=button_data.text,
-            command=lambda: button_data.callback_function(button_data.parameters)
+            command=lambda: button_data.callback_function(button_data.parameters),
         )
         button.grid(
             column=button_data.grid_data.index.x,
             row=button_data.grid_data.index.y,
             columnspan=button_data.grid_data.span_size.x,
             rowspan=button_data.grid_data.span_size.y,
-            sticky=button_data.grid_data.sticky
+            sticky=button_data.grid_data.sticky,
         )
         TkinterSingleton.set_weight_of_grid_element(button, button_data.grid_index)
 
@@ -113,11 +113,7 @@ class TkinterSingleton:
         if root is None:
             root = TkinterSingleton.root
         frame = tk.Frame(root)
-        frame.pack(
-            side=pack_data.side,
-            fill=pack_data.fill,
-            expand=pack_data.expand
-        )
+        frame.pack(side=pack_data.side, fill=pack_data.fill, expand=pack_data.expand)
         return frame
 
     @staticmethod
@@ -136,7 +132,7 @@ class TkinterSingleton:
         widget.pack(
             side=widget_data.pack_data.side,
             fill=widget_data.pack_data.fill,
-            expand=widget_data.pack_data.expand
+            expand=widget_data.pack_data.expand,
         )
         TkinterSingleton.widgets[widget_data.id_] = widget
 
@@ -145,12 +141,14 @@ class TkinterSingleton:
         return tk.Button(
             root,
             text=button_data.text,
-            command=lambda: button_data.callback_function(button_data.parameters)
+            command=lambda: button_data.callback_function(button_data.parameters),
         )
 
     @staticmethod
     def create_text(root, text_data: TextData):
-        text = tk.Text(root, height=text_data.number_of_lines, width=text_data.number_of_characters)
+        text = tk.Text(
+            root, height=text_data.number_of_lines, width=text_data.number_of_characters
+        )
         text.delete(1.0, "end-1c")
         text.insert("end-1c", text_data.text)
         return text
@@ -172,7 +170,7 @@ class TkinterSingleton:
             orient=scale_data.orientation,
             command=lambda steps_per_second: scale_data.callback_function(
                 scale_data.parameters, steps_per_second
-            )
+            ),
         )
 
     @staticmethod

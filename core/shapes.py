@@ -4,8 +4,8 @@ from enum import Enum, auto
 from core.dimensions import Dim2D
 from core.assertion import check_positive_value
 
-class Shape2D(ABC):
 
+class Shape2D(ABC):
     class Type(Enum):
         RECTANGLE = auto()
         CIRCLE = auto()
@@ -15,7 +15,7 @@ class Shape2D(ABC):
     def __str__(self):
         """ Abstract """
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return self.__str__()
 
     @abstractmethod
@@ -25,6 +25,7 @@ class Shape2D(ABC):
     @abstractmethod
     def get_position(self):
         """ Abstract """
+
 
 # TODO: Can use classmethod here?
 class Rectangle(Shape2D):
@@ -36,14 +37,18 @@ class Rectangle(Shape2D):
         self.height = height
 
     def __str__(self):
-        return (f"top_left_corner = {self.top_left_corner}, "
-                f"width x height: {self.width}x{self.height}")
+        return (
+            f"top_left_corner = {self.top_left_corner}, "
+            f"width x height: {self.width}x{self.height}"
+        )
 
     def is_inside_boundaries(self, position):
-        if position.x < self.top_left_corner.x \
-        or position.x >= self.top_left_corner.x + self.width \
-        or position.y < self.top_left_corner.y \
-        or position.y >= self.top_left_corner.y + self.height:
+        if (
+            position.x < self.top_left_corner.x
+            or position.x >= self.top_left_corner.x + self.width
+            or position.y < self.top_left_corner.y
+            or position.y >= self.top_left_corner.y + self.height
+        ):
             return False
         return True
 
@@ -58,6 +63,7 @@ class Rectangle(Shape2D):
 
     def get_position(self):
         return self.top_left_corner
+
 
 class Circle(Shape2D):
     def __init__(self, centre, radius):
@@ -79,6 +85,7 @@ class Circle(Shape2D):
 
     def get_position(self):
         return self.centre
+
 
 class Point(Shape2D):
     def __init__(self, position):

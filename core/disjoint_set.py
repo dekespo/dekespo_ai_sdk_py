@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 from typing import Any, Union
 from core.utils import error_print
 
-class DisjointSet:
 
+class DisjointSet:
     @dataclass
     class Element:
         id_: Any
@@ -18,7 +18,7 @@ class DisjointSet:
         def __str__(self):
             return f"Rank: {self.rank}, Id: {self.id_}, Size: {self.size}"
 
-        def __repr__(self): # pragma: no cover
+        def __repr__(self):  # pragma: no cover
             return self.__str__()
 
     def __init__(self):
@@ -28,7 +28,9 @@ class DisjointSet:
         if not self._is_element_id_in(element.id_):
             self._set[element.id_] = DisjointSet.Element(element.id_)
         else:
-            error_print(f"Element id {element.id_} already exists in the set. Skipping it!")
+            error_print(
+                f"Element id {element.id_} already exists in the set. Skipping it!"
+            )
 
     def _is_element_id_in(self, element_id):
         return element_id in self._set.keys()
