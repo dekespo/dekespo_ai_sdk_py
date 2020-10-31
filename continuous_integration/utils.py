@@ -26,8 +26,6 @@ def get_common_modules() -> str:
         [
             "dekespo_ai_sdk",
             "tests",
-            "draw",
-            "applications",
             "continuous_integration",
         ]
     )
