@@ -1,6 +1,6 @@
 import unittest
 
-from core.disjoint_set import DisjointSet
+from dekespo_ai_sdk.core.disjoint_set import DisjointSet
 
 
 class DisjointSetTest(unittest.TestCase):

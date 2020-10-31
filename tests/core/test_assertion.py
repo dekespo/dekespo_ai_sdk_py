@@ -1,6 +1,6 @@
 import unittest
 
-from core.assertion import check_positive_value
+from dekespo_ai_sdk.core.assertion import check_positive_value
 
 
 class AssertionTest(unittest.TestCase):

@@ -2,9 +2,9 @@ import threading
 from dataclasses import dataclass
 from typing import Any, List
 
-from core.dimensions import Dim2D
-from core.utils import error_print
-from core.neighbour import Neighbour
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.utils import error_print
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
 
 @dataclass

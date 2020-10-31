@@ -1,9 +1,9 @@
 import sys
 
-from core.utils import error_print
-from core.graph import Graph
+from dekespo_ai_sdk.core.utils import error_print
+from dekespo_ai_sdk.core.graph import Graph
 
-from algorithms.graph_search.depth_first_search import (
+from dekespo_ai_sdk.algorithms.graph_search.depth_first_search import (
     DepthFirstSearch,
     DepthFirstSearchData,
 )

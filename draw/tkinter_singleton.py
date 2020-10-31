@@ -1,8 +1,8 @@
 import tkinter as tk
 from typing import Any, Dict
 
-from core.dimensions import Dim2D
-from core.utils import error_print
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.utils import error_print
 
 from draw.widget import ButtonData, PackData, TextData, LabelData, WidgetData, ScaleData
 from draw.colour import Colour

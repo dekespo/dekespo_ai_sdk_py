@@ -2,7 +2,7 @@ from enum import Enum, auto
 from dataclasses import dataclass
 from typing import Any
 
-from core.dimensions import Dim2D
+from dekespo_ai_sdk.core.dimensions import Dim2D
 
 
 class Neighbour:

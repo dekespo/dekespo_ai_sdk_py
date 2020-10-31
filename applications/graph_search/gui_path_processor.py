@@ -1,8 +1,8 @@
 from draw.tkinter_singleton import TkinterSingleton
 from draw.colour import Colour
 
-from core.shapes import Shape2D
-from core.graph import Graph
+from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.graph import Graph
 
 from .utils import Status, Utils, GuiUtils, GraphData, Options
 

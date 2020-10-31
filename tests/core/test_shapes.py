@@ -1,7 +1,7 @@
 import unittest
 
-from core.dimensions import Dim2D
-from core.shapes import Rectangle, Circle, Point
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.shapes import Rectangle, Circle, Point
 
 
 class RectangleTest(unittest.TestCase):

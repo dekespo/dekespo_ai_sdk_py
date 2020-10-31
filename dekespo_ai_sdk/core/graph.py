@@ -3,10 +3,10 @@ from random import shuffle
 from typing import List, Tuple, Union
 from collections import OrderedDict
 
-from core.dimensions import Dim2D
-from core.raw_data_handler import RawDataHandler
-from core.shapes import Shape2D, Rectangle
-from core.neighbour import Neighbour
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
+from dekespo_ai_sdk.core.shapes import Shape2D, Rectangle
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
 
 class Graph:

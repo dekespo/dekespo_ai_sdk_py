@@ -4,3 +4,4 @@ __pycache__
 htmlcov
 Pipfile
 Pipfile.lock
+.mypy_cache

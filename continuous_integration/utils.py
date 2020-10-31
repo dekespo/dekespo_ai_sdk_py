@@ -24,13 +24,10 @@ def remove_extension_if_exists(string, extension):
 def get_common_modules() -> str:
     return " ".join(
         [
-            "core",
+            "dekespo_ai_sdk",
             "tests",
-            "templates",
             "draw",
             "applications",
             "continuous_integration",
-            "physics",
-            "algorithms",
         ]
     )

@@ -1,7 +1,7 @@
 import unittest
 
-from core.dimensions import Dim2D
-from core.neighbour import Neighbour
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
 
 class NeighbourTest(unittest.TestCase):

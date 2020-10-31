@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Union
-from core.utils import error_print
+from dekespo_ai_sdk.core.utils import error_print
 
 
 class DisjointSet:
