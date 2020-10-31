@@ -1,7 +1,7 @@
 import math
 
 import unittest
-from core.dimensions import Dim2D, Dim3D
+from dekespo_ai_sdk.core.dimensions import Dim2D, Dim3D
 
 
 class Dimensions2D(unittest.TestCase):

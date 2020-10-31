@@ -1,9 +1,9 @@
 import unittest
 
-from core.dimensions import Dim2D
-from core.shapes import Point
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.shapes import Point
 
-from physics.motion import Motion2D
+from dekespo_ai_sdk.physics.motion import Motion2D
 
 # TODO: Add tests with rectangle and circle
 class MotionPhysics2DTest(unittest.TestCase):

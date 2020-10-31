@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from enum import Enum, auto
 
-from core.dimensions import Dim2D
-from core.assertion import check_positive_value
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.assertion import check_positive_value
 
 
 class Shape2D(ABC):

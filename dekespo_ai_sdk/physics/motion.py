@@ -1,6 +1,6 @@
-from core.dimensions import Dim2D
-from core.assertion import check_positive_value
-from core.shapes import Shape2D
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.assertion import check_positive_value
+from dekespo_ai_sdk.core.shapes import Shape2D
 
 
 class Motion2D:

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from core.dimensions import Dim2D
-from core.graph import Graph
-from core.disjoint_set import DisjointSet
-from core.neighbour import Neighbour
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.graph import Graph
+from dekespo_ai_sdk.core.disjoint_set import DisjointSet
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
 
 class ConnectivityType(Enum):

@@ -1,12 +1,12 @@
 import unittest
 
-from core.dimensions import Dim2D
-from core.graph import Graph
-from core.shapes import Shape2D
-from core.raw_data_handler import RawDataHandler
-from core.neighbour import Neighbour
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.graph import Graph
+from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
-from templates.rectangle_world import (
+from tests.templates.rectangle_world import (
     example_small_random,
     example_unreachable_positions,
 )
@@ -28,7 +28,7 @@ class GraphTest(unittest.TestCase):
                                     """,
         )
         self.assertTrue(graph.raw_data_handler, example_small_random())
-        self.assertIsNone(graph.blocking_values)
+        self.assertTupleEqual(graph.blocking_values, ())
         self.assertListEqual(graph.blocking_positions, [])
         new_blocking_values = set([1])
         graph.update_blocking_data(new_blocking_values)

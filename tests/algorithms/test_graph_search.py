@@ -1,13 +1,16 @@
 import unittest
 import random
 
-from templates.rectangle_world import example_simple, example_blocked_in_the_middle
-from algorithms.graph_search.api import GraphSearch
-from core.graph import Graph
-from core.dimensions import Dim2D
-from core.shapes import Shape2D
-from core.raw_data_handler import RawDataHandler
-from core.neighbour import Neighbour
+from tests.templates.rectangle_world import (
+    example_simple,
+    example_blocked_in_the_middle,
+)
+from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch
+from dekespo_ai_sdk.core.graph import Graph
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
+from dekespo_ai_sdk.core.neighbour import Neighbour
 
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):

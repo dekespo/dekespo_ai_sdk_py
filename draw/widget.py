@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Union
 
-from core.dimensions import Dim2D
+from dekespo_ai_sdk.core.dimensions import Dim2D
 
 
 @dataclass

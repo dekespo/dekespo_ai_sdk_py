@@ -1,14 +1,17 @@
 import unittest
 
-from templates.rectangle_world import example_wiki_ccl, example_simple_different_regions
-from algorithms.connected_component_labelling import (
+from tests.templates.rectangle_world import (
+    example_wiki_ccl,
+    example_simple_different_regions,
+)
+from dekespo_ai_sdk.algorithms.connected_component_labelling import (
     ConnectedComponentLabelling,
     ConnectivityType,
 )
-from core.graph import Graph
-from core.shapes import Shape2D
-from core.dimensions import Dim2D
-from core.raw_data_handler import RawDataHandler
+from dekespo_ai_sdk.core.graph import Graph
+from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 
 
 class ConnectedComponentLabellingTest(unittest.TestCase):

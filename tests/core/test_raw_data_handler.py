@@ -1,9 +1,9 @@
 import unittest
 
-from core.raw_data_handler import RawDataHandler
-from core.dimensions import Dim2D
+from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
+from dekespo_ai_sdk.core.dimensions import Dim2D
 
-from templates.rectangle_world import example_simple
+from tests.templates.rectangle_world import example_simple
 
 
 class RawDataHandlerTest(unittest.TestCase):
