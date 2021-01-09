@@ -1,14 +1,12 @@
 import argparse
 import sys
 
-# TODO: Call all the run functions from one file
-from continuous_integration.run_tests import run_tests
-from continuous_integration.run_pylint import run_pylint
-from continuous_integration.run_mypy import run_mypy
-from continuous_integration.run_black import run_black
 from continuous_integration.install_or_skip_dependencies import (
     install_or_skip_dependencies,
 )
+from continuous_integration import utils
+
+MODULES = utils.get_common_modules()
 
 
 def parse_argurments():
@@ -21,8 +19,35 @@ def parse_argurments():
     return parser.parse_args()
 
 
+def run_black():
+    command = f"black --check {MODULES}"
+    returncode = utils.run_process(command, "black")
+    return returncode
+
+
+def run_mypy():
+    command = "mypy dekespo_ai_sdk"
+    returncode = utils.run_process(command, "mypy")
+    return returncode
+
+
+def run_pylint():
+    command = f"pylint {MODULES} --rcfile=.pylintrc"
+    returncode = utils.run_process(command, "Pylint")
+    return returncode
+
+
+def run_tests():
+    command = "coverage run --source=dekespo_ai_sdk -m unittest"
+    returncode = utils.run_process(command, "Tests with Coverage")
+    command = "coverage report --show-missing --fail-under=90"
+    returncode = utils.run_process(command, "Coverage Report check")
+    return returncode
+
+
 def main():
     arguments = parse_argurments()
+    returncode = utils.RETURN_CODE_ERROR
     if arguments.tests:
         returncode = run_tests()
     elif arguments.pylint:

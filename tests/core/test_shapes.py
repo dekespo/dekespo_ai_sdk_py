@@ -46,7 +46,11 @@ class CircleTest(unittest.TestCase):
         circle3 = Circle(Dim2D(-2, -2), 2)
         circle4 = Circle(Dim2D(2, 2), 1.5)
         self.assertTrue(Circle.circle_vs_circle_intersection_check(circle1, circle2))
-        self.assertTrue(Circle.circle_vs_circle_intersection_check(circle2, circle1))
+        self.assertTrue(
+            Circle.circle_vs_circle_intersection_check(  # pylint: disable=arguments-out-of-order
+                circle2, circle1
+            )
+        )
         self.assertFalse(Circle.circle_vs_circle_intersection_check(circle1, circle3))
         self.assertFalse(Circle.circle_vs_circle_intersection_check(circle2, circle3))
         self.assertTrue(Circle.circle_vs_circle_intersection_check(circle1, circle4))
