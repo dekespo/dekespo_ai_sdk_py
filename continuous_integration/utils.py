@@ -1,6 +1,7 @@
 import subprocess
 
 RETURN_CODE_OK = 0
+RETURN_CODE_ERROR = 1
 
 
 def run_process(command, process_name):
