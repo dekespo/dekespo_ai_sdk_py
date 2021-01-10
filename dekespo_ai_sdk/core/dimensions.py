@@ -1,50 +1,55 @@
+from __future__ import annotations
 import math
+from typing import Iterator, List, Tuple, Union
 
 
 class Dim2D:
-    def __init__(self, x, y):
+    def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"(x: {self.x}, y: {self.y})"
 
-    def __repr__(self):  # pragma: no cover
+    def __repr__(self) -> str:  # pragma: no cover
         return self.__str__()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Dim2D):
+            raise TypeError("The other must be Dim2D but found", type(other))
         return self.x == other.x and self.y == other.y
 
-    def __add__(self, other):
+    def __add__(self, other: Dim2D) -> Dim2D:
         return Dim2D(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: Dim2D) -> Dim2D:
         return Dim2D(self.x - other.x, self.y - other.y)
 
-    def vectoral_multiply(self, other):
+    def vectoral_multiply(self, other: Dim2D) -> Dim2D:
         return Dim2D(self.x * other.x, self.y * other.y)
 
-    def constant_multiply(self, other):
-        return Dim2D(self.x * other, self.y * other)
+    def constant_multiply(self, value: float) -> Dim2D:
+        return Dim2D(self.x * value, self.y * value)
 
-    def vectoral_divide(self, other):
+    def vectoral_divide(self, other: Dim2D) -> Dim2D:
         return Dim2D(self.x / other.x, self.y / other.y)
 
-    def constant_divide(self, other):
-        return Dim2D(self.x / other, self.y / other)
+    def constant_divide(self, value: float):
+        return Dim2D(self.x / value, self.y / value)
 
     def round(self):
         self.x = round(self.x)
         self.y = round(self.y)
 
-    def __abs__(self):
+    def __abs__(self) -> float:
         return math.sqrt(self.x ** 2 + self.y ** 2)
 
     @staticmethod
-    def convert_candiates_to_dimensions(candidates):
-        if not candidates:
-            return []
-        return [Dim2D(x, y) for x, y in candidates]
+    def convert_candiates_to_dimensions(
+        candidates: Union[List, Tuple],
+    ) -> Iterator[Dim2D]:
+        for x, y in candidates:
+            yield Dim2D(x, y)
 
     @staticmethod
     def get_average_value(dimensions):

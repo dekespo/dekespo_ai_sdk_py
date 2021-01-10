@@ -1,7 +1,7 @@
 import unittest
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
-from dekespo_ai_sdk.core.neighbour import Neighbour
+from dekespo_ai_sdk.core.neighbour import Neighbour, NeighbourData, NeighbourType
 
 
 class NeighbourTest(unittest.TestCase):
@@ -45,7 +45,7 @@ class NeighbourTest(unittest.TestCase):
             Neighbour.get_neighbours_diamond(
                 pos,
                 lambda *_: True,
-                Neighbour.Data(Neighbour.Data.Type.DIAMOND, radius=2),
+                NeighbourData(NeighbourType.DIAMOND, radius=2),
             )
         )
         self.assertEqual(len(poses_dic), 12)

@@ -4,14 +4,14 @@ from typing import Any, List
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.utils import error_print
-from dekespo_ai_sdk.core.neighbour import Neighbour
+from dekespo_ai_sdk.core.neighbour import NeighbourData
 
 
 @dataclass
 class DepthFirstSearchData:
     start_point: Dim2D
     get_available_neighbours: Any
-    neighbour_data: Neighbour.Data
+    neighbour_data: NeighbourData
     depth_size: int
 
 

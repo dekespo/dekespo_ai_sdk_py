@@ -6,7 +6,7 @@ from collections import OrderedDict
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.shapes import Shape2D, Rectangle
-from dekespo_ai_sdk.core.neighbour import Neighbour
+from dekespo_ai_sdk.core.neighbour import Neighbour, NeighbourData, NeighbourType
 
 
 class Graph:
@@ -97,13 +97,13 @@ class Graph:
         )
 
     def get_available_neighbours(
-        self, position: Dim2D, neighbour_data: Neighbour.Data
+        self, position: Dim2D, neighbour_data: NeighbourData
     ) -> "OrderedDict[Dim2D, int]":
         get_neighbours_type_function = {
-            Neighbour.Data.Type.CROSS: Neighbour.get_neighbours_cross,
-            Neighbour.Data.Type.SQUARE: Neighbour.get_neighbours_square,
-            Neighbour.Data.Type.DIAMOND: Neighbour.get_neighbours_diamond,
-            Neighbour.Data.Type.CUSTOM: neighbour_data.custom_function,
+            NeighbourType.CROSS: Neighbour.get_neighbours_cross,
+            NeighbourType.SQUARE: Neighbour.get_neighbours_square,
+            NeighbourType.DIAMOND: Neighbour.get_neighbours_diamond,
+            NeighbourType.CUSTOM: neighbour_data.custom_function,
         }[neighbour_data.type_]
         neighbours_positions_ordered_dic = OrderedDict(
             get_neighbours_type_function(

@@ -4,7 +4,7 @@ from enum import Enum, auto
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.disjoint_set import DisjointSet
-from dekespo_ai_sdk.core.neighbour import Neighbour
+from dekespo_ai_sdk.core.neighbour import Neighbour, NeighbourData, NeighbourType
 
 
 class ConnectivityType(Enum):
@@ -61,8 +61,8 @@ class ConnectedComponentLabelling:
                 new_labels = []
                 for neighbour_position, _ in self.graph.get_available_neighbours(
                     current_node.position,
-                    Neighbour.Data(
-                        Neighbour.Data.Type.CUSTOM,
+                    NeighbourData(
+                        NeighbourType.CUSTOM,
                         custom_function=self._get_neighbour_function,
                         should_block=False,
                         should_reach=True,
