@@ -65,7 +65,7 @@ class Dimensions2D(unittest.TestCase):
     def test_get_average_value(self):
         candidates = [(2, 3), (0, 0), (-4, -5), (2, -2), (-5, 0)]
         dimensions = Dim2D.convert_candiates_to_dimensions(candidates)
-        self.assertEqual(Dim2D.get_average_value(dimensions), Dim2D(-1, -4 / 5))
+        self.assertEqual(Dim2D.get_average_value(list(dimensions)), Dim2D(-1, -4 / 5))
 
     def test_get_euclid_distance(self):
         pos1 = Dim2D(0, 0)

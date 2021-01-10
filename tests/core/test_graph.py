@@ -4,7 +4,7 @@ from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.shapes import Shape2D
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
-from dekespo_ai_sdk.core.neighbour import Neighbour
+from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 
 from tests.templates.rectangle_world import (
     example_small_random,
@@ -39,7 +39,7 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(graph.graph_shape.is_inside_boundaries(Dim2D(1, 1)))
         self.assertFalse(graph.graph_shape.is_inside_boundaries(Dim2D(-1, 1)))
         pos = Dim2D(1, 1)
-        neighbour_data = Neighbour.Data(Neighbour.Data.Type.DIAMOND, 2)
+        neighbour_data = NeighbourData(NeighbourType.DIAMOND, 2)
         available_poses_dic = graph.get_available_neighbours(pos, neighbour_data)
         self.assertEqual(len(available_poses_dic), 7)
         self.assertIn(Dim2D(0, 0), available_poses_dic)
@@ -57,12 +57,12 @@ class GraphTest(unittest.TestCase):
         self.assertIn(Dim2D(3, 1), available_poses_dic)
         self.assertEqual(available_poses_dic[Dim2D(3, 1)], 2)
         pos1 = Dim2D(0, 2)
-        neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS, 1)
+        neighbour_data = NeighbourData(NeighbourType.CROSS, 1)
         available_poses_dic = graph.get_available_neighbours(pos1, neighbour_data)
         self.assertEqual(len(available_poses_dic), 1)
         self.assertEqual(tuple(available_poses_dic.keys())[0], Dim2D(1, 2))
         pos2 = Dim2D(2, 1)
-        neighbour_data = Neighbour.Data(Neighbour.Data.Type.SQUARE)
+        neighbour_data = NeighbourData(NeighbourType.SQUARE)
         available_poses_dic = graph.get_available_neighbours(pos2, neighbour_data)
         self.assertEqual(len(available_poses_dic), 6)
         self.assertIn(Dim2D(2, 0), available_poses_dic)
@@ -92,7 +92,7 @@ class GraphTest(unittest.TestCase):
         )
         self.assertTrue(graph.unreachable_positions, tuple(unreachable_positions_set))
         pos = Dim2D(1, 2)
-        neighbour_data = Neighbour.Data(Neighbour.Data.Type.CROSS, 2)
+        neighbour_data = NeighbourData(NeighbourType.CROSS, 2)
         available_poses_dic = graph.get_available_neighbours(pos, neighbour_data)
         self.assertEqual(len(available_poses_dic), 3)
         self.assertIn(Dim2D(1, 0), available_poses_dic)

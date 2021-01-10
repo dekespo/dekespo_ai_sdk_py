@@ -1,11 +1,11 @@
-from typing import List
+from typing import Any, List
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 
 
 class RawDataHandler:
-    def __init__(self, raw_data: List[List[str]]):
-        self._raw_data = [list(row) for row in raw_data]
+    def __init__(self, raw_data: List[List[Any]]):
+        self._raw_data: List[List[Any]] = raw_data
         raw_data_map: List[str] = []
         # TODO: give information from shape2D instead?
         for row_list in self._raw_data:
@@ -22,11 +22,11 @@ class RawDataHandler:
         return self.__str__()
 
     @property
-    def raw_data(self):
+    def raw_data(self) -> List[List[Any]]:
         return self._raw_data
 
-    def get_value(self, position: Dim2D):
-        return self._raw_data[position.y][position.x]
+    def get_value(self, position: Dim2D) -> Any:
+        return self._raw_data[int(position.y)][int(position.x)]
 
-    def set_value(self, position: Dim2D, value):
-        self._raw_data[position.y][position.x] = str(value)
+    def set_value(self, position: Dim2D, value: Any):
+        self._raw_data[int(position.y)][int(position.x)] = value
