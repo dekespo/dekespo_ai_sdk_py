@@ -17,30 +17,21 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
-          keys:
-            - pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
-            - pipenv-packages-
+          key: pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
       - run:
           command: |
             python -m continuous_integration --install_or_skip_dependencies
       - save_cache:
           paths:
+            - ".venv"
             - "Pipfile"
             - "Pipfile.lock"
           key: pipenv-packages-{{ checksum "continuous_integration/install_or_skip_dependencies.py" }}
 
       - run:
-          name: run black - format checker
+          name: run all code analysis methods
           command: |
-            pipenv run python -m continuous_integration --black
-      - run:
-          name: run pylint - lint checker
-          command: |
-            pipenv run python -m continuous_integration --pylint
-      - run:
-          name: run mypy - static analysis checker
-          command: |
-            pipenv run python -m continuous_integration --mypy
+            pipenv run python -m continuous_integration --check_all_code_analysis
       - run:
           name: run unit tests with coverage check
           command: |
