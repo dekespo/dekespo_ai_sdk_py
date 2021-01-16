@@ -38,6 +38,10 @@ jobs:
           command: |
             pipenv run python -m continuous_integration --pylint
       - run:
+          name: run code complexity check
+          command: |
+            pipenv run python -m continuous_integration --xenon
+      - run:
           name: run mypy - static analysis checker
           command: |
             pipenv run python -m continuous_integration --mypy

@@ -11,11 +11,12 @@ MODULES = utils.get_common_modules()
 
 def parse_argurments():
     parser = argparse.ArgumentParser("Continous Integration Tools")
-    parser.add_argument("--tests", action="store_true")
-    parser.add_argument("--pylint", action="store_true")
-    parser.add_argument("--mypy", action="store_true")
     parser.add_argument("--black", action="store_true")
     parser.add_argument("--install_or_skip_dependencies", action="store_true")
+    parser.add_argument("--mypy", action="store_true")
+    parser.add_argument("--pylint", action="store_true")
+    parser.add_argument("--tests", action="store_true")
+    parser.add_argument("--xenon", action="store_true")
     return parser.parse_args()
 
 
@@ -26,7 +27,7 @@ def run_black():
 
 
 def run_mypy():
-    command = "mypy dekespo_ai_sdk"
+    command = f"mypy {MODULES}"
     returncode = utils.run_process(command, "mypy")
     return returncode
 
@@ -45,19 +46,27 @@ def run_tests():
     return returncode
 
 
+def run_xenon():
+    command = f"xenon -bA -mA -aA {MODULES}"
+    returncode = utils.run_process(command, "xenon")
+    return returncode
+
+
 def main():
     arguments = parse_argurments()
     returncode = utils.RETURN_CODE_ERROR
-    if arguments.tests:
-        returncode = run_tests()
-    elif arguments.pylint:
-        returncode = run_pylint()
-    elif arguments.mypy:
-        returncode = run_mypy()
-    elif arguments.black:
+    if arguments.black:
         returncode = run_black()
     elif arguments.install_or_skip_dependencies:
         returncode = install_or_skip_dependencies()
+    elif arguments.mypy:
+        returncode = run_mypy()
+    elif arguments.pylint:
+        returncode = run_pylint()
+    elif arguments.tests:
+        returncode = run_tests()
+    elif arguments.xenon:
+        returncode = run_xenon()
     print("Return code is ", returncode)
     sys.exit(returncode)
 

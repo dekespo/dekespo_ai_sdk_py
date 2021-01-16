@@ -14,6 +14,7 @@ def install_or_skip_dependencies():
     coverage_version = "5.3.1"
     mypy_version = "0.790"
     pylint_version = "2.6.0"
+    xenon_version = "0.7.1"
     returncode = install_module("sudo pip install pipenv", "pipenv")
     returncode = install_module(f"pipenv install black=={black_version}", "black")
     returncode = install_module("pipenv install codecov", "codecov")
@@ -22,4 +23,5 @@ def install_or_skip_dependencies():
     )
     returncode = install_module(f"pipenv install mypy=={mypy_version}", "mypy")
     returncode = install_module(f"pipenv install pylint=={pylint_version}", "pylint")
+    returncode = install_module(f"pipenv install xenon=={xenon_version}", "pylint")
     return returncode
