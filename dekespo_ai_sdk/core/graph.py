@@ -6,7 +6,12 @@ from collections import OrderedDict
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.shapes import Shape2D, Rectangle
-from dekespo_ai_sdk.core.neighbour import Neighbour, NeighbourData, NeighbourType
+from dekespo_ai_sdk.core.neighbour import (
+    Neighbour,
+    NeighbourData,
+    NeighbourType,
+    GetNeighbourFunctionType,
+)
 
 
 class Graph:
@@ -98,12 +103,13 @@ class Graph:
 
     def get_available_neighbours(
         self, position: Dim2D, neighbour_data: NeighbourData
-    ) -> "OrderedDict[Dim2D, int]":
-        get_neighbours_type_function = {
+    ) -> OrderedDict:
+        get_neighbours_type_function: GetNeighbourFunctionType = {
             NeighbourType.CROSS: Neighbour.get_neighbours_cross,
             NeighbourType.SQUARE: Neighbour.get_neighbours_square,
             NeighbourType.DIAMOND: Neighbour.get_neighbours_diamond,
-            NeighbourType.CUSTOM: neighbour_data.custom_function,
+            NeighbourType.CONNECTIVITY_FOUR: Neighbour.get_neighbour_function_4_connectivity,
+            NeighbourType.CONNECTIVITY_EIGHT: Neighbour.get_neighbour_function_8_connectivity,
         }[neighbour_data.type_]
         neighbours_positions_ordered_dic = OrderedDict(
             get_neighbours_type_function(
@@ -117,8 +123,8 @@ class Graph:
             neighbours_positions_ordered_dic = OrderedDict(items)
         return neighbours_positions_ordered_dic
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Shape Type: {self.shape_type}\nRaw data:\n{self.raw_data_handler}"
 
-    def __repr__(self):  # pragma: no cover
+    def __repr__(self) -> str:  # pragma: no cover
         return self.__str__()
