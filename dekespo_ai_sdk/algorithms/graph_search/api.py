@@ -1,7 +1,10 @@
 import sys
+from collections import OrderedDict
 
 from dekespo_ai_sdk.core.utils import error_print
 from dekespo_ai_sdk.core.graph import Graph
+from dekespo_ai_sdk.core.dimensions import Dim2D
+from dekespo_ai_sdk.core.neighbour import NeighbourData
 
 from dekespo_ai_sdk.algorithms.graph_search.depth_first_search import (
     DepthFirstSearch,
@@ -22,15 +25,20 @@ class GraphSearch:
         def run_weight_function(self, position1, position2):
             return self.weight_function(position1, position2)
 
-    def __init__(self, graph: Graph, start_point):
+    def __init__(self, graph: Graph, start_point: Dim2D):
         self.graph = graph
         self.start_point = start_point
 
-    def _get_available_neighbours(self, point, neighbour_data):
+    def _get_available_neighbours(
+        self, point: Dim2D, neighbour_data: NeighbourData
+    ) -> OrderedDict:
         return self.graph.get_available_neighbours(point, neighbour_data)
 
     def depth_first_search(
-        self, neighbour_data, depth_size=sys.maxsize, runs_with_thread=False
+        self,
+        neighbour_data: NeighbourData,
+        depth_size: int = sys.maxsize,
+        runs_with_thread: bool = False,
     ):
         dfs_data = DepthFirstSearchData(
             self.start_point,
@@ -41,7 +49,7 @@ class GraphSearch:
         dfs = DepthFirstSearch(dfs_data, runs_with_thread)
         return dfs
 
-    def breadth_first_search(self, neighbour_data):
+    def breadth_first_search(self, neighbour_data: NeighbourData):
         closed_set = []
         open_set = [self.start_point]
         while open_set:

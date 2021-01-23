@@ -8,7 +8,7 @@ from tests.templates.rectangle_world import (
 from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.dimensions import Dim2D
-from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.shapes import Shape2DType
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 
@@ -18,7 +18,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
         def generate_graph_search(example_function):
             raw_data_handler = RawDataHandler(example_function())
             blocking_values = set([1])
-            graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values)
+            graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values)
             start_point = Dim2D(0, 0)
             return GraphSearch(graph, start_point)
 

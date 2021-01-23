@@ -8,7 +8,7 @@ from dekespo_ai_sdk.algorithms.connected_component_labelling import (
     ConnectedComponentLabelling,
 )
 from dekespo_ai_sdk.core.graph import Graph
-from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.shapes import Shape2DType
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.neighbour import NeighbourType
@@ -17,7 +17,7 @@ from dekespo_ai_sdk.core.neighbour import NeighbourType
 class ConnectedComponentLabellingTest(unittest.TestCase):
     def test_wiki_example(self):
         raw_data_handler = RawDataHandler(example_wiki_ccl())
-        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[0])
+        graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values=[0])
         labeller = ConnectedComponentLabelling(graph, NeighbourType.CONNECTIVITY_EIGHT)
         labeller.first_pass()
         first_pass_data = [
@@ -57,7 +57,7 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
 
     def test_different_regions_8_connectivity(self):
         raw_data_handler = RawDataHandler(example_simple_different_regions())
-        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values=[1])
         labeller = ConnectedComponentLabelling(graph, NeighbourType.CONNECTIVITY_EIGHT)
         labeller.first_pass()
         labeller.second_pass()
@@ -78,7 +78,7 @@ class ConnectedComponentLabellingTest(unittest.TestCase):
 
     def test_different_regions_4_connectivity(self):
         raw_data_handler = RawDataHandler(example_simple_different_regions())
-        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values=[1])
+        graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values=[1])
         labeller = ConnectedComponentLabelling(graph, NeighbourType.CONNECTIVITY_FOUR)
         labeller.first_pass()
         labeller.second_pass()

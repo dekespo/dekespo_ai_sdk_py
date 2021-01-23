@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from random import shuffle
-from typing import List, Tuple, Union
+from typing import List, Tuple
 from collections import OrderedDict
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
-from dekespo_ai_sdk.core.shapes import Shape2D, Rectangle
+from dekespo_ai_sdk.core.shapes import Shape2DType, Rectangle
 from dekespo_ai_sdk.core.neighbour import (
     Neighbour,
     NeighbourData,
@@ -14,17 +14,18 @@ from dekespo_ai_sdk.core.neighbour import (
 )
 
 
-class Graph:
-    @dataclass
-    class BlockingData:
-        values: Union[Tuple, None] = ()
-        positions: Union[Tuple, None] = ()
+@dataclass
+class GraphBlockingData:
+    values: Tuple = ()
+    positions: Tuple = ()
 
+
+class Graph:
     # TODO: Possible move shape_type to raw_data_handler?
     def __init__(
         self,
         raw_data_handler: RawDataHandler,
-        shape_type: Shape2D.Type,
+        shape_type: Shape2DType,
         blocking_values: Tuple = (),
         unreachable_positions: Tuple = (),
     ):
@@ -34,13 +35,13 @@ class Graph:
         self.update_blocking_data(blocking_values)
         self._unreachable_positions = self.unreachable_positions = unreachable_positions
 
-    def _get_shape(self, shape_type):
-        get_shape_function = {Shape2D.Type.RECTANGLE: self._get_rectangle_graph}[
+    def _get_shape(self, shape_type: Shape2DType):
+        get_shape_function = {Shape2DType.RECTANGLE: self._get_rectangle_graph}[
             shape_type
         ]
         self.graph_shape = get_shape_function()
 
-    def _get_rectangle_graph(self):
+    def _get_rectangle_graph(self) -> Rectangle:
         width, height = len(self.raw_data_handler.raw_data[0]), len(
             self.raw_data_handler.raw_data
         )
@@ -48,26 +49,26 @@ class Graph:
         return Rectangle(top_left_corner, width, height)
 
     def update_blocking_data(self, blocking_values: Tuple):
-        def update_blocking_positions(blocking_values: Tuple):
+        def update_blocking_positions(blocking_values: Tuple) -> Tuple:
             positions: List[Dim2D] = []
             if not blocking_values:
-                return positions
+                return tuple(positions)
             for y, row in enumerate(self.raw_data_handler.raw_data):
                 for x, value in enumerate(row):
                     if value in blocking_values:
                         positions.append(Dim2D(x, y))
             return tuple(positions)
 
-        self._blocking_data = Graph.BlockingData()
+        self._blocking_data = GraphBlockingData()
         self._blocking_data.values = blocking_values
         self._blocking_data.positions = update_blocking_positions(blocking_values)
 
     @property
-    def blocking_values(self):
+    def blocking_values(self) -> Tuple:
         return self._blocking_data.values
 
     @property
-    def blocking_positions(self):
+    def blocking_positions(self) -> Tuple:
         return self._blocking_data.positions
 
     @property
