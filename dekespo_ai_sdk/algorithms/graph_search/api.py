@@ -1,5 +1,6 @@
 import sys
 from collections import OrderedDict
+from typing import Callable
 
 from dekespo_ai_sdk.core.utils import error_print
 from dekespo_ai_sdk.core.graph import Graph
@@ -11,20 +12,24 @@ from dekespo_ai_sdk.algorithms.graph_search.depth_first_search import (
     DepthFirstSearchData,
 )
 
+FunctionType = Callable[[Dim2D, Dim2D], float]
+
+
+# TODO: Could be a data class?
+class AStarFunctions:
+    def __init__(self, heuristic_function: FunctionType, weight_function: FunctionType):
+        self.heuristic_function = heuristic_function
+        self.weight_function = weight_function
+
+    # TODO: Generalise the parameters
+    def run_heuristic_function(self, position1: Dim2D, position2: Dim2D):
+        return self.heuristic_function(position1, position2)
+
+    def run_weight_function(self, position1: Dim2D, position2: Dim2D):
+        return self.weight_function(position1, position2)
+
 
 class GraphSearch:
-    class AStarFunctions:
-        def __init__(self, heuristic_function, weight_function):
-            self.heuristic_function = heuristic_function
-            self.weight_function = weight_function
-
-        # TODO: Generalise the parameters
-        def run_heuristic_function(self, position1, position2):
-            return self.heuristic_function(position1, position2)
-
-        def run_weight_function(self, position1, position2):
-            return self.weight_function(position1, position2)
-
     def __init__(self, graph: Graph, start_point: Dim2D):
         self.graph = graph
         self.start_point = start_point
@@ -64,7 +69,7 @@ class GraphSearch:
 
     def dijkstra_search(self, end_point, weight_function, neighbour_data):
         no_heuristic_function = lambda *_: 0
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=no_heuristic_function, weight_function=weight_function
         )
         return self.a_star_search(end_point, a_star_functions, neighbour_data)

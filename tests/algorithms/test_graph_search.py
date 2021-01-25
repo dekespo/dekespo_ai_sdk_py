@@ -5,7 +5,7 @@ from tests.templates.rectangle_world import (
     example_simple,
     example_blocked_in_the_middle,
 )
-from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch
+from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch, AStarFunctions
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.shapes import Shape2DType
@@ -402,7 +402,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
 
     def test_a_star_search_simple(self):
         end_point = Dim2D(7, 6)
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=Dim2D.get_manathan_distance,
             weight_function=Dim2D.get_manathan_distance,
         )
@@ -443,7 +443,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
                 risk_value = 100
             return risk_value
 
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=custom_heuristic_function,
             weight_function=Dim2D.get_manathan_distance,
         )
@@ -483,7 +483,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
 
     def test_a_star_search_no_path(self):
         end_point = Dim2D(7, 6)
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=Dim2D.get_manathan_distance,
             weight_function=Dim2D.get_manathan_distance,
         )
