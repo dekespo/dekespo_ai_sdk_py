@@ -23,6 +23,7 @@ class NeighbourData:
     should_block: bool = True
 
 
+# TODO: Use a custom typing instead?
 GetNeighbourFunctionType = Callable[
     [Dim2D, Callable[[Dim2D, bool, bool], bool], NeighbourData],
     Iterator[Tuple[Dim2D, float]],

@@ -6,7 +6,10 @@ from dekespo_ai_sdk.core.utils import error_print
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.neighbour import NeighbourData
-
+from dekespo_ai_sdk.algorithms.graph_search.breadth_first_search import (
+    BreadthFirstSearch,
+    BreadthFirstSearchData,
+)
 from dekespo_ai_sdk.algorithms.graph_search.depth_first_search import (
     DepthFirstSearch,
     DepthFirstSearchData,
@@ -44,7 +47,7 @@ class GraphSearch:
         neighbour_data: NeighbourData,
         depth_size: int = sys.maxsize,
         runs_with_thread: bool = False,
-    ):
+    ) -> DepthFirstSearch:
         dfs_data = DepthFirstSearchData(
             self.start_point,
             self._get_available_neighbours,
@@ -54,18 +57,19 @@ class GraphSearch:
         dfs = DepthFirstSearch(dfs_data, runs_with_thread)
         return dfs
 
-    def breadth_first_search(self, neighbour_data: NeighbourData):
-        closed_set = []
-        open_set = [self.start_point]
-        while open_set:
-            current_point = open_set.pop(0)
-            if current_point not in closed_set:
-                closed_set.append(current_point)
-                for new_candidate_point, _ in self._get_available_neighbours(
-                    current_point, neighbour_data
-                ).items():
-                    open_set.append(new_candidate_point)
-        return closed_set
+    def breadth_first_search(
+        self,
+        neighbour_data: NeighbourData,
+        breadth_size: int = sys.maxsize,
+    ) -> BreadthFirstSearch:
+        bfs_data = BreadthFirstSearchData(
+            self.start_point,
+            self._get_available_neighbours,
+            neighbour_data,
+            breadth_size,
+        )
+        bfs = BreadthFirstSearch(bfs_data)
+        return bfs
 
     def dijkstra_search(self, end_point, weight_function, neighbour_data):
         no_heuristic_function = lambda *_: 0

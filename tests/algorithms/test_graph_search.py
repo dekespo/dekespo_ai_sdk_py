@@ -142,10 +142,9 @@ class SearchAlgorithmsTest(unittest.TestCase):
             )
         )
         neighbour_data = NeighbourData(NeighbourType.CROSS)
-        self.assertSequenceEqual(
-            self.simple_search_object.breadth_first_search(neighbour_data),
-            correct_path_list,
-        )
+        bfs = self.simple_search_object.breadth_first_search(neighbour_data)
+        bfs.run_without_thread()
+        self.assertSequenceEqual(bfs.get_closed_set(), correct_path_list)
 
     def test_dijkstra_search(self):
         end_point = Dim2D(7, 6)
