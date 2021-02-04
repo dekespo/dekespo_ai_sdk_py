@@ -1,11 +1,15 @@
+from typing import Any, Callable, List
 import unittest
 import random
 
+# TODO: Move the different tests into different files
 from tests.templates.rectangle_world import (
     example_simple,
     example_blocked_in_the_middle,
+    example_half_maze,
 )
 from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch, AStarFunctions
+from dekespo_ai_sdk.algorithms.graph_search.utils import Node
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.shapes import Shape2DType
@@ -15,16 +19,21 @@ from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):
     def setUp(self):
-        def generate_graph_search(example_function):
+        def generate_graph_search(
+            example_function: Callable[[], List[List[Any]]],
+            start_point: Dim2D = Dim2D(0, 0),
+        ) -> GraphSearch:
             raw_data_handler = RawDataHandler(example_function())
-            blocking_values = set([1])
+            blocking_values = (1,)
             graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values)
-            start_point = Dim2D(0, 0)
             return GraphSearch(graph, start_point)
 
         self.simple_search_object = generate_graph_search(example_simple)
         self.blocked_search_object = generate_graph_search(
             example_blocked_in_the_middle
+        )
+        self.half_maze_search_object = generate_graph_search(
+            example_half_maze, start_point=Dim2D(1, 1)
         )
 
     def test_depth_first_search(self):
@@ -55,13 +64,15 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = NeighbourData(NeighbourType.CROSS)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
         depth_size = 5
         dfs = self.simple_search_object.depth_first_search(
             neighbour_data, depth_size=depth_size
         )
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list[:depth_size])
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list[:depth_size])
 
     def test_depth_first_search_with_thread(self):
         correct_path_list = list(
@@ -96,7 +107,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
         dfs.event_set()
         dfs.run()
         dfs.join()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
 
     def test_depth_first_search_with_thread_options(self):
         neighbour_data = NeighbourData(NeighbourType.CROSS)
@@ -144,7 +156,37 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = NeighbourData(NeighbourType.CROSS)
         bfs = self.simple_search_object.breadth_first_search(neighbour_data)
         bfs.run_without_thread()
-        self.assertSequenceEqual(bfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in bfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
+
+    def test_bfs_half_maze(self):
+        correct_path_list = [
+            Node(Dim2D(1, 1), 0),
+            Node(Dim2D(2, 1), 1),
+            Node(Dim2D(1, 2), 1),
+            Node(Dim2D(1, 0), 1),
+            Node(Dim2D(2, 2), 2),
+            Node(Dim2D(0, 2), 2),
+            Node(Dim2D(0, 0), 2),
+            Node(Dim2D(2, 3), 3),
+            Node(Dim2D(0, 3), 3),
+            Node(Dim2D(2, 4), 4),
+            Node(Dim2D(0, 4), 4),
+            Node(Dim2D(3, 4), 5),
+            Node(Dim2D(1, 4), 5),
+            Node(Dim2D(4, 4), 6),
+            Node(Dim2D(4, 3), 7),
+            Node(Dim2D(4, 2), 8),
+        ]
+        neighbour_data = NeighbourData(NeighbourType.CROSS)
+        bfs = self.half_maze_search_object.breadth_first_search(neighbour_data)
+        bfs.run_without_thread()
+        path = bfs.get_closed_set()
+        # Cannot use assertSequenceEqual due to override in Node class
+        self.assertEqual(len(path), len(correct_path_list))
+        for idx, node in enumerate(path):
+            self.assertEqual(node.position, correct_path_list[idx].position)
+            self.assertEqual(node.distance, correct_path_list[idx].distance)
 
     def test_dijkstra_search(self):
         end_point = Dim2D(7, 6)
@@ -271,7 +313,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
         neighbour_data = NeighbourData(NeighbourType.CROSS, random_output=True)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
 
 
 if __name__ == "__main__":

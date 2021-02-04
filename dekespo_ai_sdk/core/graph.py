@@ -26,7 +26,7 @@ class Graph:
         self,
         raw_data_handler: RawDataHandler,
         shape_type: Shape2DType,
-        blocking_values: Tuple = (),
+        blocking_values: Tuple = (),  # TODO: Change it to set?
         unreachable_positions: Tuple = (),
     ):
         self.raw_data_handler = raw_data_handler

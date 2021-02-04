@@ -29,11 +29,35 @@ def example_blocked_in_the_middle():
 
 
 def example_small_random():
-    return [[0, 1, 0, 1], [1, 0, 0, 0], [0, 0, 0, 0]]
+    return [
+        # fmt: off
+        [0, 1, 0, 1],
+        [1, 0, 0, 0],
+        [0, 0, 0, 0]
+        # fmt: on
+    ]
 
 
 def example_unreachable_positions():
-    return [[0, 0, 0, 0], [0, 0, 1, 1], [0, 0, 1, 0]]
+    return [
+        # fmt: off
+        [0, 0, 0, 0],
+        [0, 0, 1, 1],
+        [0, 0, 1, 0]
+        # fmt: on
+    ]
+
+
+def example_half_maze():
+    return [
+        # fmt: off
+        [0, 0, 1, 0, 0],
+        [1, 0, 0, 1, 1],
+        [0, 0, 0, 1, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0]
+        # fmt: on
+    ]
 
 
 def example_wiki_ccl():

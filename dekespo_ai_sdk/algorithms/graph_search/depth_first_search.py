@@ -2,9 +2,12 @@ import threading
 from dataclasses import dataclass
 from typing import List
 
-from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.utils import error_print
-from dekespo_ai_sdk.algorithms.graph_search.utils import SearchData, update_sets
+from dekespo_ai_sdk.algorithms.graph_search.utils import (
+    Node,
+    SearchData,
+    update_sets,
+)
 
 
 @dataclass
@@ -16,7 +19,7 @@ class DepthFirstSearch(threading.Thread):
     def __init__(self, input_data: DepthFirstSearchData, runs_with_thread: bool):
         self.input_data = input_data
         self.runs_with_thread = runs_with_thread
-        self._closed_set: List[Dim2D] = []
+        self._closed_set: List[Node] = []
 
         if self.runs_with_thread:
             threading.Thread.__init__(self)
@@ -41,15 +44,16 @@ class DepthFirstSearch(threading.Thread):
         self._depth_first_search()
 
     def _depth_first_search(self):
-        open_set = [self.input_data.start_point]
+        open_set: List[Node] = [Node(self.input_data.start_point, 0)]
+        # TODO: Check the followıng depth level
         while open_set and self.input_data.depth_size > len(self._closed_set):
             if self.runs_with_thread:
                 if self._kill:
                     error_print(f"Killed the {self._thread_name} thread")
                     break
                 self._event.wait()
-            current_point = open_set.pop()
-            update_sets(self._closed_set, open_set, current_point, self.input_data)
+            current_node = open_set.pop()
+            update_sets(self._closed_set, open_set, current_node, self.input_data)
 
     def event_set(self):
         self._event.set()
@@ -58,7 +62,7 @@ class DepthFirstSearch(threading.Thread):
         self._event.clear()
 
     # TODO: Use property instead
-    def get_closed_set(self) -> List[Dim2D]:
+    def get_closed_set(self) -> List[Node]:
         return self._closed_set
 
     def is_done(self):

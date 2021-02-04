@@ -14,12 +14,32 @@ class SearchData:
     neighbour_data: NeighbourData
 
 
+@dataclass(frozen=True)
+class Node:
+    position: Dim2D
+    distance: int
+
+    def __eq__(self, other):
+        if not isinstance(other, Node):
+            raise TypeError(f"Mismatch type with {type(other)}")
+
+        return self.position == other.position
+
+
 def update_sets(
-    closed_set: List, open_set: List, current_point: Dim2D, input_data: SearchData
+    closed_set: List[Node],
+    open_set: List[Node],
+    current_node: Node,
+    input_data: SearchData,
 ):
-    if current_point not in closed_set:
-        closed_set.append(current_point)
-        for new_candidate_point, _ in input_data.get_available_neighbours(  # type: ignore
-            current_point, input_data.neighbour_data  # type: ignore
+    if current_node not in closed_set:
+        closed_set.append(current_node)
+        for (  # type: ignore
+            new_candidate_point,  # type: ignore
+            new_distance,  # type: ignore
+        ) in input_data.get_available_neighbours(  # type: ignore
+            current_node.position, input_data.neighbour_data  # type: ignore
         ).items():
-            open_set.append(new_candidate_point)
+            open_set.append(
+                Node(new_candidate_point, current_node.distance + new_distance)
+            )
