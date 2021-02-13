@@ -2,7 +2,7 @@ import unittest
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.graph import Graph
-from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.shapes import Shape2DType
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 
@@ -16,7 +16,7 @@ from tests.templates.rectangle_world import (
 class GraphTest(unittest.TestCase):
     def test_graph_data_with_blocking(self):
         raw_data_handler = RawDataHandler(example_small_random())
-        graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE)
+        graph = Graph(raw_data_handler, Shape2DType.RECTANGLE)
         self.assertTrue(
             str(graph),
             """
@@ -29,7 +29,7 @@ class GraphTest(unittest.TestCase):
         )
         self.assertTrue(graph.raw_data_handler, example_small_random())
         self.assertTupleEqual(graph.blocking_values, ())
-        self.assertListEqual(graph.blocking_positions, [])
+        self.assertTupleEqual(graph.blocking_positions, ())
         new_blocking_values = set([1])
         graph.update_blocking_data(new_blocking_values)
         self.assertTrue(graph.blocking_values, set([1]))
@@ -82,7 +82,7 @@ class GraphTest(unittest.TestCase):
         unreachable_positions_set = set([Dim2D(3, 2)])
         graph = Graph(
             raw_data_handler,
-            Shape2D.Type.RECTANGLE,
+            Shape2DType.RECTANGLE,
             blocking_set,
             unreachable_positions_set,
         )

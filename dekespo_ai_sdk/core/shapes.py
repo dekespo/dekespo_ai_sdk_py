@@ -5,12 +5,13 @@ from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.assertion import check_positive_value
 
 
-class Shape2D(ABC):
-    class Type(Enum):
-        RECTANGLE = auto()
-        CIRCLE = auto()
-        POINT = auto()
+class Shape2DType(Enum):
+    RECTANGLE = auto()
+    CIRCLE = auto()
+    POINT = auto()
 
+
+class Shape2D(ABC):
     @abstractmethod
     def __str__(self):
         """ Abstract """

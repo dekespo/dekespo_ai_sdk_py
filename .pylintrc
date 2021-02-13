@@ -1,6 +1,6 @@
 [MESSAGES CONTROL]
 
-good-names = x, y, z, to
+good-names = x, y, z
 
 # Warnings
 # W0511 = Fixme # Will keep it and check it regularly
@@ -10,3 +10,7 @@ good-names = x, y, z, to
 # C0330 = Wrong hanging indentation before block (add 4 spaces). (There is conflict over pep8 between pylint and black)
 
 disable=C0111, W0511, C0330
+
+[SIMILARITIES]
+
+ignore-imports=yes

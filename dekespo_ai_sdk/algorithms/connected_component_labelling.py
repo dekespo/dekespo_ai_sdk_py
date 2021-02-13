@@ -4,7 +4,7 @@ from enum import Enum, auto
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.disjoint_set import DisjointSet
-from dekespo_ai_sdk.core.neighbour import Neighbour, NeighbourData, NeighbourType
+from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 
 
 class ConnectivityType(Enum):
@@ -23,12 +23,9 @@ class ConnectedComponentLabelling:
         graph_binary_value: bool
         label_value: int = 0
 
-    def __init__(self, graph: Graph, connectivity_type: ConnectivityType):
+    def __init__(self, graph: Graph, connectivity_neighbour_type: NeighbourType):
         self.graph = graph
-        self._get_neighbour_function = {
-            ConnectivityType.FOUR: Neighbour.get_neighbour_function_4_connectivity,
-            ConnectivityType.EIGHT: Neighbour.get_neighbour_function_8_connectivity,
-        }[connectivity_type]
+        self.connectivity_neighbour_type = connectivity_neighbour_type
         self._nodes = None
         self._set_nodes()
         self._labels_disjoint_set = DisjointSet()
@@ -62,8 +59,7 @@ class ConnectedComponentLabelling:
                 for neighbour_position, _ in self.graph.get_available_neighbours(
                     current_node.position,
                     NeighbourData(
-                        NeighbourType.CUSTOM,
-                        custom_function=self._get_neighbour_function,
+                        self.connectivity_neighbour_type,
                         should_block=False,
                         should_reach=True,
                     ),

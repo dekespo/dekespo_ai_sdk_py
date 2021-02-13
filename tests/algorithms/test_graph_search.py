@@ -1,239 +1,102 @@
+from typing import Any, Callable, List
 import unittest
 import random
 
+# TODO: Move the different tests into different files
 from tests.templates.rectangle_world import (
     example_simple,
     example_blocked_in_the_middle,
+    example_half_maze,
 )
-from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch
+from dekespo_ai_sdk.algorithms.graph_search.api import GraphSearch, AStarFunctions
+from dekespo_ai_sdk.algorithms.graph_search.utils import Node
 from dekespo_ai_sdk.core.graph import Graph
 from dekespo_ai_sdk.core.dimensions import Dim2D
-from dekespo_ai_sdk.core.shapes import Shape2D
+from dekespo_ai_sdk.core.shapes import Shape2DType
 from dekespo_ai_sdk.core.raw_data_handler import RawDataHandler
 from dekespo_ai_sdk.core.neighbour import NeighbourData, NeighbourType
 
 # TODO: Add blocked tests also
 class SearchAlgorithmsTest(unittest.TestCase):
     def setUp(self):
-        def generate_graph_search(example_function):
+        def generate_graph_search(
+            example_function: Callable[[], List[List[Any]]],
+            start_point: Dim2D = Dim2D(0, 0),
+        ) -> GraphSearch:
             raw_data_handler = RawDataHandler(example_function())
-            blocking_values = set([1])
-            graph = Graph(raw_data_handler, Shape2D.Type.RECTANGLE, blocking_values)
-            start_point = Dim2D(0, 0)
+            blocking_values = (1,)
+            graph = Graph(raw_data_handler, Shape2DType.RECTANGLE, blocking_values)
             return GraphSearch(graph, start_point)
 
         self.simple_search_object = generate_graph_search(example_simple)
         self.blocked_search_object = generate_graph_search(
             example_blocked_in_the_middle
         )
+        self.half_maze_search_object = generate_graph_search(
+            example_half_maze, start_point=Dim2D(1, 1)
+        )
 
     def test_depth_first_search(self):
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
+                # fmt: off
                 [
-                    (0, 0),
-                    (0, 1),
-                    (0, 2),
-                    (0, 3),
-                    (0, 4),
-                    (0, 5),
-                    (0, 6),
-                    (0, 7),
-                    (0, 8),
-                    (0, 9),
-                    (1, 9),
-                    (1, 8),
-                    (1, 7),
-                    (1, 6),
-                    (1, 5),
-                    (1, 4),
-                    (1, 3),
-                    (1, 2),
-                    (1, 1),
-                    (1, 0),
-                    (2, 0),
-                    (2, 1),
-                    (2, 2),
-                    (2, 3),
-                    (2, 4),
-                    (2, 5),
-                    (2, 6),
-                    (2, 7),
-                    (2, 8),
-                    (2, 9),
-                    (3, 9),
-                    (3, 8),
-                    (3, 7),
-                    (3, 6),
-                    (3, 5),
-                    (3, 4),
-                    (3, 3),
-                    (3, 2),
-                    (3, 1),
-                    (3, 0),
-                    (4, 5),
-                    (5, 5),
-                    (5, 4),
-                    (5, 3),
-                    (5, 2),
-                    (5, 1),
-                    (5, 0),
-                    (6, 0),
-                    (6, 1),
-                    (6, 2),
-                    (6, 3),
-                    (6, 4),
-                    (6, 5),
-                    (6, 6),
-                    (6, 7),
-                    (6, 8),
-                    (6, 9),
-                    (5, 9),
-                    (5, 8),
-                    (5, 7),
-                    (5, 6),
-                    (4, 9),
-                    (7, 9),
-                    (7, 8),
-                    (7, 7),
-                    (7, 6),
-                    (7, 5),
-                    (7, 4),
-                    (7, 3),
-                    (7, 2),
-                    (7, 1),
-                    (7, 0),
-                    (8, 0),
-                    (8, 1),
-                    (8, 2),
-                    (8, 3),
-                    (8, 4),
-                    (8, 5),
-                    (8, 6),
-                    (8, 7),
-                    (8, 8),
-                    (8, 9),
-                    (9, 9),
-                    (9, 8),
-                    (9, 7),
-                    (9, 6),
-                    (9, 5),
-                    (9, 4),
-                    (9, 3),
-                    (9, 2),
-                    (9, 1),
-                    (9, 0),
+                    (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
+                    (0, 6), (0, 7), (0, 8), (0, 9), (1, 9), (1, 8),
+                    (1, 7), (1, 6), (1, 5), (1, 4), (1, 3), (1, 2),
+                    (1, 1), (1, 0), (2, 0), (2, 1), (2, 2), (2, 3),
+                    (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9),
+                    (3, 9), (3, 8), (3, 7), (3, 6), (3, 5), (3, 4),
+                    (3, 3), (3, 2), (3, 1), (3, 0), (4, 5), (5, 5),
+                    (5, 4), (5, 3), (5, 2), (5, 1), (5, 0), (6, 0),
+                    (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6),
+                    (6, 7), (6, 8), (6, 9), (5, 9), (5, 8), (5, 7),
+                    (5, 6), (4, 9), (7, 9), (7, 8), (7, 7), (7, 6),
+                    (7, 5), (7, 4), (7, 3), (7, 2), (7, 1), (7, 0),
+                    (8, 0), (8, 1), (8, 2), (8, 3), (8, 4), (8, 5),
+                    (8, 6), (8, 7), (8, 8), (8, 9), (9, 9), (9, 8),
+                    (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2),
+                    (9, 1), (9, 0)
                 ]
+                # fmt: on
             )
         )
         neighbour_data = NeighbourData(NeighbourType.CROSS)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
         depth_size = 5
         dfs = self.simple_search_object.depth_first_search(
             neighbour_data, depth_size=depth_size
         )
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list[:depth_size])
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list[:depth_size])
 
     def test_depth_first_search_with_thread(self):
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
+                # fmt: off
                 [
-                    (0, 0),
-                    (0, 1),
-                    (0, 2),
-                    (0, 3),
-                    (0, 4),
-                    (0, 5),
-                    (0, 6),
-                    (0, 7),
-                    (0, 8),
-                    (0, 9),
-                    (1, 9),
-                    (1, 8),
-                    (1, 7),
-                    (1, 6),
-                    (1, 5),
-                    (1, 4),
-                    (1, 3),
-                    (1, 2),
-                    (1, 1),
-                    (1, 0),
-                    (2, 0),
-                    (2, 1),
-                    (2, 2),
-                    (2, 3),
-                    (2, 4),
-                    (2, 5),
-                    (2, 6),
-                    (2, 7),
-                    (2, 8),
-                    (2, 9),
-                    (3, 9),
-                    (3, 8),
-                    (3, 7),
-                    (3, 6),
-                    (3, 5),
-                    (3, 4),
-                    (3, 3),
-                    (3, 2),
-                    (3, 1),
-                    (3, 0),
-                    (4, 5),
-                    (5, 5),
-                    (5, 4),
-                    (5, 3),
-                    (5, 2),
-                    (5, 1),
-                    (5, 0),
-                    (6, 0),
-                    (6, 1),
-                    (6, 2),
-                    (6, 3),
-                    (6, 4),
-                    (6, 5),
-                    (6, 6),
-                    (6, 7),
-                    (6, 8),
-                    (6, 9),
-                    (5, 9),
-                    (5, 8),
-                    (5, 7),
-                    (5, 6),
-                    (4, 9),
-                    (7, 9),
-                    (7, 8),
-                    (7, 7),
-                    (7, 6),
-                    (7, 5),
-                    (7, 4),
-                    (7, 3),
-                    (7, 2),
-                    (7, 1),
-                    (7, 0),
-                    (8, 0),
-                    (8, 1),
-                    (8, 2),
-                    (8, 3),
-                    (8, 4),
-                    (8, 5),
-                    (8, 6),
-                    (8, 7),
-                    (8, 8),
-                    (8, 9),
-                    (9, 9),
-                    (9, 8),
-                    (9, 7),
-                    (9, 6),
-                    (9, 5),
-                    (9, 4),
-                    (9, 3),
-                    (9, 2),
-                    (9, 1),
-                    (9, 0),
+                    (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
+                    (0, 6), (0, 7), (0, 8), (0, 9), (1, 9), (1, 8),
+                    (1, 7), (1, 6), (1, 5), (1, 4), (1, 3), (1, 2),
+                    (1, 1), (1, 0), (2, 0), (2, 1), (2, 2), (2, 3),
+                    (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9),
+                    (3, 9), (3, 8), (3, 7), (3, 6), (3, 5), (3, 4),
+                    (3, 3), (3, 2), (3, 1), (3, 0), (4, 5), (5, 5),
+                    (5, 4), (5, 3), (5, 2), (5, 1), (5, 0), (6, 0),
+                    (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6),
+                    (6, 7), (6, 8), (6, 9), (5, 9), (5, 8), (5, 7),
+                    (5, 6), (4, 9), (7, 9), (7, 8), (7, 7), (7, 6),
+                    (7, 5), (7, 4), (7, 3), (7, 2), (7, 1), (7, 0),
+                    (8, 0), (8, 1), (8, 2), (8, 3), (8, 4), (8, 5),
+                    (8, 6), (8, 7), (8, 8), (8, 9), (9, 9), (9, 8),
+                    (9, 7), (9, 6), (9, 5), (9, 4), (9, 3), (9, 2),
+                    (9, 1), (9, 0)
                 ]
+                # fmt: on
             )
         )
         neighbour_data = NeighbourData(NeighbourType.CROSS)
@@ -244,7 +107,8 @@ class SearchAlgorithmsTest(unittest.TestCase):
         dfs.event_set()
         dfs.run()
         dfs.join()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
 
     def test_depth_first_search_with_thread_options(self):
         neighbour_data = NeighbourData(NeighbourType.CROSS)
@@ -268,106 +132,61 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
                 [
-                    (0, 0),
-                    (1, 0),
-                    (0, 1),
-                    (2, 0),
-                    (1, 1),
-                    (0, 2),
-                    (3, 0),
-                    (2, 1),
-                    (1, 2),
-                    (0, 3),
-                    (3, 1),
-                    (2, 2),
-                    (1, 3),
-                    (0, 4),
-                    (3, 2),
-                    (2, 3),
-                    (1, 4),
-                    (0, 5),
-                    (3, 3),
-                    (2, 4),
-                    (1, 5),
-                    (0, 6),
-                    (3, 4),
-                    (2, 5),
-                    (1, 6),
-                    (0, 7),
-                    (3, 5),
-                    (2, 6),
-                    (1, 7),
-                    (0, 8),
-                    (4, 5),
-                    (3, 6),
-                    (2, 7),
-                    (1, 8),
-                    (0, 9),
-                    (5, 5),
-                    (3, 7),
-                    (2, 8),
-                    (1, 9),
-                    (6, 5),
-                    (5, 6),
-                    (5, 4),
-                    (3, 8),
-                    (2, 9),
-                    (7, 5),
-                    (6, 6),
-                    (6, 4),
-                    (5, 7),
-                    (5, 3),
-                    (3, 9),
-                    (8, 5),
-                    (7, 6),
-                    (7, 4),
-                    (6, 7),
-                    (6, 3),
-                    (5, 8),
-                    (5, 2),
-                    (4, 9),
-                    (9, 5),
-                    (8, 6),
-                    (8, 4),
-                    (7, 7),
-                    (7, 3),
-                    (6, 8),
-                    (6, 2),
-                    (5, 9),
-                    (5, 1),
-                    (9, 6),
-                    (9, 4),
-                    (8, 7),
-                    (8, 3),
-                    (7, 8),
-                    (7, 2),
-                    (6, 9),
-                    (6, 1),
-                    (5, 0),
-                    (9, 7),
-                    (9, 3),
-                    (8, 8),
-                    (8, 2),
-                    (7, 9),
-                    (7, 1),
-                    (6, 0),
-                    (9, 8),
-                    (9, 2),
-                    (8, 9),
-                    (8, 1),
-                    (7, 0),
-                    (9, 9),
-                    (9, 1),
-                    (8, 0),
-                    (9, 0),
+                    # fmt: off
+                    (0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2),
+                    (3, 0), (2, 1), (1, 2), (0, 3), (3, 1), (2, 2),
+                    (1, 3), (0, 4), (3, 2), (2, 3), (1, 4), (0, 5),
+                    (3, 3), (2, 4), (1, 5), (0, 6), (3, 4), (2, 5),
+                    (1, 6), (0, 7), (3, 5), (2, 6), (1, 7), (0, 8),
+                    (4, 5), (3, 6), (2, 7), (1, 8), (0, 9), (5, 5),
+                    (3, 7), (2, 8), (1, 9), (6, 5), (5, 6), (5, 4),
+                    (3, 8), (2, 9), (7, 5), (6, 6), (6, 4), (5, 7),
+                    (5, 3), (3, 9), (8, 5), (7, 6), (7, 4), (6, 7),
+                    (6, 3), (5, 8), (5, 2), (4, 9), (9, 5), (8, 6),
+                    (8, 4), (7, 7), (7, 3), (6, 8), (6, 2), (5, 9),
+                    (5, 1), (9, 6), (9, 4), (8, 7), (8, 3), (7, 8),
+                    (7, 2), (6, 9), (6, 1), (5, 0), (9, 7), (9, 3),
+                    (8, 8), (8, 2), (7, 9), (7, 1), (6, 0), (9, 8),
+                    (9, 2), (8, 9), (8, 1), (7, 0), (9, 9), (9, 1),
+                    (8, 0), (9, 0),
+                    # fmt: on
                 ]
             )
         )
         neighbour_data = NeighbourData(NeighbourType.CROSS)
-        self.assertSequenceEqual(
-            self.simple_search_object.breadth_first_search(neighbour_data),
-            correct_path_list,
-        )
+        bfs = self.simple_search_object.breadth_first_search(neighbour_data)
+        bfs.run_without_thread()
+        path = [node.position for node in bfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
+
+    def test_bfs_half_maze(self):
+        correct_path_list = [
+            Node(Dim2D(1, 1), 0),
+            Node(Dim2D(2, 1), 1),
+            Node(Dim2D(1, 2), 1),
+            Node(Dim2D(1, 0), 1),
+            Node(Dim2D(2, 2), 2),
+            Node(Dim2D(0, 2), 2),
+            Node(Dim2D(0, 0), 2),
+            Node(Dim2D(2, 3), 3),
+            Node(Dim2D(0, 3), 3),
+            Node(Dim2D(2, 4), 4),
+            Node(Dim2D(0, 4), 4),
+            Node(Dim2D(3, 4), 5),
+            Node(Dim2D(1, 4), 5),
+            Node(Dim2D(4, 4), 6),
+            Node(Dim2D(4, 3), 7),
+            Node(Dim2D(4, 2), 8),
+        ]
+        neighbour_data = NeighbourData(NeighbourType.CROSS)
+        bfs = self.half_maze_search_object.breadth_first_search(neighbour_data)
+        bfs.run_without_thread()
+        path = bfs.get_closed_set()
+        # Cannot use assertSequenceEqual due to override in Node class
+        self.assertEqual(len(path), len(correct_path_list))
+        for idx, node in enumerate(path):
+            self.assertEqual(node.position, correct_path_list[idx].position)
+            self.assertEqual(node.distance, correct_path_list[idx].distance)
 
     def test_dijkstra_search(self):
         end_point = Dim2D(7, 6)
@@ -375,20 +194,11 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
                 [
-                    (0, 0),
-                    (1, 0),
-                    (2, 0),
-                    (3, 0),
-                    (3, 1),
-                    (3, 2),
-                    (3, 3),
-                    (3, 4),
-                    (3, 5),
-                    (4, 5),
-                    (5, 5),
-                    (6, 5),
-                    (7, 5),
-                    (7, 6),
+                    # fmt: off
+                    (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2),
+                    (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5),
+                    (7, 5), (7, 6),
+                    # fmt: on
                 ]
             )
         )
@@ -402,27 +212,18 @@ class SearchAlgorithmsTest(unittest.TestCase):
 
     def test_a_star_search_simple(self):
         end_point = Dim2D(7, 6)
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=Dim2D.get_manathan_distance,
             weight_function=Dim2D.get_manathan_distance,
         )
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
                 [
-                    (0, 0),
-                    (1, 0),
-                    (2, 0),
-                    (3, 0),
-                    (3, 1),
-                    (3, 2),
-                    (3, 3),
-                    (3, 4),
-                    (3, 5),
-                    (4, 5),
-                    (5, 5),
-                    (6, 5),
-                    (7, 5),
-                    (7, 6),
+                    # fmt: off
+                    (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2),
+                    (3, 3), (3, 4), (3, 5), (4, 5), (5, 5), (6, 5),
+                    (7, 5), (7, 6),
+                    # fmt: on
                 ]
             )
         )
@@ -443,33 +244,19 @@ class SearchAlgorithmsTest(unittest.TestCase):
                 risk_value = 100
             return risk_value
 
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=custom_heuristic_function,
             weight_function=Dim2D.get_manathan_distance,
         )
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
                 [
-                    (0, 0),
-                    (1, 0),
-                    (2, 0),
-                    (3, 0),
-                    (3, 1),
-                    (3, 2),
-                    (3, 3),
-                    (3, 4),
-                    (3, 5),
-                    (3, 6),
-                    (3, 7),
-                    (3, 8),
-                    (3, 9),
-                    (4, 9),
-                    (5, 9),
-                    (6, 9),
-                    (7, 9),
-                    (7, 8),
-                    (7, 7),
-                    (7, 6),
+                    # fmt: off
+                    (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (3, 2),
+                    (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8),
+                    (3, 9), (4, 9), (5, 9), (6, 9), (7, 9), (7, 8),
+                    (7, 7), (7, 6),
+                    # fmt: on
                 ]
             )
         )
@@ -483,7 +270,7 @@ class SearchAlgorithmsTest(unittest.TestCase):
 
     def test_a_star_search_no_path(self):
         end_point = Dim2D(7, 6)
-        a_star_functions = GraphSearch.AStarFunctions(
+        a_star_functions = AStarFunctions(
             heuristic_function=Dim2D.get_manathan_distance,
             weight_function=Dim2D.get_manathan_distance,
         )
@@ -502,105 +289,32 @@ class SearchAlgorithmsTest(unittest.TestCase):
         correct_path_list = list(
             Dim2D.convert_candiates_to_dimensions(
                 [
-                    (0, 0),
-                    (1, 0),
-                    (2, 0),
-                    (3, 0),
-                    (3, 1),
-                    (2, 1),
-                    (2, 2),
-                    (3, 2),
-                    (3, 3),
-                    (2, 3),
-                    (1, 3),
-                    (0, 3),
-                    (0, 2),
-                    (0, 1),
-                    (1, 1),
-                    (1, 2),
-                    (0, 4),
-                    (1, 4),
-                    (1, 5),
-                    (2, 5),
-                    (3, 5),
-                    (3, 6),
-                    (2, 6),
-                    (2, 7),
-                    (2, 8),
-                    (3, 8),
-                    (3, 9),
-                    (4, 9),
-                    (5, 9),
-                    (6, 9),
-                    (6, 8),
-                    (5, 8),
-                    (5, 7),
-                    (5, 6),
-                    (5, 5),
-                    (6, 5),
-                    (7, 5),
-                    (7, 6),
-                    (7, 7),
-                    (7, 8),
-                    (8, 8),
-                    (8, 9),
-                    (7, 9),
-                    (9, 9),
-                    (9, 8),
-                    (9, 7),
-                    (9, 6),
-                    (8, 6),
-                    (8, 5),
-                    (8, 4),
-                    (8, 3),
-                    (8, 2),
-                    (9, 2),
-                    (9, 1),
-                    (8, 1),
-                    (8, 0),
-                    (9, 0),
-                    (7, 0),
-                    (7, 1),
-                    (7, 2),
-                    (6, 2),
-                    (6, 3),
-                    (7, 3),
-                    (7, 4),
-                    (6, 4),
-                    (5, 4),
-                    (5, 3),
-                    (5, 2),
-                    (5, 1),
-                    (5, 0),
-                    (6, 0),
-                    (6, 1),
-                    (9, 3),
-                    (9, 4),
-                    (9, 5),
-                    (8, 7),
-                    (6, 7),
-                    (6, 6),
-                    (4, 5),
-                    (2, 9),
-                    (1, 9),
-                    (1, 8),
-                    (1, 7),
-                    (0, 7),
-                    (0, 6),
-                    (1, 6),
-                    (0, 5),
-                    (0, 8),
-                    (0, 9),
-                    (3, 7),
-                    (3, 4),
-                    (2, 4),
+                    # fmt: off
+                    (0, 0), (1, 0), (2, 0), (3, 0), (3, 1), (2, 1),
+                    (2, 2), (3, 2), (3, 3), (2, 3), (1, 3), (0, 3),
+                    (0, 2), (0, 1), (1, 1), (1, 2), (0, 4), (1, 4),
+                    (1, 5), (2, 5), (3, 5), (3, 6), (2, 6), (2, 7),
+                    (2, 8), (3, 8), (3, 9), (4, 9), (5, 9), (6, 9),
+                    (6, 8), (5, 8), (5, 7), (5, 6), (5, 5), (6, 5),
+                    (7, 5), (7, 6), (7, 7), (7, 8), (8, 8), (8, 9),
+                    (7, 9), (9, 9), (9, 8), (9, 7), (9, 6), (8, 6),
+                    (8, 5), (8, 4), (8, 3), (8, 2), (9, 2), (9, 1),
+                    (8, 1), (8, 0), (9, 0), (7, 0), (7, 1), (7, 2),
+                    (6, 2), (6, 3), (7, 3), (7, 4), (6, 4), (5, 4),
+                    (5, 3), (5, 2), (5, 1), (5, 0), (6, 0), (6, 1),
+                    (9, 3), (9, 4), (9, 5), (8, 7), (6, 7), (6, 6),
+                    (4, 5), (2, 9), (1, 9), (1, 8), (1, 7), (0, 7),
+                    (0, 6), (1, 6), (0, 5), (0, 8), (0, 9), (3, 7),
+                    (3, 4), (2, 4),
+                    # fmt: on
                 ]
             )
         )
         neighbour_data = NeighbourData(NeighbourType.CROSS, random_output=True)
         dfs = self.simple_search_object.depth_first_search(neighbour_data)
         dfs.run_without_thread()
-        self.assertSequenceEqual(dfs.get_closed_set(), correct_path_list)
+        path = [node.position for node in dfs.get_closed_set()]
+        self.assertSequenceEqual(path, correct_path_list)
 
 
 if __name__ == "__main__":
