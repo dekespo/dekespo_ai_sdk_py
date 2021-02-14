@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+# TODO: rename continuous_integration as dekespo_ci so that it can
+# be used in other python repos, or even create a new repo for this one
 from continuous_integration.install_or_skip_dependencies import (
     install_or_skip_dependencies,
 )

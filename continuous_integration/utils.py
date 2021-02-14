@@ -16,6 +16,7 @@ def run_process(command, process_name):
     return returncode
 
 
+# TODO: Delete this function?
 def remove_extension_if_exists(string, extension):
     if string.endswith(extension):
         return string[: -len(extension)]

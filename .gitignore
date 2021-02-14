@@ -5,5 +5,7 @@ htmlcov
 Pipfile
 Pipfile.lock
 .mypy_cache
-.history
 .venv
+*.egg-info
+build
+dist
