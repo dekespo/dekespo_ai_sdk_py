@@ -6,6 +6,8 @@
 
 My pet project where it uses standard python modules to cover different AI algorithms, data structure and SDK that can be used for example in an application or online bot competition.
 
+One can download via [PyPi](https://pypi.org/project/dekespo-ai-sdk/).
+
 Currently it is used in
 - Its own applications (see https://github.com/dekespo/dekespo_apps_py)
 - https://www.codingame.com/multiplayer/bot-programming

@@ -10,6 +10,7 @@ def install_or_skip_dependencies():
             sys.exit(-1)
         return returncode
 
+    # TODO: Use dataclass and loop it for DRY
     black_version = "20.8b1"
     coverage_version = "5.3.1"
     mypy_version = "0.790"
