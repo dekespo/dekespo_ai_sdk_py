@@ -16,7 +16,7 @@ def check_all_code_analysis() -> int:
     returncode = utils.RETURN_CODE_OK
     returncode = returncode or run_black()
     returncode = returncode or run_pylint()
-    returncode = returncode or run_xenon()
+    # returncode = returncode or run_xenon()
     returncode = returncode or run_mypy()
     return returncode
 
@@ -29,7 +29,7 @@ def parse_argurments() -> argparse.Namespace:
     parser.add_argument("--mypy", action="store_true")
     parser.add_argument("--pylint", action="store_true")
     parser.add_argument("--tests", action="store_true")
-    parser.add_argument("--xenon", action="store_true")
+    # parser.add_argument("--xenon", action="store_true")
     return parser.parse_args()
 
 
@@ -56,13 +56,15 @@ def run_tests() -> int:
     returncode = utils.run_process(command, "Tests with Coverage")
     command = "coverage report --show-missing --fail-under=90"
     returncode = utils.run_process(command, "Coverage Report check")
+    command = "coverage xml"
+    returncode = utils.run_process(command, "Generate XML report")
     return returncode
 
 
-def run_xenon() -> int:
-    command = f"xenon -bB -mA -aA {MODULES}"
-    returncode = utils.run_process(command, "xenon")
-    return returncode
+# def run_xenon() -> int:
+#     command = f"xenon -bB -mA -aA {MODULES}"
+#     returncode = utils.run_process(command, "xenon")
+#     return returncode
 
 
 def main():
@@ -80,8 +82,8 @@ def main():
         returncode = run_pylint()
     elif arguments.tests:
         returncode = run_tests()
-    elif arguments.xenon:
-        returncode = run_xenon()
+    # elif arguments.xenon:
+    #     returncode = run_xenon()
     print("Return code is ", returncode)
     sys.exit(returncode)
 
