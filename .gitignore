@@ -2,8 +2,6 @@ __pycache__
 .vscode
 .coverage
 htmlcov
-Pipfile
-Pipfile.lock
 .mypy_cache
 .venv
 *.egg-info
