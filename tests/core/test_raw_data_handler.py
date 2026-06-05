@@ -21,3 +21,5 @@ class RawDataHandlerTest(unittest.TestCase):
         self.assertTrue(raw_data_handler.get_value(chosen_position), "1")
         raw_data_handler.set_value(chosen_position, "5")
         self.assertTrue(raw_data_handler.get_value(chosen_position), "5")
+        width, height = 10, 10 # example_simple size is 10x10, set manually
+        self.assertTrue(set(Dim2D(x, y) for x in range(width) for y in range(height)), raw_data_handler.get_all_positions())

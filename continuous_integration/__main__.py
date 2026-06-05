@@ -52,7 +52,7 @@ def run_pylint() -> int:
 
 
 def run_tests() -> int:
-    command = "coverage run --source=dekespo_ai_sdk -m unittest"
+    command = "coverage run --source=dekespo_ai_sdk -m unittest discover -v"
     returncode = utils.run_process(command, "Tests with Coverage")
     command = "coverage report --show-missing --fail-under=90"
     returncode = utils.run_process(command, "Coverage Report check")
