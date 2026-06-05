@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Set
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 
@@ -30,3 +30,10 @@ class RawDataHandler:
 
     def set_value(self, position: Dim2D, value: Any):
         self._raw_data[int(position.y)][int(position.x)] = value
+
+    def get_all_positions(self) -> Set[Dim2D]:
+        positions = set()
+        for y, line in enumerate(self._raw_data):
+            for x, point in enumerate(line):
+                positions.add(Dim2D(x, y))
+        return positions
