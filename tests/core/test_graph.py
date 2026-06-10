@@ -1,4 +1,6 @@
+import io
 import unittest
+from unittest.mock import patch
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
 from dekespo_ai_sdk.core.graph import Graph
@@ -101,6 +103,33 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(available_poses_dic[Dim2D(1, 1)], 1)
         self.assertIn(Dim2D(0, 2), available_poses_dic)
         self.assertEqual(available_poses_dic[Dim2D(0, 2)], 1)
+
+    def test_print_map_representation_based_on_values(self):
+        raw_data_handler = RawDataHandler(example_small_random())
+        graph = Graph(raw_data_handler, Shape2DType.RECTANGLE)
+
+        values = {
+            Dim2D(0, 0): "A",
+            Dim2D(1, 0): "B2",
+            Dim2D(2, 0): "C",
+            Dim2D(3, 0): "D",
+            Dim2D(0, 1): "E123",
+            Dim2D(1, 1): "F",
+        }
+
+        with patch("sys.stderr", new_callable=io.StringIO) as fake_stderr:
+            graph.print_map_representation_based_on_values(values)
+            output = fake_stderr.getvalue()
+
+        expected_lines = [
+            "        0    1    2    3",
+            "0       A   B2    C    D",
+            "1    E123    F    #    #",
+            "2       #    #    #    #",
+        ]
+
+        for line in expected_lines:
+            self.assertIn(line, output)
 
 
 if __name__ == "__main__":
