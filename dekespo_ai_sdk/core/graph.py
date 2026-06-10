@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from random import shuffle
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 from collections import OrderedDict
 
 from dekespo_ai_sdk.core.dimensions import Dim2D
@@ -12,6 +12,7 @@ from dekespo_ai_sdk.core.neighbour import (
     NeighbourType,
     GetNeighbourFunctionType,
 )
+from dekespo_ai_sdk.core.utils import error_print
 
 
 @dataclass
@@ -123,6 +124,29 @@ class Graph:
             shuffle(items)
             neighbours_positions_ordered_dic = OrderedDict(items)
         return neighbours_positions_ordered_dic
+
+    def print_map_representation_based_on_values(self, values: Dict):
+        if self.shape_type == Shape2DType.RECTANGLE:
+            # Print X‑axis header
+            cell_width = 4 # TODO: can be moved to as parameter
+
+            # X‑axis header
+            header = " " * cell_width
+            for x in range(self.graph_shape.width):
+                header += " "
+                header += str(x)[:cell_width].rjust(cell_width)
+            error_print(header)
+
+            # Rows with Y‑axis labels
+            for y in range(self.graph_shape.height):
+                row = [str(y)[:cell_width].ljust(cell_width)]  # Y label
+                for x in range(self.graph_shape.width):
+                    key = Dim2D(x, y)
+                    value = str(values.get(key, "#"))
+                    row.append(value[:cell_width].rjust(cell_width))
+                error_print(" ".join(row))
+        else:
+            error_print(f"{self.shape_type} has no defined mapping!")
 
     def __str__(self) -> str:
         return f"Shape Type: {self.shape_type}\nRaw data:\n{self.raw_data_handler}"
