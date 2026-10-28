@@ -1,4 +1,4 @@
-black==20.8b1
+black==26.10.1
 codecov==2.1.13
 coverage==5.3.1
 pylint==2.6.0
